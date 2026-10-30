@@ -30,6 +30,7 @@ Every page carries a status label:
 
 | Guide | Use it when |
 | :--- | :--- |
+| [What root unlocks](guides/what-root-unlocks.md) | You want the concrete capabilities after the `uid=0` shell. |
 | [Firmware acquisition](guides/firmware-acquisition.md) | You need the package for your own model, including the historical curl example. |
 | [Firmware extraction](guides/firmware-extraction.md) | You have a `.pkg` and want the rootfs/application filesystems. |
 | [USB autoroot](guides/usb-autoroot.md) | You want an ephemeral root shell from a cold boot. |

@@ -1,4 +1,4 @@
-# Philips Titan OS Research & Right-to-Repair Toolkit
+# Philips Titan OS Jailbreak, Root & Reverse-Engineering Toolkit
 
 [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -6,8 +6,11 @@
 [![Target](https://img.shields.io/badge/target-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
 [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
 
-Research notes, local-control tooling, and a verified boot-time root path for Philips
-televisions running **Titan OS** on the Novatek **NT72690** platform.
+Research notes, firmware analysis, local-control tooling, and a verified boot-time
+**jailbreak/root** path for Philips televisions running **Titan OS** on the Novatek
+**NT72690** platform. This is a right-to-repair and reverse-engineering toolkit for
+**55PUS8000/12** (`TPA256E` / `TPN256E`): USB autoroot, persistent root, NVM/SAM,
+channel maps, JointSpace, Ambilight, firmware extraction, and a documented restore.
 
 **Verified target:** `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard
 `715GD542`, firmware `TPA256E_V056.002.236.191`, Linux 6.1.124 on ARM64 with an
@@ -44,6 +47,27 @@ televisions running **Titan OS** on the Novatek **NT72690** platform.
 
 The full story, including the paths that failed, is in
 [verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md).
+
+---
+
+## What root unlocks
+
+Once the USB autoroot path gives you `uid=0`, you can inspect the live system,
+dump and verify NVM/EDID/channel maps, parse the firmware container, use
+JointSpace/Ambilight locally, and run your own boot-time service. The full list
+is in [what root unlocks](docs/guides/what-root-unlocks.md).
+
+| Root capability | Why it matters |
+| :--- | :--- |
+| Live shell on `:2323` | Inspect mounts, processes, partitions, `ttyS0`, SELinux, and the UI stack. |
+| NVM/EDID/channel backups | Recover from a bad service-menu or tuner experiment. |
+| Firmware parsing | Understand `TIMG`/`PIMG`/`NFSB`/SquashFS before flashing anything. |
+| JointSpace + Ambilight | Local keys, volume, input, per-LED RGB, and live color telemetry. |
+| Persistent hook | Start your own userspace service after a cold boot, with a delete-to-restore path. |
+| `/swdl` + `apdat` seams | Experiment with local UI/keyboard/config without rootfs writes. |
+
+The public repo stops at research and root. A custom local-first OS layer is a
+separate project; this repo is the verified starting point.
 
 ---
 
@@ -114,6 +138,7 @@ See [persistent root](docs/guides/persistent-root.md) and
 | [Boot chain: XBoot -> ATF -> Linux](docs/research/01-boot-chain-xboot-atf.md) | Why there is no interactive U-Boot |
 | [Flash layout and partitions](docs/research/02-flash-layout-and-partitions.md) | The canonical p9/p20/p31/p36 map |
 | [Firmware container format](docs/research/03-firmware-container-timg-pimg-nfsb.md) | `TIMG`, `PIMG`, `NFSB`, MD5 vs RSA/SHA-256 |
+| [What root unlocks](docs/guides/what-root-unlocks.md) | What you can actually do after the `uid=0` shell |
 | [Firmware acquisition](docs/guides/firmware-acquisition.md) | How the package was found, including the historical curl example |
 | [Firmware extraction](docs/guides/firmware-extraction.md) | Parse and carve a package without hardcoded offsets |
 | [USB autorun hook](docs/research/05-usb-autorun-hook.md) | The exact boot-time eval chain |
@@ -174,6 +199,17 @@ This project is independent research and is not affiliated with or endorsed by
 Philips, TP Vision, Novatek, or WhaleTV. Trademarks remain the property of their
 owners. Original code and documentation are MIT licensed; third-party components
 are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+---
+
+## Keywords
+
+Philips Titan OS jailbreak, Titan OS root, Philips TV root, 55PUS8000/12,
+TPA256E, TPN256E, Novatek NT72690, USB autoroot, persistent root, XBoot, ATF,
+firmware extraction, TIMG, PIMG, NFSB, SquashFS, U-Boot NVM, dual CRC32, SAM,
+Service Alignment Mode, channel maps, CRC-16/MODBUS, JointSpace, Ambilight,
+local control, right-to-repair, smart TV reverse engineering, telemetry audit,
+debloat.
 
 ---
 

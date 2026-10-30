@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "philips-titan-tools"
+version = "0.1.0"
+description = "Research and right-to-repair tooling for Philips Titan OS (Novatek NT72690)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Gustav Löfqvist" }]
+dependencies = ["requests>=2.28,<3"]
+
+[tool.setuptools]
+packages = []

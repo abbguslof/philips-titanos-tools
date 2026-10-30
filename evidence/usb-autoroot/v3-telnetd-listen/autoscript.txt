@@ -1,0 +1,19 @@
+mkdir -p /media/sda1/d
+/usr/bin/id > /media/sda1/d/diag3.txt 2>&1
+/bin/cat /sys/fs/selinux/enforce >> /media/sda1/d/diag3.txt 2>&1
+/bin/cat /proc/tty/driver/serial >> /media/sda1/d/diag3.txt 2>&1
+/sbin/ip -4 addr >> /media/sda1/d/diag3.txt 2>&1
+/bin/cp /media/sda1/busybox-armhf /tmp/busybox
+/bin/chmod +x /tmp/busybox
+/usr/sbin/iptables -I INPUT -p tcp --dport 2323 -j ACCEPT
+/usr/sbin/iptables -S INPUT > /media/sda1/d/ipt3.txt 2>&1
+/tmp/busybox telnetd -p 2323 -l /bin/sh -f /media/sda1/d/telnetd3.log &
+/bin/sleep 2
+/bin/netstat -ltn > /media/sda1/d/net3.txt 2>&1
+/bin/sh -c 'grep -q ":2323" /media/sda1/d/net3.txt || { echo 0 > /sys/fs/selinux/enforce; /tmp/busybox telnetd -p 2323 -l /bin/sh; /bin/netstat -ltn > /media/sda1/d/net3b.txt; }' 
+/usr/bin/timeout 5 /usr/bin/telnet 127.0.0.1 2323 </dev/null > /media/sda1/d/tlocal.txt 2>&1
+/bin/stty -F /dev/ttyS0 raw -echo
+/bin/cat /proc/tty/driver/serial > /media/sda1/d/rx_before.txt
+/usr/bin/timeout 25 /usr/bin/od -An -tx1 -v /dev/ttyS0 > /media/sda1/d/rx3.txt 2>&1
+/bin/cat /proc/tty/driver/serial > /media/sda1/d/rx_after.txt
+/tmp/busybox setsid /sbin/getty -L 115200 ttyS0 vt100 > /media/sda1/d/getty3.txt 2>&1 &

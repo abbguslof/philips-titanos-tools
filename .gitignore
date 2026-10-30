@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Device credentials, pairing data, certs
+.jointspace_credentials.json
+.env
+*.pem
+*.key
+*.crt
+tools/.certs/
+
+# Runtime telemetry and generated captures
+tools/ipc_telemetry.json
+tools/intercept_telemetry.json
+tools/webview_telemetry.json
+networkdump/
+*.pcap
+*.pcapng
+
+# Firmware and extracted vendor filesystems
+fw/
+*.zip
+*.pkg
+*.sqsh
+*.img
+*.gz
+*.bin
+*.dtb
+*.dtbo
+# Small, non-identifying evidence slices are allowed.
+!evidence/usb-autoroot/v5-umfg-partitions/*.bin
+!samples/channel-maps/**/*.bin
+
+# Decrypted/raw device dumps
+usbdump/
+!samples/
+!evidence/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

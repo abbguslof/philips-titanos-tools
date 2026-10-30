@@ -1,0 +1,1 @@
+/bin/sh /media/sda1/autoroot.sh >>/media/sda1/autoroot.log 2>&1

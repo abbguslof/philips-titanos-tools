@@ -1,0 +1,18 @@
+mkdir -p /media/sda1/d
+/usr/bin/id > /media/sda1/d/diag.txt 2>&1
+/bin/date >> /media/sda1/d/diag.txt 2>&1
+/bin/cat /proc/cmdline >> /media/sda1/d/diag.txt 2>&1
+/bin/ls -l /dev/ttyS0 /dev/console /dev/ptmx >> /media/sda1/d/diag.txt 2>&1
+/bin/cat /proc/tty/driver/serial >> /media/sda1/d/diag.txt 2>&1
+/bin/ps w >> /media/sda1/d/diag.txt 2>&1
+/bin/cat /proc/mounts >> /media/sda1/d/diag.txt 2>&1
+/bin/pkill -f getty
+/bin/sleep 1
+/bin/stty -F /dev/ttyS0 raw -echo
+/bin/echo TVTX_OK > /dev/ttyS0
+/usr/bin/timeout 15 /usr/bin/od -An -tx1 -v /dev/ttyS0 > /media/sda1/d/rx.txt 2>&1
+/bin/cp /media/sda1/busybox-armhf /tmp/bb
+/bin/chmod +x /tmp/bb
+/usr/sbin/iptables -I INPUT -p tcp --dport 2323 -j ACCEPT 2>/media/sda1/d/ipt.txt
+/tmp/bb telnetd -p 2323 -l /bin/sh >/media/sda1/d/telnetd.txt 2>&1 &
+/tmp/bb setsid /tmp/bb getty -L 115200 ttyS0 vt100 >/media/sda1/d/getty.txt 2>&1 &

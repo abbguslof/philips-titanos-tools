@@ -1,0 +1,15 @@
+=== autoroot start ===
+date: Fri Oct 30 11:49:22 GMT 2026
+uptime: 36.16 23.25
+id: uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+cmdline: console=ttynull,115200 rootfstype=squashfs quiet maxcpus=4 rootwait no_console_suspend earlycon=uart8250,mmio32,0xfd099000,baudrate=115200 nvt_pstore_mmc.blkdev=/dev/mmcblk0p36 page_pinner=on page_owner=on root=/dev/mmcblk0p20 ro
+serial: serinfo:1.0 driver revision:
+0: uart:16550A mmio:0xFD099000 irq:16 tx:4534 rx:0 RTS|DTR
+1: uart:16550A mmio:0xFD090000 irq:17 tx:0 rx:0
+2: uart:16550A mmio:0xFD092000 irq:18 tx:0 rx:0 RTS|DTR
+3: uart:unknown port:00000000 irq:0
+media mounts:
+tmpfs /media tmpfs rw,seclabel,relatime 0 0
+/dev/sda1 /media/sda1 vfat rw,relatime,fmask=0000,dmask=0000,allow_utime=0022,codepage=437,iocharset=iso8859-1,shortname=winnt,utf8,errors=continue 0 0
+telnetd pid 2558
+SUCCESS: telnetd listening on :2323

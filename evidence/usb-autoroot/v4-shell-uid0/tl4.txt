@@ -1,0 +1,12 @@
+
+
+id
+MARK
+/mtd_apexe/board # id
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+/mtd_apexe/board # MARK
+/bin/sh: MARK: not found
+/mtd_apexe/board # Connected to 127.0.0.1
+
+Entering character mode
+Escape character is '^]'.

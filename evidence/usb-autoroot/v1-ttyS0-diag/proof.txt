@@ -1,0 +1,1 @@
+crw-rw----. 1 root ttyS 4, 64 Oct 30 09:13 /dev/ttyS0

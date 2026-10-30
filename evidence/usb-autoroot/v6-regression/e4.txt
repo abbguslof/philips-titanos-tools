@@ -1,0 +1,6 @@
+1/bin/echo: write error: Invalid argument
+1[    5.257119][  T712] FGU NO_MUSIC:amb_setAlexaVCATuning:old state=0 new state=0 are the same, return directly...
+[    5.258094][  T712] FGU NO_MUSIC:amb_setAlexaVCATuning:old state=0 new state=0 are the same, return directly...
+[    5.258130][  T712] FGU NO_MUSIC:IMamb_Fms_setAlexaVCATuning:state=0 speed=100 brightness=50 saturation=100 extAudio=0  allSides=0 res=0
+[    5.258168][  T712] FGU NO_MUSIC:IMambP_priv_setAlexaVCATuning:state=0 speed=100 brightness=50 saturation=100 extAudio=0 allSides=0 res=0
+pty_ok

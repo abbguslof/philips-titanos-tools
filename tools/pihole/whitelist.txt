@@ -1,0 +1,16 @@
+# Smart TV Essential Whitelist for Pi-hole / AdGuard
+# Keep these unblocked to prevent offline warning toasts and preserve streaming app playback.
+
+# --- Embedded Network Watchdog (Prevents offline warning toasts) ---
+clients3.google.com
+www.google.com
+www.yahoo.com
+download.airserver.com
+
+# --- Netflix Playback & Auth (Blocking these breaks Netflix playback/login) ---
+secure.netflix.com
+api-global.netflix.com
+appboot.netflix.com
+
+# --- Spotify Smart TV App ---
+api-tv.spotify.com

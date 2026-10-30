@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Titan OS IPC Bridge Reflection Harness</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0b0f19;
+            color: #c9d1d9;
+            font-family: 'Courier New', monospace;
+            padding: 24px;
+            font-size: 18px;
+        }
+        h1 { color: #2ea043; font-size: 28px; margin-bottom: 4px; }
+        .subtitle { color: #8b949e; margin-bottom: 20px; font-size: 15px; }
+        .phase { color: #58a6ff; font-weight: bold; font-size: 16px; margin-top: 16px; }
+        .box {
+            background: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 12px;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .highlight { color: #f0883e; }
+        .success { color: #7ee787; font-weight: bold; }
+        .alert { color: #f85149; }
+        .info { color: #58a6ff; }
+        pre { margin: 0; white-space: pre-wrap; font-size: 15px; line-height: 1.4; }
+        .progress { color: #d2a8ff; }
+    </style>
+</head>
+<body>
+    <h1>🔌 BROWSER IPC REFLECTION HARNESS</h1>
+    <div class="subtitle">Enumerating native BrowserIpcPluginClass (application/browser-ipc-2)</div>
+
+    <div class="phase">Phase 1: Plugin Instantiation</div>
+    <div class="box">
+        <pre id="phase1" class="progress">Instantiating native IPC plugin objects...</pre>
+    </div>
+
+    <div class="phase">Phase 2: Property & Method Enumeration</div>
+    <div class="box">
+        <pre id="phase2" class="progress">Waiting for Phase 1...</pre>
+    </div>
+
+    <div class="phase">Phase 3: Prototype Chain Walk</div>
+    <div class="box">
+        <pre id="phase3" class="progress">Waiting for Phase 2...</pre>
+    </div>
+
+    <div class="phase">Phase 4: Method Signature Probing</div>
+    <div class="box">
+        <pre id="phase4" class="progress">Waiting for Phase 3...</pre>
+    </div>
+
+    <div class="phase">Phase 5: Alternative Plugin Types</div>
+    <div class="box">
+        <pre id="phase5" class="progress">Waiting for Phase 4...</pre>
+    </div>
+
+    <div class="phase">Phase 6: Telemetry Transmission</div>
+    <div class="box">
+        <pre id="phase6" class="progress">Queued...</pre>
+    </div>
+
+    <!-- Primary IPC plugin object (production Titan OS embeds this) -->
+    <p style="position:fixed; opacity:0; pointer-events:none;">
+        <object id="ipc_primary" type="application/browser-ipc-2"></object>
+    </p>
+
+    <!-- Probe alternative MIME types that Novatek/WhaleTV/Vewd might register -->
+    <p style="position:fixed; opacity:0; pointer-events:none;">
+        <object id="ipc_alt1" type="application/browser-ipc"></object>
+        <object id="ipc_alt2" type="application/browser-ipc-1"></object>
+        <object id="ipc_alt3" type="application/oipfApplicationManager"></object>
+        <object id="ipc_alt4" type="application/oipfConfiguration"></object>
+        <object id="ipc_alt5" type="application/oipfDownloadManager"></object>
+        <object id="ipc_alt6" type="application/hbbtv"></object>
+        <object id="ipc_alt7" type="application/oipfDrmAgent"></object>
+        <object id="ipc_alt8" type="application/oipfParentalControlManager"></object>
+        <object id="ipc_alt9" type="application/oipfSearchManager"></object>
+        <object id="ipc_alt10" type="application/x-vewd-plugin"></object>
+        <object id="ipc_alt11" type="application/x-novatek-plugin"></object>
+        <object id="ipc_alt12" type="application/x-whaletv-plugin"></object>
+    </p>
+
+    <script>
+        // =================================================================
+        // Titan OS BrowserIpcPluginClass Deep Reflection Harness
+        // =================================================================
+        // This script performs exhaustive enumeration of every property,
+        // method, prototype chain member, and event handler on the native
+        // C++ IPC bridge exposed by the Titan OS Chromium webview shell.
+        // =================================================================
+
+        var HOST = 'http://192.0.2.44:8080';
+        var report = {
+            harness_version: '1.0.0',
+            timestamp: new Date().toISOString(),
+            origin: window.location.href,
+            protocol: window.location.protocol,
+            userAgent: navigator.userAgent,
+            phase1_instantiation: {},
+            phase2_enumeration: {},
+            phase3_prototype: {},
+            phase4_signatures: {},
+            phase5_alternatives: {},
+            errors: []
+        };
+
+        function log(phaseId, msg) {
+            var el = document.getElementById(phaseId);
+            if (el) el.innerText += '\n' + msg;
+        }
+
+        function setPhase(phaseId, msg, cls) {
+            var el = document.getElementById(phaseId);
+            if (el) {
+                el.innerText = msg;
+                if (cls) el.className = cls;
+            }
+        }
+
+        // -----------------------------------------------------------------
+        // Phase 1: Attempt to instantiate the primary IPC plugin
+        // -----------------------------------------------------------------
+        function runPhase1() {
+            var ipc = document.getElementById('ipc_primary');
+            var result = { found: false, tagName: '', type: '', keys: [], typeof: '' };
+
+            if (!ipc) {
+                result.error = 'getElementById returned null';
+                setPhase('phase1', '❌ Plugin element not found in DOM', 'alert');
+            } else {
+                result.tagName = ipc.tagName || '';
+                result.type = ipc.type || '';
+                result.typeof = typeof ipc;
+                result.nodeType = ipc.nodeType;
+                result.toString = String(ipc);
+
+                // Check if the plugin actually initialized (native plugins
+                // expose extra properties beyond standard HTMLObjectElement)
+                var standardKeys = {};
+                var tempObj = document.createElement('object');
+                for (var sk in tempObj) { standardKeys[sk] = true; }
+
+                var extraKeys = [];
+                var allKeys = [];
+                for (var k in ipc) {
+                    allKeys.push(k);
+                    if (!standardKeys[k]) {
+                        extraKeys.push(k);
+                    }
+                }
+
+                result.totalKeys = allKeys.length;
+                result.standardKeys = Object.keys(standardKeys).length;
+                result.extraKeys = extraKeys;
+                result.found = extraKeys.length > 0;
+
+                if (result.found) {
+                    setPhase('phase1', '✓ IPC Plugin ACTIVE — ' + extraKeys.length + ' native properties detected!\n  Extra keys: ' + extraKeys.join(', '), 'success');
+                } else {
+                    setPhase('phase1', '⚠ Plugin element exists but no extra native properties detected.\n  Total keys: ' + allKeys.length + ' (all standard HTMLObjectElement)', 'highlight');
+                }
+            }
+
+            report.phase1_instantiation = result;
+        }
+
+        // -----------------------------------------------------------------
+        // Phase 2: Deep property and method enumeration
+        // -----------------------------------------------------------------
+        function runPhase2() {
+            var ipc = document.getElementById('ipc_primary');
+            if (!ipc) {
+                setPhase('phase2', '⊘ Skipped (no plugin)', 'alert');
+                return;
+            }
+
+            var properties = {};
+            var methods = {};
+            var eventHandlers = {};
+
+            for (var key in ipc) {
+                try {
+                    var val = ipc[key];
+                    var t = typeof val;
+
+                    if (t === 'function') {
+                        methods[key] = {
+                            type: 'function',
+                            arity: val.length || 0,
+                            toString: safeToString(val),
+                            name: val.name || ''
+                        };
+                    } else if (key.match(/^on[a-z]/i)) {
+                        eventHandlers[key] = {
+                            type: t,
+                            value: safeStringify(val)
+                        };
+                    } else {
+                        properties[key] = {
+                            type: t,
+                            value: safeStringify(val),
+                            writable: testWritable(ipc, key)
+                        };
+                    }
+                } catch (e) {
+                    properties[key] = { type: 'error', error: e.toString() };
+                }
+            }
+
+            // Also try Object.getOwnPropertyNames if available
+            var ownNames = [];
+            try {
+                ownNames = Object.getOwnPropertyNames(ipc);
+                for (var i = 0; i < ownNames.length; i++) {
+                    var n = ownNames[i];
+                    if (!properties[n] && !methods[n] && !eventHandlers[n]) {
+                        try {
+                            var desc = Object.getOwnPropertyDescriptor(ipc, n);
+                            properties[n] = {
+                                type: typeof ipc[n],
+                                value: safeStringify(ipc[n]),
+                                descriptor: desc ? {
+                                    configurable: desc.configurable,
+                                    enumerable: desc.enumerable,
+                                    writable: desc.writable,
+                                    hasGetter: !!desc.get,
+                                    hasSetter: !!desc.set
+                                } : null
+                            };
+                        } catch (e2) {
+                            properties[n] = { type: 'error', error: e2.toString() };
+                        }
+                    }
+                }
+            } catch (e) {}
+
+            report.phase2_enumeration = {
+                propertyCount: Object.keys(properties).length,
+                methodCount: Object.keys(methods).length,
+                eventHandlerCount: Object.keys(eventHandlers).length,
+                ownPropertyNames: ownNames,
+                properties: properties,
+                methods: methods,
+                eventHandlers: eventHandlers
+            };
+
+            var summary = '  Properties: ' + Object.keys(properties).length +
+                '\n  Methods: ' + Object.keys(methods).length +
+                '\n  Event Handlers: ' + Object.keys(eventHandlers).length;
+
+            if (Object.keys(methods).length > 0) {
+                summary += '\n\n  📋 Methods found:\n';
+                for (var mk in methods) {
+                    summary += '    → ' + mk + '(' + methods[mk].arity + ' args)\n';
+                }
+            }
+
+            setPhase('phase2', '✓ Enumeration complete:\n' + summary, 'success');
+        }
+
+        // -----------------------------------------------------------------
+        // Phase 3: Walk the prototype chain
+        // -----------------------------------------------------------------
+        function runPhase3() {
+            var ipc = document.getElementById('ipc_primary');
+            if (!ipc) {
+                setPhase('phase3', '⊘ Skipped (no plugin)', 'alert');
+                return;
+            }
+
+            var chain = [];
+            var current = ipc;
+            var depth = 0;
+            var maxDepth = 10;
+
+            while (current && depth < maxDepth) {
+                var proto = null;
+                try { proto = Object.getPrototypeOf(current); } catch (e) { break; }
+                if (!proto || proto === current) break;
+
+                var protoInfo = {
+                    depth: depth,
+                    constructor: '',
+                    ownKeys: []
+                };
+
+                try { protoInfo.constructor = proto.constructor ? proto.constructor.name : 'unknown'; } catch (e) {}
+                try {
+                    var pKeys = Object.getOwnPropertyNames(proto);
+                    protoInfo.ownKeys = pKeys;
+                    // Look for interesting methods at each prototype level
+                    for (var i = 0; i < pKeys.length; i++) {
+                        try {
+                            if (typeof proto[pKeys[i]] === 'function' && pKeys[i] !== 'constructor') {
+                                if (!report.phase2_enumeration.methods) report.phase2_enumeration.methods = {};
+                                if (!report.phase2_enumeration.methods[pKeys[i]]) {
+                                    report.phase2_enumeration.methods[pKeys[i]] = {
+                                        type: 'function',
+                                        source: 'prototype_depth_' + depth,
+                                        arity: proto[pKeys[i]].length || 0,
+                                        toString: safeToString(proto[pKeys[i]])
+                                    };
+                                }
+                            }
+                        } catch (e) {}
+                    }
+                } catch (e) {}
+
+                chain.push(protoInfo);
+                current = proto;
+                depth++;
+            }
+
+            report.phase3_prototype = { chain: chain, depth: depth };
+
+            var summary = 'Prototype chain depth: ' + depth;
+            for (var c = 0; c < chain.length; c++) {
+                summary += '\n  [' + c + '] ' + chain[c].constructor + ' (' + chain[c].ownKeys.length + ' keys)';
+            }
+
+            setPhase('phase3', '✓ ' + summary, 'info');
+        }
+
+        // -----------------------------------------------------------------
+        // Phase 4: Probe method signatures with safe zero-arg calls
+        // -----------------------------------------------------------------
+        function runPhase4() {
+            var ipc = document.getElementById('ipc_primary');
+            if (!ipc || !report.phase2_enumeration.methods) {
+                setPhase('phase4', '⊘ Skipped (no methods found)', 'alert');
+                return;
+            }
+
+            var methods = report.phase2_enumeration.methods;
+            var probeResults = {};
+
+            // Interesting keywords that might indicate OS-level access
+            var interestingPatterns = [
+                /exec/i, /command/i, /cmd/i, /shell/i, /system/i, /run/i,
+                /spawn/i, /process/i, /file/i, /read/i, /write/i, /open/i,
+                /close/i, /socket/i, /connect/i, /send/i, /receive/i, /recv/i,
+                /path/i, /dir/i, /mount/i, /storage/i, /usb/i, /device/i,
+                /debug/i, /log/i, /config/i, /setting/i, /permission/i,
+                /root/i, /admin/i, /privilege/i, /iptable/i, /firewall/i,
+                /install/i, /update/i, /firmware/i, /flash/i,
+                /key/i, /input/i, /event/i, /notify/i, /callback/i,
+                /ipc/i, /message/i, /channel/i, /broadcast/i, /subscribe/i,
+                /navigate/i, /url/i, /load/i, /browse/i, /launch/i,
+                /get/i, /set/i, /query/i, /request/i, /response/i,
+                /power/i, /standby/i, /reboot/i, /shutdown/i
+            ];
+
+            for (var mk in methods) {
+                var isInteresting = false;
+                for (var p = 0; p < interestingPatterns.length; p++) {
+                    if (interestingPatterns[p].test(mk)) {
+                        isInteresting = true;
+                        break;
+                    }
+                }
+
+                probeResults[mk] = {
+                    interesting: isInteresting,
+                    arity: methods[mk].arity
+                };
+
+                // Only safe-probe zero-arg methods that look like getters
+                if (methods[mk].arity === 0 && mk.match(/^(get|is|has|check|query|list|read|count|status)/i)) {
+                    try {
+                        var result = ipc[mk]();
+                        probeResults[mk].callResult = safeStringify(result);
+                        probeResults[mk].callType = typeof result;
+                        probeResults[mk].called = true;
+                    } catch (e) {
+                        probeResults[mk].callError = e.toString();
+                        probeResults[mk].called = true;
+                    }
+                }
+            }
+
+            report.phase4_signatures = probeResults;
+
+            var interesting = [];
+            var summary = '';
+            for (var pk in probeResults) {
+                if (probeResults[pk].interesting) {
+                    interesting.push(pk);
+                    summary += '\n  ⚡ ' + pk + ' (arity: ' + probeResults[pk].arity + ')';
+                    if (probeResults[pk].called) {
+                        summary += ' → ' + (probeResults[pk].callResult || probeResults[pk].callError);
+                    }
+                }
+            }
+
+            if (interesting.length > 0) {
+                setPhase('phase4', '✓ ' + interesting.length + ' interesting methods identified:' + summary, 'success');
+            } else {
+                setPhase('phase4', '✓ Probe complete. No high-interest method names detected.\n  (All ' + Object.keys(probeResults).length + ' methods catalogued in telemetry report)', 'info');
+            }
+        }
+
+        // -----------------------------------------------------------------
+        // Phase 5: Probe alternative plugin MIME types
+        // -----------------------------------------------------------------
+        function runPhase5() {
+            var altPlugins = [
+                { id: 'ipc_alt1',  type: 'application/browser-ipc' },
+                { id: 'ipc_alt2',  type: 'application/browser-ipc-1' },
+                { id: 'ipc_alt3',  type: 'application/oipfApplicationManager' },
+                { id: 'ipc_alt4',  type: 'application/oipfConfiguration' },
+                { id: 'ipc_alt5',  type: 'application/oipfDownloadManager' },
+                { id: 'ipc_alt6',  type: 'application/hbbtv' },
+                { id: 'ipc_alt7',  type: 'application/oipfDrmAgent' },
+                { id: 'ipc_alt8',  type: 'application/oipfParentalControlManager' },
+                { id: 'ipc_alt9',  type: 'application/oipfSearchManager' },
+                { id: 'ipc_alt10', type: 'application/x-vewd-plugin' },
+                { id: 'ipc_alt11', type: 'application/x-novatek-plugin' },
+                { id: 'ipc_alt12', type: 'application/x-whaletv-plugin' }
+            ];
+
+            var standardKeyCount = 0;
+            try {
+                var tempObj = document.createElement('object');
+                for (var sk in tempObj) { standardKeyCount++; }
+            } catch (e) {}
+
+            var altResults = {};
+            var activeCount = 0;
+            var summary = '';
+
+            for (var i = 0; i < altPlugins.length; i++) {
+                var ap = altPlugins[i];
+                var el = document.getElementById(ap.id);
+                var info = { type: ap.type, active: false, extraKeys: [] };
+
+                if (el) {
+                    var keyCount = 0;
+                    var extras = [];
+                    var standardKeys = {};
+                    try {
+                        var tempObj2 = document.createElement('object');
+                        for (var s in tempObj2) { standardKeys[s] = true; }
+                    } catch (e) {}
+
+                    for (var k in el) {
+                        keyCount++;
+                        if (!standardKeys[k]) extras.push(k);
+                    }
+
+                    info.totalKeys = keyCount;
+                    info.extraKeys = extras;
+                    info.active = extras.length > 0;
+
+                    if (info.active) {
+                        activeCount++;
+                        // Deep enumerate this plugin too
+                        info.methods = {};
+                        info.properties = {};
+                        for (var ek = 0; ek < extras.length; ek++) {
+                            try {
+                                var val = el[extras[ek]];
+                                if (typeof val === 'function') {
+                                    info.methods[extras[ek]] = {
+                                        arity: val.length || 0,
+                                        toString: safeToString(val)
+                                    };
+                                } else {
+                                    info.properties[extras[ek]] = {
+                                        type: typeof val,
+                                        value: safeStringify(val)
+                                    };
+                                }
+                            } catch (e) {
+                                info.properties[extras[ek]] = { error: e.toString() };
+                            }
+                        }
+                        summary += '\n  ✓ ' + ap.type + ' — ACTIVE (' + extras.length + ' extra keys)';
+                    }
+                }
+
+                altResults[ap.type] = info;
+            }
+
+            // Also probe navigator.plugins and navigator.mimeTypes
+            var navigatorPlugins = [];
+            try {
+                if (navigator.plugins) {
+                    for (var np = 0; np < navigator.plugins.length; np++) {
+                        var plugin = navigator.plugins[np];
+                        var pInfo = { name: plugin.name, filename: plugin.filename, description: plugin.description, mimeTypes: [] };
+                        for (var mt = 0; mt < plugin.length; mt++) {
+                            pInfo.mimeTypes.push({
+                                type: plugin[mt].type,
+                                description: plugin[mt].description,
+                                suffixes: plugin[mt].suffixes
+                            });
+                        }
+                        navigatorPlugins.push(pInfo);
+                    }
+                }
+            } catch (e) {}
+
+            var navigatorMimeTypes = [];
+            try {
+                if (navigator.mimeTypes) {
+                    for (var nm = 0; nm < navigator.mimeTypes.length; nm++) {
+                        navigatorMimeTypes.push({
+                            type: navigator.mimeTypes[nm].type,
+                            description: navigator.mimeTypes[nm].description,
+                            suffixes: navigator.mimeTypes[nm].suffixes,
+                            plugin: navigator.mimeTypes[nm].enabledPlugin ? navigator.mimeTypes[nm].enabledPlugin.name : null
+                        });
+                    }
+                }
+            } catch (e) {}
+
+            report.phase5_alternatives = {
+                plugins: altResults,
+                activeAlternativeCount: activeCount,
+                navigatorPlugins: navigatorPlugins,
+                navigatorMimeTypes: navigatorMimeTypes
+            };
+
+            if (activeCount > 0 || navigatorPlugins.length > 0) {
+                setPhase('phase5', '✓ ' + activeCount + ' active alternative plugins, ' + navigatorPlugins.length + ' navigator plugins' + summary, 'success');
+            } else {
+                setPhase('phase5', '⊘ No active alternative plugins. navigator.plugins: ' + navigatorPlugins.length, 'info');
+            }
+        }
+
+        // -----------------------------------------------------------------
+        // Phase 6: Transmit full report to workstation
+        // -----------------------------------------------------------------
+        function runPhase6() {
+            setPhase('phase6', '📡 Transmitting telemetry to ' + HOST + '/api/ipc-telemetry ...', 'progress');
+
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', HOST + '/api/ipc-telemetry', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.timeout = 10000;
+                xhr.onload = function() {
+                    setPhase('phase6', '✓ Telemetry transmitted successfully to workstation!\n  Status: HTTP ' + xhr.status + '\n  Report size: ' + JSON.stringify(report).length + ' bytes', 'success');
+                };
+                xhr.onerror = function() {
+                    setPhase('phase6', '⚠ Transmission failed — workstation unreachable at ' + HOST + '\n  Report stored in console. Open DevTools if available.', 'alert');
+                };
+                xhr.ontimeout = function() {
+                    setPhase('phase6', '⚠ Transmission timed out (10s). Workstation may be offline.', 'alert');
+                };
+                xhr.send(JSON.stringify(report, null, 2));
+            } catch (e) {
+                setPhase('phase6', '⚠ Transmit error: ' + e.message, 'alert');
+                report.errors.push('phase6_transmit: ' + e.toString());
+            }
+
+            // Also dump to console as a fallback
+            try { console.log('[IPC_HARNESS_REPORT]', JSON.stringify(report, null, 2)); } catch (e) {}
+        }
+
+        // -----------------------------------------------------------------
+        // Utility functions
+        // -----------------------------------------------------------------
+        function safeStringify(val) {
+            try {
+                if (val === null) return 'null';
+                if (val === undefined) return 'undefined';
+                var t = typeof val;
+                if (t === 'string') return val.substring(0, 500);
+                if (t === 'number' || t === 'boolean') return String(val);
+                if (t === 'function') return '[function]';
+                if (t === 'object') {
+                    try { return JSON.stringify(val).substring(0, 500); }
+                    catch (e) { return '[object ' + (val.constructor ? val.constructor.name : 'Unknown') + ']'; }
+                }
+                return String(val).substring(0, 200);
+            } catch (e) {
+                return '[stringify error: ' + e.message + ']';
+            }
+        }
+
+        function safeToString(fn) {
+            try { return fn.toString().substring(0, 300); }
+            catch (e) { return '[native code]'; }
+        }
+
+        function testWritable(obj, key) {
+            try {
+                var desc = Object.getOwnPropertyDescriptor(obj, key);
+                if (desc) return !!desc.writable || !!desc.set;
+            } catch (e) {}
+            return 'unknown';
+        }
+
+        // -----------------------------------------------------------------
+        // Execute all phases sequentially
+        // -----------------------------------------------------------------
+        try { runPhase1(); } catch (e) { report.errors.push('phase1: ' + e.toString()); }
+        try { runPhase2(); } catch (e) { report.errors.push('phase2: ' + e.toString()); }
+        try { runPhase3(); } catch (e) { report.errors.push('phase3: ' + e.toString()); }
+        try { runPhase4(); } catch (e) { report.errors.push('phase4: ' + e.toString()); }
+        try { runPhase5(); } catch (e) { report.errors.push('phase5: ' + e.toString()); }
+        // Delay telemetry transmission to let async probes settle
+        setTimeout(function() {
+            try { runPhase6(); } catch (e) { report.errors.push('phase6: ' + e.toString()); }
+        }, 2000);
+    </script>
+</body>
+</html>

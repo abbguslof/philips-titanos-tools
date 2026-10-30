@@ -1,0 +1,5 @@
+serinfo:1.0 driver revision:
+0: uart:16550A mmio:0xFD099000 irq:16 tx:4534 rx:0 RTS|DTR
+1: uart:16550A mmio:0xFD090000 irq:17 tx:0 rx:0
+2: uart:16550A mmio:0xFD092000 irq:18 tx:0 rx:0 RTS|DTR
+3: uart:unknown port:00000000 irq:0

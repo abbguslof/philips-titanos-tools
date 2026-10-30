@@ -1,0 +1,80 @@
+Novatek XBoot rev: 2a4184c
+kconfig: n22074_tk_linux_sec_defconfig
+build time: Aug 26 2025 17:54:05
+NT72690 0
+boot_area: 1
+fhAC ON
+pd start
+pd done
+DDR tool:v3006 buf:0xfc32ac00 adc6:0x0
+ADC8:0xb3
+adc5:0x0
+adc1:0xf5
+cpu_set 1250
+[transit_val:0x1][bond_val:0x5c][reg_val:0x100015c]
+DDRF:NT690_TPV_16DDR4_2133_8G_32DDR3_2133_4G4G_230524_1_Normal_1x_bm.
+MAU REMAP enabled !
+moNew Panel Structure
+panel name = EU8000_LVA55_TconLess, b8Mode50Hz = 0, VX1 = 1, enLvdsFormat = 1
+u8Tcon = 0, PanelType = 130,TconType = 0
+NTCPE_getMaxDisplay 1
+[_VID_Customize_Set_PanelPowerOn] nvt_tcon_need_init[1] power on mode[3]
+Panel Power GPIO,MSB=0 , LSB=13
+Panel BackLight GPIO=2062
+panel power on, delay 30 ms before proceeding
+Vx1 SSC freq:(30,0x64)
+Vx1 SSC percent:(6,0xf)
+Vx1 Not Enable SSC
+set OSD display window 3840*2160
+[nvt_tcon_transfer_param, 35] u32Tmp = 0x188200, set to TCON_BOOT1_TCON_TYPE_REG
+xzbdj wrst
+;0STBC version : 13c8d0
+call prj_cust_init()
+eMMC pre_eolf_info normal
+eMMC SLC mmc type used life: 00%-10%
+eMMC MLC mmc type used life: 00%-10%
+k:1 p:1 bc:2 upf:0x0
+[Secure] RPMB: 1, mode: 0
+
+boot counter = 1
+[LC]
+tvDDR sel ADC:0x0, fdt_id: N22074_LINUX_TPV_4K_TC_2G
+fdt_id_str = N22074_LINUX_TPV_4K_TC_2G
+gisuccess to get update state!
+OBR,PowerOnEvt:RC ON(3), IsBCOverLimit:0, need_mirror:0, switched:1, dual_all_same:0, addon_stats =2
+[DEBUG]uart mode:0, sign:UMFG
+lnikauth pass !
+Tconless Panel Power GPIO,MSB=0 , LSB=13
+Tconless Panel BackLight GPIO=2062
+Tconless panel power on, delay 30 ms before proceeding
+nvt_tcon_get_demura_chksum_emmc-> Demura type is 11
+get config done
+nvt_tcon_get_demura_chksum_emmc: 216 demura_chksum_emmc = 0x0
+nvt_tcon_bootup [chksum_emmc = 0x0][chksum_spi = 0x0]
+ tcon51 no need download demura
+ nvt_tcon_drv_init (in, 2022-1208-1011)
+[demura_address = 0x9f500000][tcon_od_address = 0x9ed00000]
+-> TCON full 64K chksum( 0x37C4 ) Ok
+u32FreqHz2 = 173250000
+u32Value2 = 0x1ce000
+ -> TCON: romgen.bin disable demura engine(0)
+ -> KER_TCON_set_demura_Gain_on_off:252 boolean_enable(0)
+ nvt_tcon_drv_init (out)
+BL type:Globaldimmg
+set pwm channel number:0, freq=20000, level=100,b8PWMDutyInv:1
+op233:0
+logo image resolution:1920X1080
+FRC_type 0
+delay 1 ms for power on dealy2
+Boottime: 90ms A64 Core1
+
+B0
+a64m Rev: a6de2e4
+cpu0 el1_entry=2800000
+
+B2
+
+B3
+cpu2 el1_entry=35cd290
+cpu3 el1_entry=35cd290
+w�{����

@@ -1,0 +1,36 @@
+=== success ===
+date: Fri Oct 30 11:49:22 GMT 2026
+uptime: 36.33 23.59
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       
+tcp        0      0 192.0.2.10:49152      0.0.0.0:*               LISTEN      
+tcp        0      0 192.0.2.10:12345      0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:8883            0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:26444         0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:26443         0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:26441         0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:8002          0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:29577         0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:9090          0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:8083          0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:4040          0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:7788            0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:11883         0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:7000            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:8009            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:4123            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:56789           0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:56790           0.0.0.0:*               LISTEN      
+tcp        0      0 192.0.2.10:26442      0.0.0.0:*               LISTEN      
+tcp        0      0 127.0.0.1:29785         0.0.0.0:*               LISTEN      
+tcp        0      0 :::50727                :::*                    LISTEN      
+tcp        0      0 :::1925                 :::*                    LISTEN      
+tcp        0      0 :::1926                 :::*                    LISTEN      
+tcp        0      0 :::7000                 :::*                    LISTEN      
+tcp        0      0 :::7005                 :::*                    LISTEN      
+tcp        0      0 :::8008                 :::*                    LISTEN      
+tcp        0      0 :::2323                 :::*                    LISTEN      
+tcp        0      0 :::28001                :::*                    LISTEN      
+  PID TTY      STAT   TIME COMMAND

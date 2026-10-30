@@ -1,0 +1,41 @@
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+Fri Oct 30 09:21:51 GMT 2026
+console=ttynull,115200 rootfstype=squashfs quiet maxcpus=4 rootwait no_console_suspend earlycon=uart8250,mmio32,0xfd099000,baudrate=115200 nvt_pstore_mmc.blkdev=/dev/mmcblk0p36 page_pinner=on page_owner=on root=/dev/mmcblk0p20 ro
+crw-------. 1 root tty  5,  1 Jan  1  1970 /dev/console
+crw-rw-rw-. 1 root tty  5,  2 Jan  1  1970 /dev/ptmx
+crw-rw----. 1 root ttyS 4, 64 Oct 30 09:21 /dev/ttyS0
+serinfo:1.0 driver revision:
+0: uart:16550A mmio:0xFD099000 irq:16 tx:4498 rx:0 RTS|DTR
+1: uart:16550A mmio:0xFD090000 irq:17 tx:0 rx:0
+2: uart:16550A mmio:0xFD092000 irq:18 tx:0 rx:0 RTS|DTR
+3: uart:unknown port:00000000 irq:0
+  PID TTY      STAT   TIME COMMAND
+/dev/root / squashfs ro,seclabel,relatime,errors=continue 0 0
+devtmpfs /dev devtmpfs rw,seclabel,relatime,size=680120k,nr_inodes=170030,mode=755 0 0
+sysfs /sys sysfs rw,seclabel,relatime 0 0
+selinuxfs /sys/fs/selinux selinuxfs rw,nosuid,noexec,relatime 0 0
+proc /proc proc rw,relatime 0 0
+devpts /dev/pts devpts rw,seclabel,relatime,gid=5,mode=620,ptmxmode=666 0 0
+tmpfs /dev/shm tmpfs rw,seclabel,relatime,mode=777 0 0
+tmpfs /tmp tmpfs rw,seclabel,relatime 0 0
+tmpfs /media tmpfs rw,seclabel,relatime 0 0
+tmpfs /run tmpfs rw,seclabel,nosuid,nodev,relatime,mode=755 0 0
+/dev/mapper/mtd_apexe /mtd_apexe squashfs ro,seclabel,relatime,errors=continue 0 0
+/dev/mapper/apexe_ext /apexe_ext squashfs ro,seclabel,relatime,errors=continue 0 0
+/dev/nvt-part-name/channel_fac /chanfac ext4 ro,seclabel,relatime 0 0
+/dev/nvt-part-name/misc_tmp /misctmp ext4 rw,seclabel,relatime 0 0
+/dev/nvt-part-name/devcfg /tkconfig ext4 ro,seclabel,relatime 0 0
+/dev/nvt-part-name/devcfg_rw /devcfg_rw ext4 rw,seclabel,relatime 0 0
+/dev/nvt-part-name/frc_fw /frcfw ext4 ro,seclabel,relatime 0 0
+/dev/nvt-part-name/demo /demo ext4 rw,seclabel,relatime 0 0
+/dev/nvt-part-name/aq /aqtbl ext4 ro,seclabel,relatime 0 0
+/dev/nvt-part-name/pq /pqtbl ext4 ro,seclabel,relatime 0 0
+/dev/nvt-part-name/nvm_file /nvm_file ext4 rw,seclabel,relatime 0 0
+/dev/nvt-part-name/sw_dl /swdl ext4 rw,seclabel,relatime 0 0
+/dev/nvt-part-name/apdat /mtd_rwarea ext4 rw,seclabel,relatime 0 0
+/dev/nvt-part-name/tmpdat /mtd_tmpdat ext4 rw,seclabel,relatime 0 0
+/dev/sda1 /media/sda1 vfat rw,relatime,fmask=0000,dmask=0000,allow_utime=0022,codepage=437,iocharset=iso8859-1,shortname=winnt,utf8,errors=continue 0 0
+tmpfs /dev/shm tmpfs rw,seclabel,relatime 0 0
+/dev/mapper/mtd_apexe /lib/firmware squashfs ro,seclabel,relatime,errors=continue 0 0
+/dev/mapper/apexe_ext /mtd_apexe/board/com.nvt.opera squashfs ro,seclabel,relatime,errors=continue 0 0
+/dev/mapper/apexe_ext /mtd_apexe/board/com.tpv.opera squashfs ro,seclabel,relatime,errors=continue 0 0

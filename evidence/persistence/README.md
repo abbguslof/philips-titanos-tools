@@ -1,10 +1,12 @@
 # Persistence evidence
 
-Status: **hardware-verified in the research session, public capture pending.**
+Status: **hardware-verified; redacted capture included in [output.txt](output.txt).**
 
 After installing `payloads/persist_root.sh`, removing the USB stick, and cold
 booting, the TV returned an interactive `uid=0` root shell on `:2323`. The
-public evidence set is waiting for a clean redacted capture from the TV shell.
+captured boot log shows `telnetd pid 1500`, `SUCCESS`, and a listener on
+`:2323`; `iptables -S INPUT` shows `-P INPUT DROP` plus the explicit `:2323`
+ACCEPT rule.
 
 ## Capture procedure
 

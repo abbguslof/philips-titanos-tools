@@ -1,8 +1,8 @@
 # Persistent root
 
 Status: **VERIFIED on hardware** (root after a cold boot with the USB removed).
-The public redacted capture is pending re-capture; see
-[evidence/persistence](../../evidence/persistence/README.md).
+The redacted capture is in
+[evidence/persistence/output.txt](../../evidence/persistence/output.txt).
 
 The hook lives on the writable `apdat` partition. It does not modify the
 read-only rootfs or the bootloader.

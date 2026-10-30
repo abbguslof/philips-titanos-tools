@@ -26,13 +26,10 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 
 The persistent `customer_env.sh` hook was verified on hardware: after installing
 it, removing the USB, and cold booting, the `:2323` root shell returned. The
-public redacted capture is **pending**. See
-[persistence/README.md](persistence/README.md) for the exact capture procedure.
-
-> A previous `v8-presist/output.txt` was captured in the workstation shell, not
-> the TV shell (`uid=1000`, host kernel, no `/mtd_rwarea`). It is not TV evidence
-> and is excluded. Re-capture must run in the TV's `nc` session and show
-> `uid=0(root)`.
+redacted capture is [persistence/output.txt](persistence/output.txt): `uid=0`,
+`system_u:system_r:initrc_t`, `telnetd pid 1500`, `READY`, listener on `:2323`,
+and the explicit `:2323` ACCEPT rule. See
+[persistence/README.md](persistence/README.md) for the procedure.
 
 ## Evidence rules
 

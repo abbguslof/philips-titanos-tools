@@ -15,7 +15,7 @@ First public, sanitized release.
   `SERV.U`, JointSpace, SAM, channel maps, and network telemetry.
 - Guides for firmware acquisition/extraction, USB autoroot, persistent root,
   restore, SAM export/import, and testing.
-- Curated, redacted evidence for v1-v7 and the UMFG partition slices.
+- Curated, redacted evidence for v1-v8 (including the persistent boot) and the UMFG partition slices.
 - Glossary and ADRs for the two USB workflows, the persistence hook, evidence
   redaction, and public-release structure.
 

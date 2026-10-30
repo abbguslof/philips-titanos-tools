@@ -25,7 +25,7 @@ televisions running **Titan OS** on the Novatek **NT72690** platform.
 | Capability | Status | Evidence |
 | :--- | :--- | :--- |
 | Interactive `uid=0` shell over TCP `:2323` from a cold boot with a USB stick | **Verified on hardware** | [v4](evidence/usb-autoroot/v4-shell-uid0/), [v7](evidence/usb-autoroot/v7-autoroot-success/) |
-| Root shell survives reboot without the USB stick (`customer_env.sh` hook) | **Verified on hardware** (redacted capture pending) | [persistent root guide](docs/guides/persistent-root.md) |
+| Root shell survives reboot without the USB stick (`customer_env.sh` hook) | **Verified on hardware** | [persistence evidence](evidence/persistence/output.txt) |
 | USB autorun stick builder (MBR/FAT32, empty label, SHA-256 verified) | **Verified on hardware** | [`tools/autoroot_usb.py`](tools/autoroot_usb.py) |
 | Firmware container parsing (`TIMG` / `PIMG` / `NFSB` / SquashFS LZO) | **Verified statically** | [firmware guide](docs/guides/firmware-extraction.md) |
 | U-Boot-style NVM environment read/write with dual CRC32 | **Verified on hardware** | [NVM reference](docs/reference/file-formats.md#uboot-nvm-nvm_ubootdatdata) |

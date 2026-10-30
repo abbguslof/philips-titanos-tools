@@ -1,8 +1,8 @@
 # Persistence via `customer_env.sh`
 
 Status: **VERIFIED on hardware** (root survived a cold boot with the USB stick
-removed). The public redacted capture is pending; see
-[evidence/persistence](../../evidence/persistence/README.md).
+removed). The redacted capture is in
+[evidence/persistence/output.txt](../../evidence/persistence/output.txt).
 
 ## Why this hook exists
 

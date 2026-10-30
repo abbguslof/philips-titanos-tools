@@ -1,0 +1,54 @@
+# Captured from the TV root shell after a cold boot with the USB stick removed.
+# Source: usbdump/autoscriptproof/v8-presist/output.txt (private archive).
+# Redaction: the TV LAN address is shown as 192.0.2.10. The full apdat directory
+# listing and shell echo are omitted; only the persistence-relevant files remain.
+
+=== date ===
+Fri Oct 30 12:47:12 GMT 2026
+
+=== id ===
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+
+=== cmdline ===
+console=ttynull,115200 rootfstype=squashfs quiet maxcpus=4 rootwait no_console_suspend earlycon=uart8250,mmio32,0xfd099000,baudrate=115200 nvt_pstore_mmc.blkdev=/dev/mmcblk0p36 page_pinner=on page_owner=on root=/dev/mmcblk0p20 ro
+
+=== selinux ===
+1
+
+=== busybox ===
+-rwxrwxrwx. 1 root root 1284688 Oct 30 12:01 /mtd_rwarea/apdat/busybox
+-rwxr-xr-x. 1 root root 1284688 Oct 30 11:59 /tmp/persist/busybox
+
+=== apdat (persistence files) ===
+-rwxrwxrwx. 1 root root 1284688 Oct 30 12:01 busybox
+-rwxrwxrwx. 1 root root      83 Oct 30 12:01 customer_env.sh
+-rwxrwxrwx. 1 root root       0 Oct 30 09:57 customer_env.sh.bak
+-rwxrwxrwx. 1 root root     204 Oct 30 12:02 root_boot.log
+-rw-r--r--. 1 root root      54 Oct 30 12:02 root_boot.ready
+-rwxrwxrwx. 1 root root    3194 Oct 30 12:01 root_boot.sh
+
+=== hook ===
+[ -f /mtd_rwarea/apdat/root_boot.sh ] && /bin/sh /mtd_rwarea/apdat/root_boot.sh &
+
+=== root_boot.log ===
+=== root_boot start ===
+date: Thu Jan  1 01:00:04 BST 1970
+uptime: 2.36 5.64
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+telnetd pid 1500
+SUCCESS: telnetd listening on :2323
+
+=== root_boot.ready ===
+READY Fri Oct 30 12:02:42 GMT 2026 uptime=11.92 10.21
+
+=== netstat (relevant subset) ===
+tcp        0      0 :::2323                 :::*                    LISTEN
+tcp        0      0 :::1925                 :::*                    LISTEN
+tcp        0      0 :::1926                 :::*                    LISTEN
+tcp        0      0 :::8008                 :::*                    LISTEN
+tcp        0      0 :::8009                 :::*                    LISTEN
+tcp        0      0 0.0.0.0:7000            0.0.0.0:*               LISTEN
+
+=== iptables ===
+-P INPUT DROP
+-A INPUT -p tcp -m tcp --dport 2323 -j ACCEPT

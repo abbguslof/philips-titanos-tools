@@ -34,6 +34,7 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 | JointSpace engineering routes from LAN | **DEAD** | 403 due to `tvtype`, not an IP ACL. |
 | JointSpace engineering routes from loopback | **DEAD** | Same userspace gate. |
 | `POST /6/activities/browser` | **Stub** | Returns 200 `{}`; no standalone browser. |
+| Chromium DevTools `:7788` | **OPEN / exposed** | Browser runs with `--remote-debugging-port=7788`; LAN reachability and CDP actions are a debug surface, not a root path. |
 | TLS hijack of `eu.app.titanos.tv` with a private CA | **DEAD** | `DP_203`; private CA/pinning rejection. Breaking the origin also prevents the launcher/input field from rendering; the keyboard assets themselves are local. |
 | `TPVisionDebug.cookie` / `enable_log2usb` | **Inert** | No daemon references them on Titan OS. |
 | `BrowserIpcPluginClass` from a plain HTTP origin | **Inert** | Exposes 0 native methods outside the authorized origin. |

@@ -36,6 +36,7 @@ Active probing from the LAN and from the TV's own browser showed:
 | 2323/tcp | filtered | No listener until the autoroot payload starts one. |
 | 4725/tcp | filtered | No listener. |
 | 7001/tcp | closed | RST, no service. |
+| 7788/tcp | **open** | Opera/Chromium DevTools (CDP) on `0.0.0.0:7788`; the browser runs with `--remote-debugging-port=7788`. |
 | 8008/tcp | open | Google Cast / Eureka. |
 | 8009/tcp | open | Google Cast TLS. |
 | 8080/tcp | filtered | No HTTP proxy/listener. |

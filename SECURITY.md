@@ -54,6 +54,13 @@ repository profile.
 If you find a **remote** vulnerability in a Philips/Titan OS device, report it
 to the vendor first. This repository is about physical-access research.
 
+## Vendor debug ports
+
+This build runs the Opera/Chromium browser with `--remote-debugging-port=7788`
+and the boot firewall allows 7788. That is a local debugging surface. Do not
+expose it to the internet; if you do not need it, block it at the router or in
+the TV firewall. It is not a remote root path by itself.
+
 ## Reporting a problem in this repository
 
 Please report:

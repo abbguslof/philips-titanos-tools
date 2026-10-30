@@ -44,6 +44,7 @@ channel maps, JointSpace, Ambilight, firmware extraction, and a documented resto
 | JointSpace local control (keys, volume, Ambilight, `expert` mode) | **Verified on hardware** | [JointSpace research](docs/research/08-jointspace-api.md) |
 | Serial `SERV.U` interactive shell | **Dead on this build** (`ttyS0` TX only; RX never received a byte) | [hardware notes](docs/research/07-hardware-serv-u.md) |
 | JointSpace engineering routes (`/6/debug`, `/6/devtools`, ...) | **Dead on this build** (`tvtype: consumer`) | [dead ends](docs/research/12-verified-findings-and-dead-ends.md) |
+| Opera/Chromium DevTools on TCP `:7788` | **Open on the LAN; local debug surface** | [webview research](docs/research/13-webview-launcher-ipc.md#chromium-devtools-on-7788) |
 
 The full story, including the paths that failed, is in
 [verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md).
@@ -148,7 +149,7 @@ See [persistent root](docs/guides/persistent-root.md) and
 | [Service mode (SAM)](docs/research/09-service-mode-sam.md) | NVM/channel/EDID export-import |
 | [Network telemetry](docs/research/11-network-telemetry.md) | Ad auctions, ACR, captive-portal pings |
 | [Verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md) | What is proven, what is dead, what is unknown |
-| [Webview, launcher, and native IPC](docs/research/13-webview-launcher-ipc.md) | Chromium 112, OIPF, BrowserIpcPluginClass, developer sequences, TLS pinning |
+| [Webview, launcher, and native IPC](docs/research/13-webview-launcher-ipc.md) | Chromium/Opera webview (112 UA / 124 CDP), OIPF, BrowserIpcPluginClass, developer sequences, TLS pinning |
 | [App framework and startup surface](docs/research/14-app-framework.md) | `nvt.app.ini`, `idtv`/`nbrowser`, local keyboard/offline launcher, `/swdl` overlay |
 | [Glossary](docs/reference/glossary.md) | Canonical terms (two different `boot0`s, two USB workflows) |
 

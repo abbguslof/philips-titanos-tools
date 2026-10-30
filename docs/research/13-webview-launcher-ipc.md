@@ -6,8 +6,11 @@ The other D-pad sequences are **INFERRED** from the launcher bundle.
 
 ## Runtime identity
 
-The Titan OS UI is a Chromium webview, not a native Qt/C++ shell. The live
-User-Agent was:
+The Titan OS UI is a Chromium/Opera webview, not a native Qt/C++ shell. There are
+two version layers: the app/webview User-Agent and the actual browser binary
+reported by CDP. Do not use the UA alone as the binary version.
+
+The live User-Agent was:
 
 ```text
 Mozilla/5.0 (Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko)
@@ -18,10 +21,15 @@ NETTV/4.6.0.8 SignOn/2.0 SmartTvA/5.0.0 WhaleTV/2.0 TitanOS/3.0 en Ginga
 
 That means:
 
-- Chromium 112 / Opera 46 / OMI 4.24 on a 32-bit `armv7l` userspace.
+- The app/webview UA reports Chromium 112 / Opera 46 / OMI 4.24 on a 32-bit
+  `armv7l` userspace.
+- The live CDP endpoint (`/json/version`) reports
+  `Chrome/124.0.6367.119` and `OMI/4.25.0.64.Tango7.129`; that is the browser
+  binary layer.
 - 1920x1080 viewport with `devicePixelRatio` 1.
-- The launcher and virtual keyboard are cloud components from
-  `app.titanos.tv` / `eu.app.titanos.tv`.
+- The launcher and virtual keyboard are cloud/app components from
+  `app.titanos.tv` / `eu.app.titanos.tv`; the keyboard assets themselves are
+  local (see below).
 
 The sanitized capture summary is
 [`samples/webview/webview-telemetry-summary.json`](../../samples/webview/webview-telemetry-summary.json).
@@ -121,6 +129,28 @@ fi
 path for a local UI or browser configuration. The full list also includes
 `framework-daemon`, `libnettvp.so`, `rpc_plugins`, and a telnetd/FTP update
 service. Treat it as a vendor update surface; use it only with a recovery path.
+
+## Chromium DevTools on `:7788`
+
+The Opera/Chromium browser is launched with:
+
+```text
+--remote-debugging-port=7788
+```
+
+The live TV shows `0.0.0.0:7788 LISTEN`, and the boot firewall allowlist includes
+port 7788. The browser also writes `/mtd_rwarea/browser_home/DevToolsActivePort`.
+`GET http://<TV_IP>:7788/json/version` returns Chrome 124; `GET /json/list`
+returns the current page targets. On the tested boot the only page target was
+`page_blank.html`, while the native `idtv` UI was running. This is a local
+debugging surface, not a hidden remote shell, but it can inspect and navigate the
+browser page over CDP. The `/json/new` and `/json/activate` navigation experiment
+is **OPEN**. Treat it as a security-relevant debug port and do not expose it
+beyond your LAN.
+
+The `browser_home/config.json` also contains a `DeviceToken` and
+`ProductInstanceId`; these are device/account identifiers and must be redacted
+from any published log.
 
 ## Developer Actions menu and sequences
 

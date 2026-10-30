@@ -23,6 +23,7 @@ Every page carries a status label:
 | 10 | [Channel maps](research/10-channel-maps.md) | VERIFIED | `chanLst.bin`, CRC-16/MODBUS, `usr/`. |
 | 11 | [Network telemetry](research/11-network-telemetry.md) | VERIFIED | Ad auctions, ACR, captive-portal pings, OTA endpoints. |
 | 12 | [Verified findings and dead ends](research/12-verified-findings-and-dead-ends.md) | VERIFIED | One-page truth table and the paths that failed. |
+| 13 | [Webview, launcher, and native IPC](research/13-webview-launcher-ipc.md) | VERIFIED / INFERRED | Chromium 112, OIPF, loopback, BrowserIpcPluginClass, developer menu, TLS pinning. |
 
 ## Guides
 
@@ -45,11 +46,13 @@ Every page carries a status label:
 | [Remote sequences](reference/remote-sequences.md) | The 12 six-key sequences, with verification status. |
 | [Glossary](reference/glossary.md) | Canonical terms; read this before the research docs. |
 
-## Roadmap and decisions
+## Decisions
 
-- [Future work](roadmap/future-work.md) — unverified design ideas, clearly labelled.
 - [ADRs](adr/) — why the repo uses two USB workflows, a `customer_env.sh` hook,
   redacted evidence, and a fresh public tree.
+
+The public repo stops at research and root. Product/custom-OS ideas are out of
+scope here.
 
 ## Evidence and samples
 

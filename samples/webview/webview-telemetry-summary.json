@@ -1,0 +1,28 @@
+{
+  "note": "Sanitized summary of a live Titan OS webview telemetry capture. The raw capture is in the private research archive.",
+  "origin": "http://192.0.2.44:8080",
+  "user_agent": "Mozilla/5.0 (Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.4147.62 Safari/537.36 OPR/46.0.2207.0 OMI/4.24, TV_NT72690_2025_4K/056.002.236.191 (Philips, PUS8000, wireless) CE-HTML/1.0 NETTV/4.6.0.8 SignOn/2.0 SmartTvA/5.0.0 WhaleTV/2.0 TitanOS/3.0 en Ginga",
+  "viewport": {"screenWidth": 1920, "screenHeight": 1080, "devicePixelRatio": 1},
+  "oipf": {
+    "ApplicationManager": "active",
+    "Configuration": "active",
+    "OwnerApplication": null
+  },
+  "loopback": {
+    "1925": "open (JointSpace HTTP)",
+    "2323": "closed (RST, not firewall-dropped)",
+    "4725": "closed (RST)",
+    "8080": "closed (RST)",
+    "9222": "closed (RST)"
+  },
+  "file_access": "http origin cannot read file:/// (SOP)",
+  "jointspace": {
+    "1_system": 200,
+    "6_system": 200,
+    "6_debug": 403,
+    "6_devtools": 403,
+    "6_diagnostics": 403,
+    "6_applications": 403,
+    "6_activities_browser": 403
+  }
+}

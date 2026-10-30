@@ -114,8 +114,8 @@ See [persistent root](docs/guides/persistent-root.md) and
 | [Service mode (SAM)](docs/research/09-service-mode-sam.md) | NVM/channel/EDID export-import |
 | [Network telemetry](docs/research/11-network-telemetry.md) | Ad auctions, ACR, captive-portal pings |
 | [Verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md) | What is proven, what is dead, what is unknown |
+| [Webview, launcher, and native IPC](docs/research/13-webview-launcher-ipc.md) | Chromium 112, OIPF, BrowserIpcPluginClass, developer sequences, TLS pinning |
 | [Glossary](docs/reference/glossary.md) | Canonical terms (two different `boot0`s, two USB workflows) |
-| [Roadmap](docs/roadmap/future-work.md) | Unverified design ideas, clearly labelled |
 
 ---
 
@@ -127,7 +127,6 @@ See [persistent root](docs/guides/persistent-root.md) and
 │   ├── research/      verified findings, one topic per file
 │   ├── guides/        step-by-step procedures
 │   ├── reference/     formats, partition map, glossary
-│   ├── roadmap/       unverified future work
 │   └── adr/           architecture decisions
 ├── payloads/          autoroot.sh, persist_root.sh, busybox, autoscript variants
 ├── tools/             USB builder, NVM/EDID/channel tools, JointSpace client, firmware tools

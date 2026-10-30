@@ -1,0 +1,16 @@
+{
+  "note": "Sanitized summary of BrowserIpcPluginClass reflection from a plain HTTP origin. Raw capture is private.",
+  "origin": "http://192.0.2.44:8080/ipc",
+  "object": {"id": "ipc_primary", "type": "application/browser-ipc-2", "tagName": "OBJECT"},
+  "phase1_instantiation": {"found": false, "totalKeys": 344, "extraKeys": []},
+  "phase2_enumeration": {"propertyCount": 155, "methodCount": 83, "eventHandlerCount": 106},
+  "phase5_alternatives": {
+    "application/oipfApplicationManager": {"active": true, "extraKeys": 5, "methods": ["getOwnerApplication"]},
+    "application/oipfDrmAgent": {"active": true, "extraKeys": 5, "methods": ["sendDRMMessage"]},
+    "application/browser-ipc": {"active": false, "extraKeys": []},
+    "application/browser-ipc-1": {"active": false, "extraKeys": []},
+    "application/x-vewd-plugin": {"active": false, "extraKeys": []},
+    "application/x-novatek-plugin": {"active": false, "extraKeys": []},
+    "application/x-whaletv-plugin": {"active": false, "extraKeys": []}
+  }
+}

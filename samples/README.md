@@ -10,6 +10,7 @@ Small, non-identifying factory files used by the tests and documentation.
 | `channel-maps/ChannelMap_100/ChannelList/channellib/*.xml` | Empty 66-byte DVB XMLs. |
 | `channel-maps/ChannelMap_100/ChannelList/s2channellib/*.xml` | Empty 66-byte DVB XMLs. |
 | `identify/update.html`, `identify/updatecracked.html` | Legacy update-assistant samples with placeholder serials. |
+| `webview/*.json` | Sanitized webview and BrowserIpcPluginClass telemetry summaries. |
 
 **Not included:** full firmware packages, extracted rootfs/application
 filesystems, multi-megabyte `FLASH_*` sector tables, satellite databases, raw

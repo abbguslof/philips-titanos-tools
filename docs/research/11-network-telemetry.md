@@ -50,7 +50,8 @@ and the local network layout.
 
 ## Blocking
 
-`tools/pihole/blocklist.txt` and `whitelist.txt` are a starting point for
+[`tools/pihole/blocklist.txt`](../../tools/pihole/blocklist.txt) and
+[`whitelist.txt`](../../tools/pihole/whitelist.txt) are a starting point for
 network-level debloating. The blocklist is a compiled list of public smart-TV
 telemetry/ad domains; verify upstream licenses before redistributing it. The
 whitelist keeps connectivity checks and streaming apps working.

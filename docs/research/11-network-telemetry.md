@@ -54,7 +54,10 @@ and the local network layout.
 [`whitelist.txt`](../../tools/pihole/whitelist.txt) are a starting point for
 network-level debloating. The blocklist is a compiled list of public smart-TV
 telemetry/ad domains; verify upstream licenses before redistributing it. The
-whitelist keeps connectivity checks and streaming apps working.
+Titan OS cloud-shell domains (`app.titanos.tv`, `titanos.tv`) are commented out
+by default because blocking them breaks the launcher and the on-screen keyboard.
+Uncomment them only after you have a local UI replacement. The whitelist keeps
+connectivity checks and streaming apps working.
 
 Blocking is not a substitute for the on-device root path. It is useful for
 reducing background load and telemetry while you plan deeper changes.

@@ -2,18 +2,25 @@
 # Universal Smart TV Privacy & Ad-Bidding Blocklist for Pi-hole / AdGuard
 # Targets: Philips Titan OS, Samsung, LG, Sony, Panasonic, Roku, TCL, etc.
 # Total Domains: 635 unique tracking and ad-auction endpoints
+#
+# WARNING: This is an aggressive list. Some entries can break the TV UI,
+# the on-screen keyboard, or app playback. Read
+# docs/research/11-network-telemetry.md and test one group at a time.
+# The Titan OS cloud-shell domains are commented out by default.
 # =====================================================================
 
 # ---------------------------------------------------------------------
 # Philips & Titan OS (Ad Bidding, Telemetry, Cloud Shell)
 # --- DSP / Real-Time Bidding Ad Creatives ---
 bidtheatre.com
-creatives.bidtheatre.com (23 domains)
+creatives.bidtheatre.com
 # ---------------------------------------------------------------------
 89b730ac922a41429ffca1e9dc2dbb68.mediatailor.us-east-1.amazonaws.com
 ad.nettvservices.com
 ads.wurl.tv
-app.titanos.tv
+# WARNING: the launcher and virtual keyboard are served from these domains.
+# Uncomment only after you have a local UI replacement.
+# app.titanos.tv
 certs-store.core.cloud.vewd.com
 dac-api-prod.tpv-analytics.com
 deviceportal.nettvservices.com
@@ -28,7 +35,7 @@ springserve.com
 telemetry.vewd.com
 tiles.springserve.com
 titan.wurl.tv
-titanos.tv
+# titanos.tv
 tpv-analytics.com
 tv.springserve.com
 video.springserve.com

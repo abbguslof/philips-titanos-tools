@@ -19,6 +19,31 @@ The TV's UI is a cloud-loaded web application (`app.titanos.tv`,
 `eu.app.titanos.tv`). Blocking that origin breaks the launcher and the on-screen
 keyboard, because those components are served from the cloud.
 
+## LAN port surface
+
+Active probing from the LAN and from the TV's own browser showed:
+
+| Port | LAN result | Notes |
+| :--- | :--- | :--- |
+| 22/tcp | filtered | No SSH listener. |
+| 23/tcp | filtered | No telnetd by default. |
+| 80/tcp | filtered | No HTTP listener. |
+| 443/tcp | filtered | No HTTPS listener. |
+| 1925/tcp | open | JointSpace HTTP. |
+| 1926/tcp | open | JointSpace HTTPS. |
+| 2323/tcp | filtered | No listener until the autoroot payload starts one. |
+| 4725/tcp | filtered | No listener. |
+| 7001/tcp | closed | RST, no service. |
+| 8008/tcp | open | Google Cast / Eureka. |
+| 8009/tcp | open | Google Cast TLS. |
+| 8080/tcp | filtered | No HTTP proxy/listener. |
+| 9222/tcp | closed | No Chrome DevTools endpoint. |
+
+Inbound non-standard ports are dropped by the boot firewall
+(`iptables_conf.sh`: `-P INPUT DROP` plus an allowlist). Loopback is not
+filtered, but a closed port still returns an immediate RST. This is why the
+browser can reach `127.0.0.1:1925` but not a devtools port.
+
 ## OTA endpoints
 
 Static analysis of `libnettvp.so` / `libapp.so` and the live traffic identify:

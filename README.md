@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/abbguslof/philips-titan-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titan-tools/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-36-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-37-brightgreen.svg)](tests/)
 [![Target](https://img.shields.io/badge/target-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
 [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
 
@@ -115,6 +115,7 @@ See [persistent root](docs/guides/persistent-root.md) and
 | [Network telemetry](docs/research/11-network-telemetry.md) | Ad auctions, ACR, captive-portal pings |
 | [Verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md) | What is proven, what is dead, what is unknown |
 | [Webview, launcher, and native IPC](docs/research/13-webview-launcher-ipc.md) | Chromium 112, OIPF, BrowserIpcPluginClass, developer sequences, TLS pinning |
+| [App framework and startup surface](docs/research/14-app-framework.md) | `nvt.app.ini`, `idtv`/`nbrowser`, local keyboard/offline launcher, `/swdl` overlay |
 | [Glossary](docs/reference/glossary.md) | Canonical terms (two different `boot0`s, two USB workflows) |
 
 ---
@@ -130,7 +131,7 @@ See [persistent root](docs/guides/persistent-root.md) and
 │   └── adr/           architecture decisions
 ├── payloads/          autoroot.sh, persist_root.sh, busybox, autoscript variants
 ├── tools/             USB builder, NVM/EDID/channel tools, JointSpace client, firmware tools
-├── tests/             36 unit tests (python -m unittest)
+├── tests/             37 unit tests (python -m unittest)
 ├── samples/           small, non-identifying factory samples
 ├── evidence/          curated, redacted proof runs
 └── .github/workflows/ CI

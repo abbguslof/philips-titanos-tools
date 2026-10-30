@@ -140,10 +140,6 @@ def extract_component(path: Path, comp: Pimg, output_dir: Path) -> Path:
                 raise ValueError("unexpected EOF while extracting")
             dst.write(chunk)
             remaining -= len(chunk)
-    actual = stream_md5(raw, 0, raw.stat().st_size)
-    if actual != comp.md5:
-        raise ValueError(f"{comp.name}: MD5 mismatch ({actual} != {comp.md5})")
-
     if "gzip" in comp.compression:
         decompressed = output_dir / f"{comp.index:02d}-{comp.name}.raw"
         with gzip.open(raw, "rb") as src, decompressed.open("wb") as dst:
@@ -154,6 +150,11 @@ def extract_component(path: Path, comp: Pimg, output_dir: Path) -> Path:
                 dst.write(chunk)
         raw.unlink()
         raw = decompressed
+
+    # The PIMG MD5 covers the component payload after decompression.
+    actual = stream_md5(raw, 0, raw.stat().st_size)
+    if actual != comp.md5:
+        raise ValueError(f"{comp.name}: MD5 mismatch ({actual} != {comp.md5})")
 
     with raw.open("rb") as f:
         head = f.read(4)

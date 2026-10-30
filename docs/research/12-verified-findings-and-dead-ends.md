@@ -34,7 +34,7 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 | JointSpace engineering routes from LAN | **DEAD** | 403 due to `tvtype`, not an IP ACL. |
 | JointSpace engineering routes from loopback | **DEAD** | Same userspace gate. |
 | `POST /6/activities/browser` | **Stub** | Returns 200 `{}`; no standalone browser. |
-| TLS hijack of `eu.app.titanos.tv` with a private CA | **DEAD** | `DP_203`; private CA/pinning rejection. Breaking the origin also breaks the virtual keyboard. |
+| TLS hijack of `eu.app.titanos.tv` with a private CA | **DEAD** | `DP_203`; private CA/pinning rejection. Breaking the origin also prevents the launcher/input field from rendering; the keyboard assets themselves are local. |
 | `TPVisionDebug.cookie` / `enable_log2usb` | **Inert** | No daemon references them on Titan OS. |
 | `BrowserIpcPluginClass` from a plain HTTP origin | **Inert** | Exposes 0 native methods outside the authorized origin. |
 | Channel-map `usr/` traversal | **OPEN** | No verified code-execution path. |

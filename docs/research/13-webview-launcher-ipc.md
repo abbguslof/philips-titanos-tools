@@ -78,6 +78,50 @@ The sanitized reflection summary is
 Do not assume the plugin is a shell bridge from an arbitrary origin. It is not,
 on this build.
 
+## Local keyboard and offline launcher
+
+The smart launcher is cloud-loaded, but the browser and the native TV UI are not
+empty shells. The `apext0` application partition contains:
+
+| Component | What it is |
+| :--- | :--- |
+| `com.nvt.opera/browser_dir/virtual_keyboard_v2.pak` | Local virtual-keyboard assets used by the Opera/Chromium browser. |
+| `com.nvt.opera/browser_dir/browser_ui/imeui.html` | Local IME UI. |
+| `com.nvt.opera/browser_dir/jsplugins/liblocalui.so` | Local HTML UI plugin. |
+| `com.nvt.opera/browser_dir/jsplugins/liblauncher.so` | Launcher plugin. |
+| `com.nvt.opera/browser_dir/jsplugins/libbrowser_ipc_plugin2.so` | Browser IPC plugin. |
+| `com.tpv.opera/browser_dir/pages/offlinelauncher/` | Local offline launcher (Home/TV Guide/Sources/Settings tiles). |
+| `mframework/webui/PHI/page/pages/oskb/oskb.js` | Native TV UI on-screen keyboard. |
+| `mframework/webui/PHI/page/pages/main/launcher.js` | Native TV UI launcher page. |
+
+The earlier `DP_203` test blocked the cloud launcher origin; the launcher and the
+input field that invokes the keyboard failed to render. The keyboard assets
+themselves are local. A local UI replacement therefore has a local keyboard
+path; the problem is making the local UI the primary UI, not inventing a
+keyboard from scratch.
+
+### Vendor `/swdl` overlay
+
+`board/run_custom_impl.sh` checks `/swdl` early in boot and bind-mounts vendor
+update payloads over the read-only application partition:
+
+```sh
+if [ -d "/swdl/UI/page" ]; then
+    mount -o bind /swdl/UI/page /mtd_apexe/board/mframework/webui/PHI/page
+fi
+if [ -d "/swdl/com.tpv.opera" ]; then
+    mount -o bind /swdl/com.tpv.opera /mtd_apexe/board/com.tpv.opera
+fi
+if [ -d "/swdl/com.nvt.opera" ]; then
+    mount -o bind /swdl/com.nvt.opera /mtd_apexe/board/com.nvt.opera
+fi
+```
+
+`/swdl` is a writable ext4 partition. This is a persistent, non-DNS injection
+path for a local UI or browser configuration. The full list also includes
+`framework-daemon`, `libnettvp.so`, `rpc_plugins`, and a telnetd/FTP update
+service. Treat it as a vendor update surface; use it only with a recovery path.
+
 ## Developer Actions menu and sequences
 
 The six-key launcher sequences all start with RED and end with BLUE. The
@@ -98,8 +142,9 @@ status.
 Redirecting `eu.app.titanos.tv` to a local HTTPS server with a private CA
 produced `DP_203` ("Cannot connect TV"). The webview rejects the private CA
 and/or pins the core UI origin. While the origin was blocked, the launcher
-stalled and the on-screen keyboard failed to appear, because both are remote
-components. Restoring DNS immediately restored the UI.
+stalled and the keyboard did not appear because the launcher/input field never
+rendered. The local keyboard assets were still on disk; restoring DNS restored
+the UI. This is a cloud-UI dependency, not a missing-keyboard problem.
 
 Consequences:
 
@@ -122,5 +167,7 @@ working diagnostic tokens are `need_usb_log`, `enable_usr_prinf`, and
 - Whether a trusted user CA can be injected from USB to defeat `DP_203`.
 - Whether the browser IPC plugin can be reached from an authorized
   `https://*.titanos.tv` origin without breaking the UI.
-- Whether a local dashboard can replace the cloud launcher without losing the
-  system keyboard.
+- How to make the native `idtv` launcher or the browser's local
+  `offlinelauncher` the primary home without the cloud app list.
+- Which local UI the `liblocalui.so` / `liblauncher.so` plugins will accept, and
+  whether `/swdl/UI/page` is the cleanest injection point.

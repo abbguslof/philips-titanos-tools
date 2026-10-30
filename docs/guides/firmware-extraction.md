@@ -38,8 +38,9 @@ python3 tools/firmware/parse_timg.py PH_...pkg --extract fs0 -o fw/extracted
 
 The tool:
 
-1. seeks to the component payload and verifies its `PIMG` MD5;
-2. decompresses `enc=gzip` if needed;
+1. seeks to the component payload and decompresses `enc=gzip` if needed;
+2. verifies the `PIMG` MD5 **after decompression** (the MD5 covers the
+   decompressed component payload, not the gzip stream);
 3. if the result starts with `NFSB`, strips the 4,096-byte header and writes a
    `.sqsh`;
 4. never executes the payload.

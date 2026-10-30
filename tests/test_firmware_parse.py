@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+import gzip
 import hashlib
 import struct
 import tempfile
@@ -15,11 +16,11 @@ from tools.firmware.parse_timg import (
 )
 
 
-def build_pimg(name: str, payload: bytes, compression: str = "enc=none") -> bytes:
+def build_pimg(name: str, payload: bytes, compression: str = "enc=none", md5_data: bytes | None = None) -> bytes:
     header = bytearray(PIMG_HEADER_SIZE)
     header[0:4] = b"PIMG"
     struct.pack_into("<Q", header, 0x08, len(payload))
-    header[0x10:0x20] = hashlib.md5(payload).digest()
+    header[0x10:0x20] = hashlib.md5(md5_data if md5_data is not None else payload).digest()
     header[0x20:0x20 + len(name)] = name.encode()
     header[0x30:0x30 + 4] = b"/dev"
     header[0x70:0x70 + len(compression)] = compression.encode()
@@ -56,6 +57,18 @@ class TestTimgParser(unittest.TestCase):
             self.assertEqual([c.name for c in components], ["fs0", "ap0"])
             out = extract_component(pkg, components[0], Path(tmp) / "out")
             self.assertEqual(out.read_bytes(), b"hello")
+
+    def test_gzip_component_md5_is_over_decompressed_payload(self):
+        plain = b"gzip component payload"
+        compressed = gzip.compress(plain)
+        blob = build_pimg("apext0", compressed, "enc=gzip", md5_data=plain)
+        with tempfile.TemporaryDirectory() as tmp:
+            pkg = Path(tmp) / "test.pkg"
+            pkg.write_bytes(build_timg([blob]))
+            _, components = parse_timg(pkg)
+            self.assertEqual(components[0].compression, "enc=gzip")
+            out = extract_component(pkg, components[0], Path(tmp) / "out")
+            self.assertEqual(out.read_bytes(), plain)
 
 
 if __name__ == "__main__":

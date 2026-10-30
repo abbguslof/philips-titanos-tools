@@ -15,9 +15,11 @@ A 1,000-query sample from an idle/home-screen session showed four main groups:
 | Telemetry/ACR | `dac-api-prod.tpv-analytics.com`, `events-prod01.eu.prod.titanos.tv`, `platform.cid.samba.tv`, `api.rollbar.com` | Device analytics, Titan events, Samba TV audio fingerprinting, frontend errors. |
 | Connectivity watchdogs | `www.google.com`, `www.yahoo.com`, `clients3.google.com` | Captive-portal / online checks every 10–20 seconds. |
 
-The TV's UI is a cloud-loaded web application (`app.titanos.tv`,
-`eu.app.titanos.tv`). Blocking that origin breaks the launcher and the on-screen
-keyboard, because those components are served from the cloud.
+The smart launcher is a cloud-loaded web application (`app.titanos.tv`,
+`eu.app.titanos.tv`). Blocking that origin breaks the launcher and the input
+field that invokes the keyboard. The browser still ships local keyboard assets;
+the failure is the missing cloud UI, not a missing keyboard binary. See
+[webview, launcher, and IPC](13-webview-launcher-ipc.md#local-keyboard-and-offline-launcher).
 
 ## LAN port surface
 

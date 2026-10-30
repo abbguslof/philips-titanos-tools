@@ -8,7 +8,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (36 tests):
+Current coverage (37 tests):
 
 | Test file | Covers |
 | :--- | :--- |

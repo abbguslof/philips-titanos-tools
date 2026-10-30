@@ -15,7 +15,7 @@ writes nothing to flash. Restore is: remove the stick, cold boot.
 ## Build the stick
 
 ```bash
-cd philips-titan-tools
+cd philips-titanos-tools
 sudo ./tools/autoroot_usb.py --device /dev/sdX --host <TV_IP>
 ```
 

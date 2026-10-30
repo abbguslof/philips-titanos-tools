@@ -1,6 +1,6 @@
 # Philips Titan OS Research & Right-to-Repair Toolkit
 
-[![CI](https://github.com/abbguslof/philips-titan-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titan-tools/actions/workflows/ci.yml)
+[![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-37-brightgreen.svg)](tests/)
 [![Target](https://img.shields.io/badge/target-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
@@ -17,6 +17,15 @@ televisions running **Titan OS** on the Novatek **NT72690** platform.
 > physical USB access and a cold boot. No remote exploit is claimed. The repo does
 > not ship Philips firmware, extracted vendor filesystems, or real device
 > identifiers. Read [SECURITY.md](SECURITY.md) before using anything.
+
+
+| What this is | What this is not |
+| :--- | :--- |
+| A reproducible research repo for a TV you own: firmware parsing, boot-chain notes, NVM/channel-map tooling, a verified USB root path, and a persistent root hook. | A remote exploit, a cloud bypass for third-party devices, or a vendor firmware mirror. |
+| A local-control toolkit: JointSpace, Ambilight `expert` mode, SAM export/import, and the `:2323` root shell. | A custom OS. Product/custom-OS work lives in a separate private project. |
+| A physical-access path: USB stick + cold boot, with a documented restore. | A no-risk modification. Read the safety and restore notes first. |
+
+**Start here:** [USB autoroot](docs/guides/usb-autoroot.md) · [persistent root](docs/guides/persistent-root.md) · [firmware acquisition](docs/guides/firmware-acquisition.md) · [documentation index](docs/README.md)
 
 ---
 
@@ -45,8 +54,8 @@ The full story, including the paths that failed, is in
 You need a spare USB stick and a physical power cycle. The stick is reformatted.
 
 ```bash
-git clone https://github.com/abbguslof/philips-titan-tools.git
-cd philips-titan-tools
+git clone https://github.com/abbguslof/philips-titanos-tools.git
+cd philips-titanos-tools
 sudo ./tools/autoroot_usb.py --device /dev/sdX --host 192.0.2.10
 ```
 

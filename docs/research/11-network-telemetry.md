@@ -17,7 +17,9 @@ A 1,000-query sample from an idle/home-screen session showed four main groups:
 
 The smart launcher is a cloud-loaded web application (`app.titanos.tv`,
 `eu.app.titanos.tv`). Blocking that origin breaks the launcher and the input
-field that invokes the keyboard. The browser still ships local keyboard assets;
+field that invokes the keyboard. **Confirmed 2026-11-01:** blocking
+`titanos.tv` removes the stock home search and the Browser app keyboard;
+unblocking restores both. SELinux and FreeTitan were not the cause. The browser still ships local keyboard assets;
 the failure is the missing cloud UI, not a missing keyboard binary. See
 [webview, launcher, and IPC](13-webview-launcher-ipc.md#local-keyboard-and-offline-launcher).
 

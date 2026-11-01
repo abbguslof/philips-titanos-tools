@@ -20,6 +20,19 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 | JointSpace discovery, pairing, keys, volume, Ambilight, and `expert` LED injection work locally. | [JointSpace](08-jointspace-api.md) |
 | `tvtype: consumer` blocks `/6/debug`/`/6/devtools` from LAN and loopback, regardless of pairing scope. `mds_mode=1` does not change it. | [JointSpace](08-jointspace-api.md) |
 | Serial `SERV.U` TX works; RX never received a byte across a 25 s typed window. Serial break does not interrupt XBoot. | [hardware](07-hardware-serv-u.md) |
+| Root shell runs as `initrc_t`; `runcon -t unconfined_t` is allowed, `init_t`/`kernel_t` are denied. `CapEff=0x1ffffffffff`. | [SELinux runtime](15-selinux-runtime-control.md) |
+| A `bin_t` copy of `/bin/mount` in `unconfined_t` mounts non-mountpoint targets; `mounton` over the stock `com.tpv.opera`/`com.nvt.appmgr` mountpoints was denied under the stock policy. The permissive v33 policy now allows it. | [SELinux runtime](15-selinux-runtime-control.md) |
+| A single `dd bs=1048576 count=1` write loads the stock v30 policy and a converted v33 policy; `cat` splits at 128 KiB and fails with `ebitmap: truncated map`. | [SELinux runtime](15-selinux-runtime-control.md) |
+| A v33 policy with all 1120 types permissive loads at boot from `customer_env.sh`; `mounton` over an `appmgr_t` target then succeeds. `getenforce` still reports `Enforcing`. | [SELinux runtime](15-selinux-runtime-control.md) |
+| Stock Settings/native menus work after the stock rollback, permissive policy, and a cold boot (user report 2026-11-01). Only the intentional Pi-hole `titanos.tv` block remains. | [SELinux runtime](15-selinux-runtime-control.md) |
+| `/mtd_apexe/board/modules` contains matching vendor `.ko` files; `modules_disabled=0`; unsigned `ndp_nvtmem.ko` loads and unloads with `insmod`/`rmmod`; `vermagic` includes `modversions aarch64`. | [Kernel/module control](16-kernel-and-hardware-control.md) |
+| A patched `ndp_logo.ko` carrier executes arbitrary unsigned kernel code; a relocation-safe payload read `selinux_state` (`0x01010100`) and wrote `initialized=0` (`0x01010000`), then restored it. | [Kernel/module control](16-kernel-and-hardware-control.md) |
+| A persistent seloff carrier at `/mtd_rwarea/apdat/ndp_logo_seloff_boot.ko` loads from `customer_env.sh` and clears `selinux_state.initialized`; two cold boots verified TV/appmgr/idtv. A `no_kernel_module` file skips it. | [Kernel/module control](16-kernel-and-hardware-control.md) |
+| `/dev/mem`/`/dev/kmem` mknod but open with `ENODEV`; `/proc/kcore`, `/proc/config.gz`, BTF, and `/proc/kexec*` are absent. `/sys/fs/selinux/disable` is `EINVAL`; `selinux_state` is the only SELinux global. | [Kernel/module control](16-kernel-and-hardware-control.md) |
+| `/dev/ntkmem`, `/dev/ndp_hwmem`, `/dev/ntgpio`, `/dev/ntkiic0`, `/dev/i2c-*`, `/dev/ntkled`, `/dev/ntktcon`, `/dev/ntkhdmi`, `/dev/uinput`, and `/dev/uhid` exist; `/dev/input` only has `mice`. | [Kernel/module control](16-kernel-and-hardware-control.md) |
+| `kexec`, `/dev/mem`, `/dev/kmem`, `/proc/kcore`, and `/lib/modules` are absent; `insmod` exists; `security_hook_heads`/`security_add_hooks`/`selinux_state` are visible with `kptr_restrict=0`. | [SELinux runtime](15-selinux-runtime-control.md) |
+| NVM p9 has no `bootargs`/`selinux`/`enforcing`; the kernel command line is in the FDT/ATF. | [SELinux runtime](15-selinux-runtime-control.md) |
+| `mmcblk0boot0` is readable (4 MiB); `policy33.bin` and `boot0.bin` were copied to `/swdl`. | [SELinux runtime](15-selinux-runtime-control.md) |
 | `TPVisionDebug.cookie` / `enable_log2usb` are inert on this build. | [dead ends](#dead-ends) |
 
 ## Dead ends
@@ -40,6 +53,11 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 | `BrowserIpcPluginClass` from a plain HTTP origin | **Inert** | Exposes 0 native methods outside the authorized origin. |
 | Channel-map `usr/` traversal | **OPEN** | No verified code-execution path. |
 | Hardware eMMC ISP / voltage glitch | **NOT ATTEMPTED** | High brick risk; not needed for this path. |
+| `setenforce 0` / `/sys/fs/selinux/disable` | **DEAD** | Kernel returns `EINVAL`; `/etc/selinux/config` read-only. |
+| NVM `selinux=0` / `enforcing=0` | **DEAD** | p9 has no `bootargs`; the cmdline is in the FDT/ATF. |
+| `/sys/fs/selinux/load` of the running policy via `cat` | **DEAD** | 128 KiB chunks; `ebitmap: truncated map`. Use one `dd bs=1048576 count=1`. |
+| `mount`/`umount` under `unconfined_t` | **SUPERSEDED** | A permissive v33 policy now allows `mounton`; the `bin_t`/`unconfined_t` workaround is only a fallback. |
+| `kexec`, `/dev/mem`, `/proc/kcore`, kernel module | **DEAD** | kexec/device nodes absent; no `/lib/modules`; no matching build. |
 | `init=` injection | **FORBIDDEN** | No serial/physical recovery; can brick before SAM. |
 
 ## Open questions
@@ -50,6 +68,11 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 - Whether a future firmware build keeps the same `quick_debug/menu auto` hook.
 - Whether the user trust store can be extended from USB to defeat `DP_203`.
 - Whether the channel-map import parser has a memory-safety bug. Not tested.
+- Whether the two v33-only netlink permissions (`nlmsg_readpriv`,
+  `nlmsg_getneigh`) matter to any running service. They remain denied.
+- Whether to restore `app.titanos.tv`/`eu.app.titanos.tv` in Pi-hole or keep the
+  cloud blocked. The TV is otherwise working.
+- Whether the eMMC `boot_area` can be switched for recovery.
 
 ## What the root path does not do
 
@@ -57,3 +80,6 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 - It does not defeat the `NFSB` RSA/SHA-256 layer.
 - It does not bypass Widevine/DRM.
 - It does not provide remote access without a listener you start yourself.
+- It does not flip the kernel's global enforcing flag: `getenforce` still says
+  `Enforcing` and `setenforce` is `EINVAL`. It does load a v33 policy with every
+  type permissive, so enforcement is effectively off without a boot-chain write.

@@ -25,6 +25,8 @@ Every page carries a status label:
 | 12 | [Verified findings and dead ends](research/12-verified-findings-and-dead-ends.md) | VERIFIED | One-page truth table and the paths that failed. |
 | 13 | [Webview, launcher, and native IPC](research/13-webview-launcher-ipc.md) | VERIFIED / INFERRED | Chromium/Opera webview (112 UA / 124 CDP), OIPF, loopback, BrowserIpcPluginClass, developer menu, TLS pinning. |
 | 14 | [App framework and startup surface](research/14-app-framework.md) | VERIFIED | `nvt.app.ini`, `idtv`/`nbrowser`, local UI/keyboard assets, `/swdl` overlay. |
+| 15 | [SELinux runtime control](research/15-selinux-runtime-control.md) | VERIFIED / WORKING | Whole-policy `dd` load, v33 all-types-permissive policy at boot, working `mounton`, Settings/menus verified after cold boot; `setenforce` remains `EINVAL`. |
+| 16 | [Kernel, module, and hardware control surfaces](research/16-kernel-and-hardware-control.md) | VERIFIED / PERSISTENT SELOFF | Vendor `.ko` files, unsigned module load, verified kernel code execution and `selinux_state` read/write, persistent seloff boot payload with kill switch, plus hardware nodes. |
 
 ## Guides
 

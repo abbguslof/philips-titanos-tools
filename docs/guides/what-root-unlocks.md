@@ -10,8 +10,8 @@ The USB autoroot path gives an interactive `uid=0` shell in the vendor
 
 - Read `/proc/cmdline`, `/proc/mounts`, `/proc/tty/driver/serial`, and the
   partition map.
-- Dump or verify the NVM environment (`p9`), EDID, and channel maps before you
-  change anything.
+- Dump or verify the NVM environment (`nvm_dat`, p11; the SAM wrapper is
+  separate), EDID, and channel maps before you change anything.
 - Inspect the read-only `ap0`/`apext0` filesystems, the native `idtv` UI, the
   Opera/Chromium browser, the local keyboard assets, and the `/swdl` partition.
 - Read the vendor startup scripts (`S21idtv.sh`, `run.sh`, `run_custom_impl.sh`)
@@ -30,6 +30,9 @@ The USB autoroot path gives an interactive `uid=0` shell in the vendor
   `enc=gzip`, strip the `NFSB` header, and mount the SquashFS filesystems.
 - Inspect the rootfs, `mtd_apexe`, and the browser/UI partition without
   flashing anything.
+- Mount the inner SquashFS of an NFSB image read-only with
+  `payloads/nfsb_raw_mount.sh`. The `nfsb` verifier does not run for a direct
+  `squashfs` mount; the mount does not flash or boot a modified image.
 
 ## Control the TV locally
 

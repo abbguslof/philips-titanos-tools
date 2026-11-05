@@ -1,0 +1,24 @@
+# Modified NFSB copy
+
+$ dd if=/dev/nvt-part-name/fs0 of=/mtd_tmpdat/nfsb-mod.bin bs=1M
+30+0 records out
+31457280 bytes (31 MB, 30 MiB) copied
+$ printf 'NFSBTESTMODIFY!!' | dd of=/mtd_tmpdat/nfsb-mod.bin bs=1 seek=1048576 conv=notrunc
+16+0 records in
+16+0 records out
+16 bytes copied
+$ losetup -r /dev/loop0 /mtd_tmpdat/nfsb-mod.bin
+$ mount -t nfsb -o ro /dev/loop0 /tmp/nfsbmod
+mount_rc=0
+$ find /tmp/nfsbmod -type f -exec cat {} + > /dev/null
+cat: /tmp/nfsbmod/bin/echo: Input/output error
+
+dmesg:
+NFSB header found and verified.
+dm: target linear of size 61432 on 253:14(253:14) is ready
+device-mapper: verity: sha256 using implementation "sha256-ce"
+dm: target verity of size 38080 on 253:15(253:15) is ready
+device-mapper: verity: 253:14: data block 255 is corrupted
+SQUASHFS error: Failed to read block 0xfdc13: -5
+SQUASHFS error: Unable to read fragment cache entry [fdc13]
+SQUASHFS error: Unable to read page, block fdc13, size 41f6

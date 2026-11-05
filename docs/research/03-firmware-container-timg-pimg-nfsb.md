@@ -63,6 +63,13 @@ unsquashfs -d rootfs fs0.sqsh
 userspace through the `nfsb` kernel module. `apext0` is the extended UI/Opera
 partition.
 
+> **Runtime note (verified 2026-11-05).** The NFSB verifier is exercised by
+> the `nfsb` mount. The inner SquashFS at offset `0x1000` can be mounted
+> directly with the normal `squashfs` driver (`losetup` + `mount -t squashfs`)
+> on the running TV. This is a runtime read-only/custom-layer path; it does
+> not make a modified NFSB image flashable or bootable and does not defeat
+> the boot-time verifier. See [runtime NFSB bypass](17-runtime-nfsb-squashfs.md).
+
 ## Why this matters for research
 
 - The container is easy to parse without vendor tools: read the `TIMG` header,

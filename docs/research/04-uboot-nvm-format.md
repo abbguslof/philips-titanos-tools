@@ -3,9 +3,12 @@
 Status: **VERIFIED** on hardware (read, modify, dual CRC32, SAM write, reboot).
 
 The TV calls this "U-Boot NVM", but the boot chain is XBoot (see
-[boot chain](01-boot-chain-xboot-atf.md)). The file is an 8,036-byte
-environment container on partition **p9**, exported by SAM as
-`SAM/nvm_ubootdat.data`.
+[boot chain](01-boot-chain-xboot-atf.md)). The SAM `nvm_ubootdat.data` is an
+8,036-byte environment container. The wrapper carries partition ID 9. The live
+`/dev/nvt-part-name` maps p9 to `misc` and p11 to `nvm_dat`; the raw NVM
+variables (`macaddr`, `uart_mode`, `mds_mode`, `bootdelay`) are in `nvm_dat`.
+The wrapper and the raw partition are different views; verify the source before
+writing.
 
 ## Layout
 
@@ -14,7 +17,7 @@ environment container on partition **p9**, exported by SAM as
 | Offset              | Field                                                  |
 +---------------------+--------------------------------------------------------+
 | 0x0000 - 0x0003     | Outer CRC32 (uint32 LE), covers 0x0004..EOF            |
-| 0x0004 - 0x0007     | Partition type ID (uint32 LE = 9)                      |
+| 0x0004 - 0x0007     | Partition type ID in the wrapper (uint32 LE = 9)       |
 | 0x0008 - 0x000B     | Header size (uint32 LE = 0x24 = 36)                    |
 | 0x000C - 0x0023     | Reserved / zero padding                                |
 | 0x0024 - 0x0027     | Inner CRC32 (uint32 LE), covers 0x0028..EOF            |
@@ -67,10 +70,11 @@ routes; the `tvtype: consumer` lock is in userspace. Both were tested.
 ## Hardware write path
 
 SAM **`Download from USB` -> `NVM copy`** reads `SAM/nvm_ubootdat.data`,
-verifies both CRC32 layers, and writes partition p9. This was verified on
+verifies both CRC32 layers, and writes the NVM area p9. This was verified on
 hardware with `canary_test=1` and `bootdelay=5`; the TV displayed "Done" and
-rebooted cleanly. `bootdelay=5` is inert because there is no interactive
-U-Boot prompt.
+rebooted cleanly. The live raw variables are also in `nvm_dat` (p11); the SAM
+wrapper and the raw partition are distinct. `bootdelay=5` is inert because
+there is no interactive U-Boot prompt.
 
 The factory sample in `samples/nvm/nvm_ubootdat.data` uses a dummy MAC and
 placeholder production code. Keep a pristine backup before any write.

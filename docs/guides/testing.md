@@ -8,7 +8,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (37 tests):
+Current coverage (40 tests):
 
 | Test file | Covers |
 | :--- | :--- |
@@ -19,6 +19,7 @@ Current coverage (37 tests):
 | `test_firmware_fetch.py` | Support-page link extraction and candidate filename generation. |
 | `test_firmware_parse.py` | TIMG/PIMG header parsing and component extraction. |
 | `test_jointspace_client.py` | HMAC signature, mocked network calls, key sequence. |
+| `test_nfsb_raw_mount.py` | Raw NFSB mount helper syntax, usage, and contract. |
 | `test_persist_root.py` | Installer tokens, embedded script syntax, no USB dependency. |
 | `test_stage_usb.py` | SAM canary staging and CRC verification. |
 | `test_uboot_nvm_tool.py` | Dual CRC32, factory verification, bit-identical round-trip. |
@@ -31,6 +32,8 @@ Hardware tests are documented, not faked:
 - Persistent `customer_env.sh` hook across a reboot.
 - SAM NVM/EDID write.
 - Serial capture and electrical measurements.
+- Runtime raw SquashFS mount of a live NFSB partition. CI checks the helper
+  syntax and usage only.
 
 When you run a hardware test, add a short redacted log under `evidence/` and
 update `evidence/README.md`.
@@ -39,7 +42,7 @@ update `evidence/README.md`.
 
 ```bash
 python3 -m compileall -q tools tests
-sh -n payloads/autoroot.sh payloads/persist_root.sh
+sh -n payloads/autoroot.sh payloads/persist_root.sh payloads/nfsb_raw_mount.sh
 sh -n tools/usb_prep.sh tools/bootstrap/bootstrap.sh
 ```
 

@@ -22,6 +22,15 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 | [hardware/xboot-serial.log](hardware/xboot-serial.log) | XBoot -> ATF -> EL1, `uart mode:0`, boot timing. |
 | [firmware/upgrade_loader.html](firmware/upgrade_loader.html) | The historical Google Drive mirror returned a virus-scan warning page, not a loader. |
 
+## Runtime NFSB
+
+| Set | What it proves |
+| :--- | :--- |
+| [runtime-nfsb](runtime-nfsb/) | A pristine NFSB mount verifies the header and creates verity targets; a modified block fails verity on read; the inner SquashFS at offset `0x1000` mounts directly with `squashfs`. |
+
+The method and limits are in
+[runtime NFSB bypass](../docs/research/17-runtime-nfsb-squashfs.md).
+
 ## Persistence
 
 The persistent `customer_env.sh` hook was verified on hardware: after installing

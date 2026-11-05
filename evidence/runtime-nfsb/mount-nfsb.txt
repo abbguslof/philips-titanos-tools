@@ -1,0 +1,21 @@
+# Pristine NFSB mount
+
+$ mount -t nfsb -o ro /dev/nvt-part-name/fs0 /tmp/nfsbtest
+mount_rc=0
+$ ls /tmp/nfsbtest | head
+apexe_ext
+aqtbl
+bin
+build_info.txt
+chanfac
+demo
+dev
+devcfg_rw
+etc
+frcfw
+
+dmesg:
+NFSB header found and verified.
+dm: target linear of size 61432 on 253:10(253:10) is ready
+device-mapper: verity: sha256 using implementation "sha256-ce"
+dm: target verity of size 38080 on 253:11(253:11) is ready

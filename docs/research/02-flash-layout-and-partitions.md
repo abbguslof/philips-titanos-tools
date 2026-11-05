@@ -28,11 +28,17 @@ following are verified from the root shell:
 | p2 | vendor `boot1` | `UMFG` at `0x1A0200`; slice value `1` on the tested unit. |
 | p3, p4 | DDR config (`DDRC` magic) | Not mounted as a filesystem in userspace. |
 | p7, p8 | `PIDX` magic | Not identified further. |
-| p9 | U-Boot-style NVM environment | Exported as `SAM/nvm_ubootdat.data`; see [NVM format](04-uboot-nvm-format.md). |
+| p9 | `misc` (`DBFG` magic) | Partition tables and boot flags. The SAM NVM wrapper uses partition ID 9; see the note below. |
+| p11 | `nvm_dat` | Live raw NVM environment: `macaddr`, `uart_mode`, `mds_mode`, `bootdelay`. |
 | p13–p18, p21 | U-Boot legacy magic (`27 05 19 56`) | Raw images; not mounted. |
 | p19, p20, p32–p35 | `NFSB` secure filesystem images | p20 is the rootfs (`/`), SquashFS read-only. |
 | p31 | `apdat` → `/mtd_rwarea` | **rw ext4.** This is the persistence partition. |
 | p36 | pstore | `nvt_pstore_mmc.blkdev=/dev/mmcblk0p36`. |
+
+The SAM `nvm_ubootdat.data` is an 8,036-byte wrapper with partition ID 9. The
+live `/dev/nvt-part-name` maps p9 to `misc` and p11 to `nvm_dat`. The wrapper
+and the raw partition are different views; verify the source before writing.
+See [NVM format](04-uboot-nvm-format.md).
 
 The kernel command line confirms the important ones:
 

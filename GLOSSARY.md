@@ -27,10 +27,24 @@ the vendor `run.sh`. They are not the eMMC boot partitions.
 **`PIMG`** — a component header/payload inside a `TIMG` container.
 
 **`NFSB`** — the secure-filesystem wrapper (4,096-byte header, SHA-256 +
-RSA-2048) around the SquashFS images.
+RSA-2048) around the SquashFS images. The verifier runs for the `nfsb` mount.
+The inner filesystem can be mounted directly at runtime; that mount is read-only
+and does not make the image bootable.
 
-**NVM** — the U-Boot-style environment partition `p9`, exported as
-`nvm_ubootdat.data`. It is not the bootloader itself.
+**NVM** — the U-Boot-style environment. The live raw variables are in
+`nvm_dat` (`p11`). The SAM `nvm_ubootdat.data` is an 8,036-byte wrapper with
+partition ID 9. The wrapper is not the raw partition. It is not the bootloader
+itself.
+
+**`misc`** — the `p9` partition with `DBFG` magic; it holds partition tables and
+boot flags.
+
+**`nvm_dat`** — the `p11` partition with the live raw NVM variables (`macaddr`,
+`uart_mode`, `mds_mode`, `bootdelay`).
+
+**Runtime raw mount** — a read-only `mount -t squashfs` of the inner filesystem
+at offset `0x1000`. It does not use the `nfsb` verifier and does not flash or
+boot a modified image.
 
 **SAM** — Service Alignment Mode, the technician menu. It can export/import NVM,
 EDID, and channel data.

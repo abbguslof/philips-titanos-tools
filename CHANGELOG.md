@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.1 - 2026-11-05
+
+### Added
+
+- Runtime NFSB research: the inner SquashFS at offset `0x1000` mounts directly
+  with the stock `squashfs` driver, without the `nfsb` verifier or dm-verity.
+- `payloads/nfsb_raw_mount.sh` for a read-only mount of an NFSB partition.
+- Runtime NFSB evidence for the pristine mount, the modified-block verity
+  failure, and the direct SquashFS mount.
+- Partition and NVM clarification: `misc` is p9, `nvm_dat` is p11, and the
+  SAM wrapper uses partition ID 9.
+
+### Changed
+
+- Clarified that the runtime raw mount does not defeat the boot-time NFSB
+  verifier. A modified NFSB image still cannot boot or flash.
+- Test count is 40.
+
 ## 0.1.0 - 2026-10-30
 
 First public, sanitized release.

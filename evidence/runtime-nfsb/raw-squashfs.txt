@@ -1,0 +1,19 @@
+# Direct SquashFS mount at offset 0x1000
+
+$ dd if=/dev/nvt-part-name/fs1 of=/tmp/fs1.sqsh bs=4096 skip=1
+$ losetup -r /dev/loop1 /tmp/fs1.sqsh
+$ mkdir -p /tmp/sqsh
+$ mount -t squashfs -o ro /dev/loop1 /tmp/sqsh
+mount_rc=0
+$ mount | grep sqsh
+/dev/loop1 on /tmp/sqsh type squashfs (ro,relatime)
+$ head -5 /tmp/sqsh/etc/init.d/S21idtv.sh
+#!/bin/sh
+
+run_idtv() {
+        BSP_ONLY=$(cat /sys/firmware/devicetree/base/nvt_debugger/bsp_only 2>/dev/null)
+$ file /tmp/fs1.sqsh
+/tmp/fs1.sqsh: Squashfs filesystem, little endian, version 4.0, lzo compressed, 19496396 bytes, 1922 inodes, blocksize: 131072 bytes
+$ umount /tmp/sqsh
+$ losetup -d /dev/loop1
+$ rm -f /tmp/fs1.sqsh

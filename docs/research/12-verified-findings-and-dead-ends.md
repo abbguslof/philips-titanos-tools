@@ -10,10 +10,12 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 | :--- | :--- |
 | XBoot `2a4184c` -> ATF `a64m` -> Linux EL1 at `0x2800000` in ~90 ms. No interactive U-Boot. | [boot chain](01-boot-chain-xboot-atf.md), [serial log](../../evidence/hardware/xboot-serial.log) |
 | Kernel command line uses `console=ttynull` and `root=/dev/mmcblk0p20`. | [v7 log](../../evidence/usb-autoroot/v7-autoroot-success/autoroot.log) |
-| 40 user partitions; root p20, pstore p36, NVM p9, `apdat` p31. | [flash layout](02-flash-layout-and-partitions.md) |
+| 40 user partitions; root p20, pstore p36, `misc` p9, `nvm_dat` p11, `apdat` p31. | [flash layout](02-flash-layout-and-partitions.md), [partition map](../reference/partition-map.md) |
 | `mmcblk0boot0`/`boot1` are 4 MiB eMMC boot partitions holding XBoot. Vendor `boot0` is `mmcblk0p1`; `p1` `UMFG` value 0, `p2` value 1. | [UMFG slices](../../evidence/usb-autoroot/v5-umfg-partitions/) |
 | `TIMG` container + `PIMG` components are MD5-only; inner `NFSB` uses SHA-256 + RSA-2048; `enc=gzip` decompresses to SquashFS LZO. | [firmware format](03-firmware-container-timg-pimg-nfsb.md) |
-| `nvm_ubootdat.data` is 8,036 bytes with outer/inner IEEE CRC32; SAM writes p9 successfully. | [NVM format](04-uboot-nvm-format.md) |
+| `nvm_ubootdat.data` is an 8,036-byte wrapper with outer/inner IEEE CRC32 and partition ID 9; the live raw NVM variables are in `nvm_dat` (p11); SAM writes the NVM area p9 successfully. | [NVM format](04-uboot-nvm-format.md) |
+| The inner SquashFS at offset `0x1000` mounts directly with `mount -t squashfs`; the NFSB verifier runs only for the `nfsb` mount. | [runtime NFSB](17-runtime-nfsb-squashfs.md), [evidence](../../evidence/runtime-nfsb/) |
+| A modified NFSB copy still mounts through `nfsb` with a valid header, but dm-verity rejects the changed block on read. | [runtime NFSB](17-runtime-nfsb-squashfs.md), [evidence](../../evidence/runtime-nfsb/) |
 | USB autorun: `S21idtv.sh` -> `run.sh` -> `quick_debug/menu auto` -> `eval` at ~36 s; empty label mounts at `/media/sda1`. | [USB hook](05-usb-autorun-hook.md) |
 | Interactive `uid=0` over TCP `:2323` from a USB cold boot. | [v4](../../evidence/usb-autoroot/v4-shell-uid0/), [v7](../../evidence/usb-autoroot/v7-autoroot-success/) |
 | Persistence via `/mtd_rwarea/apdat/customer_env.sh` survives a cold boot without the stick. | [persistence](06-persistence-customer-env.md), [pending capture](../../evidence/persistence/README.md) |
@@ -54,7 +56,7 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 | Channel-map `usr/` traversal | **OPEN** | No verified code-execution path. |
 | Hardware eMMC ISP / voltage glitch | **NOT ATTEMPTED** | High brick risk; not needed for this path. |
 | `setenforce 0` / `/sys/fs/selinux/disable` | **DEAD** | Kernel returns `EINVAL`; `/etc/selinux/config` read-only. |
-| NVM `selinux=0` / `enforcing=0` | **DEAD** | p9 has no `bootargs`; the cmdline is in the FDT/ATF. |
+| NVM `selinux=0` / `enforcing=0` | **DEAD** | The NVM area (`nvm_dat`/p11 and the SAM wrapper) has no `bootargs`; the cmdline is in the FDT/ATF. |
 | `/sys/fs/selinux/load` of the running policy via `cat` | **DEAD** | 128 KiB chunks; `ebitmap: truncated map`. Use one `dd bs=1048576 count=1`. |
 | `mount`/`umount` under `unconfined_t` | **SUPERSEDED** | A permissive v33 policy now allows `mounton`; the `bin_t`/`unconfined_t` workaround is only a fallback. |
 | `kexec`, `/dev/mem`, `/proc/kcore`, kernel module | **DEAD** | kexec/device nodes absent; no `/lib/modules`; no matching build. |
@@ -73,11 +75,16 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 - Whether to restore `app.titanos.tv`/`eu.app.titanos.tv` in Pi-hole or keep the
   cloud blocked. The TV is otherwise working.
 - Whether the eMMC `boot_area` can be switched for recovery.
+- Whether the boot-time NFSB verifier can be bypassed without the vendor RSA
+  key. The runtime raw mount does not attempt it; the `NVHC` and encrypted boot
+  images add more checks.
 
 ## What the root path does not do
 
 - It does not modify the read-only rootfs or the bootloader.
-- It does not defeat the `NFSB` RSA/SHA-256 layer.
+- It does not defeat the boot-time `NFSB` RSA/SHA-256 layer. The runtime raw
+  SquashFS mount is a separate read-only userspace path; a modified NFSB image
+  still cannot boot or flash.
 - It does not bypass Widevine/DRM.
 - It does not provide remote access without a listener you start yourself.
 - It does not flip the kernel's global enforcing flag: `getenforce` still says

@@ -13,7 +13,8 @@ user-area partitions. The two eMMC boot areas are separate devices.
 | `mmcblk0p4` | DDR config | raw | `DDRC` magic. |
 | `mmcblk0p7` | indexed data | raw | `PIDX` magic. |
 | `mmcblk0p8` | indexed data | raw | `PIDX` magic. |
-| `mmcblk0p9` | NVM environment | raw / SAM | `nvm_ubootdat.data`; `DBFG` magic. |
+| `mmcblk0p9` | `misc` | raw | `DBFG`; partition tables and boot flags. The SAM NVM wrapper uses partition ID 9. |
+| `mmcblk0p11` | `nvm_dat` | raw | Live raw NVM: `macaddr`, `uart_mode`, `mds_mode`, `bootdelay`. |
 | `mmcblk0p13`–`p18` | U-Boot legacy images | raw | `27 05 19 56` magic. |
 | `mmcblk0p19` | `NFSB` secure fs | mapped | Not rootfs. |
 | `mmcblk0p20` | rootfs | squashfs ro | `/`; `root=/dev/mmcblk0p20`. |

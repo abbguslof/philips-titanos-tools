@@ -1,0 +1,22 @@
+# Dropbear SSH after a USB-less cold boot - 2026-11-10
+# REDACTED: TV -> 192.0.2.10, workstation -> 192.0.2.44
+
+$ ls /media
+$ ls /media/sda1
+ls: cannot access '/media/sda1': No such file or directory
+
+$ ssh -p 2222 root@192.0.2.10 'id; cat /proc/uptime; grep " /root " /proc/mounts; ls -ld /root /root/.ssh; command -v lsblk; lsblk | head -3; cat /mtd_rwarea/apdat/root_boot.ready'
+uid=0(root) gid=0(root) groups=0(root)
+166.65 428.36
+tmpfs /root tmpfs rw,relatime,size=1024k,mode=700 0 0
+drwx------ 3 root root 80 Nov 10 13:09 /root
+drwx------ 2 root root 60 Nov 10 13:04 /root/.ssh
+/mtd_rwarea/apdat/opt/bin/lsblk
+NAME             MAJ:MIN      BLOCKS
+ram0             1:0  4096 KB
+ram1             1:1  4096 KB
+ram2             1:2  4096 KB
+READY Tue Nov 10 13:08:14 GMT 2026 uptime=12.41 11.05
+
+$ grep -m1 "Pubkey auth succeeded" /mtd_rwarea/apdat/opt/var/dropbear.log
+[..] Pubkey auth succeeded for 'root' with ssh-ed25519 key SHA256:Kmt4PxI6Z5qKVDlM5XBt/I6GUv+kDF+nv+wykVPmbyw

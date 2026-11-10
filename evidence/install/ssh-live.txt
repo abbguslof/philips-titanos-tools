@@ -1,0 +1,32 @@
+# Dropbear live test - 2026-11-10
+# REDACTED: TV -> 192.0.2.10, workstation -> 192.0.2.44
+
+$ netstat -ltn | grep 2222
+tcp        0      0 0.0.0.0:2222            0.0.0.0:*               LISTEN
+tcp        0      0 :::2222                 :::*                    LISTEN
+
+# Non-interactive (DEFAULT_ROOT_PATH)
+$ ssh -i <key> -p 2222 root@192.0.2.10 'echo "PATH=$PATH"; command -v lsblk; lsblk | head -3; id'
+PATH=/mtd_rwarea/apdat/opt/bin:/usr/sbin:/usr/bin:/sbin:/bin
+/mtd_rwarea/apdat/opt/bin/lsblk
+NAME             MAJ:MIN      BLOCKS
+ram0             1:0  4096 KB
+ram1             1:1  4096 KB
+ram2             1:2  4096 KB
+uid=0(root) gid=0(root) groups=0(root)
+
+# Login shell (/etc/profile + /etc/profile.d/opt-bin.sh)
+$ ssh -i <key> -p 2222 root@192.0.2.10 'sh -l -c "echo loginPATH=\$PATH; command -v lsblk"'
+loginPATH=/bin:/sbin:/usr/bin:/usr/sbin:/mtd_rwarea/apdat/opt/bin
+/mtd_rwarea/apdat/opt/bin/lsblk
+
+# Auth is publickey only (-s); password disabled.
+# Failure modes seen and fixed:
+#  1) -D /mtd_rwarea/apdat/opt/etc/ssh -> "opt/etc must be owned by user or
+#     root, and not writable by group or others" (apdat is 777; dropbear
+#     checks every component when outside the home dir).
+#     Fix: bind-mount opt/root_home (700) over /root; use default ~/.ssh.
+#  2) ssh host 'cmd' had PATH=/usr/sbin:/usr/bin:/sbin:/bin.
+#     Fix: patched DEFAULT_ROOT_PATH; login shells get profile.d drop-in.
+#  3) boot resets /mtd_apdat to 777 (run.sh:587), so /root/.ssh is rejected.
+#     Fix: tmpfs /root populated at boot; see ssh-boot.txt.

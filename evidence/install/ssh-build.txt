@@ -1,0 +1,29 @@
+# Dropbear build record - 2026-11-10
+
+Toolchain: zig 0.17.1 (official tarball, sha256 verified)
+  https://ziglang.org/download/0.17.1/zig-x86_64-linux-0.17.1.tar.xz
+Target: aarch64-linux-musl, static
+Source: https://github.com/mkj/dropbear
+  commit 17549ea6 "Fix terminal escaping in scp"
+
+configure:
+  CC="zig cc -target aarch64-linux-musl"
+  AR="zig ar"  RANLIB="zig ranlib"
+  CFLAGS="-O2 -static"  LDFLAGS="-static"
+  ./configure --host=aarch64-linux-musl --enable-bundled-libtom \
+    --disable-zlib --disable-pam --disable-syslog \
+    --disable-lastlog --disable-utmpx --disable-wtmp
+
+Local source patch (src/default_options.h):
+  DEFAULT_PATH      "/usr/bin:/bin"
+    -> "/mtd_rwarea/apdat/opt/bin:/usr/bin:/bin"
+  DEFAULT_ROOT_PATH "/usr/sbin:/usr/bin:/sbin:/bin"
+    -> "/mtd_rwarea/apdat/opt/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+Result:
+  file:    ELF 64-bit LSB pie executable, ARM aarch64, static-pie linked, stripped
+  size:    729,504 bytes
+  INTERP:  none
+  NEEDED:  none
+  sha256:  0f1fa428c012ea977335e504c882c9e9205f86f6c6a172c271ca2d5a98c7699c
+  baked:   /mtd_rwarea/apdat/opt/bin:/usr/sbin:/usr/bin:/sbin:/bin

@@ -1,0 +1,56 @@
+=== boot ===
+Tue Nov 10 12:27:23 GMT 2026
+uid=0(root) gid=0(root) groups=0(root)
+--- cmdline ---
+console=ttynull,115200 rootfstype=squashfs quiet maxcpus=4 rootwait no_console_suspend earlycon=uart8250,mmio32,0xfd099000,baudrate=115200 nvt_pstore_mmc.blkdev=/dev/mmcblk0p36 page_pinner=on page_owner=on root=/dev/mmcblk0p20 ro
+--- mounts ---
+/dev/root / squashfs ro,relatime,errors=continue 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=680120k,nr_inodes=170030,mode=755 0 0
+sysfs /sys sysfs rw,relatime 0 0
+selinuxfs /sys/fs/selinux selinuxfs rw,nosuid,noexec,relatime 0 0
+proc /proc proc rw,relatime 0 0
+devpts /dev/pts devpts rw,relatime,gid=5,mode=620,ptmxmode=666 0 0
+tmpfs /dev/shm tmpfs rw,relatime,mode=777 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+tmpfs /media tmpfs rw,relatime 0 0
+tmpfs /run tmpfs rw,nosuid,nodev,relatime,mode=755 0 0
+/dev/mapper/mtd_apexe /mtd_apexe squashfs ro,relatime,errors=continue 0 0
+/dev/mapper/apexe_ext /apexe_ext squashfs ro,relatime,errors=continue 0 0
+/dev/nvt-part-name/channel_fac /chanfac ext4 ro,relatime 0 0
+/dev/nvt-part-name/misc_tmp /misctmp ext4 rw,relatime 0 0
+/dev/nvt-part-name/devcfg /tkconfig ext4 ro,relatime 0 0
+/dev/nvt-part-name/devcfg_rw /devcfg_rw ext4 rw,relatime 0 0
+/dev/nvt-part-name/frc_fw /frcfw ext4 ro,relatime 0 0
+/dev/nvt-part-name/demo /demo ext4 rw,relatime 0 0
+/dev/nvt-part-name/aq /aqtbl ext4 ro,relatime 0 0
+/dev/nvt-part-name/pq /pqtbl ext4 ro,relatime 0 0
+/dev/nvt-part-name/nvm_file /nvm_file ext4 rw,relatime 0 0
+/dev/nvt-part-name/sw_dl /swdl ext4 rw,relatime 0 0
+/dev/nvt-part-name/apdat /mtd_rwarea ext4 rw,relatime 0 0
+/dev/nvt-part-name/tmpdat /mtd_tmpdat ext4 rw,relatime 0 0
+/dev/sda1 /media/sda1 vfat rw,relatime,fmask=0000,dmask=0000,allow_utime=0022,codepage=437,iocharset=iso8859-1,shortname=winnt,utf8,errors=continue 0 0
+tmpfs /dev/shm tmpfs rw,relatime 0 0
+/dev/mapper/mtd_apexe /lib/firmware squashfs ro,relatime,errors=continue 0 0
+/dev/mapper/apexe_ext /mtd_apexe/board/com.nvt.opera squashfs ro,relatime,errors=continue 0 0
+/dev/mapper/apexe_ext /mtd_apexe/board/com.tpv.opera squashfs ro,relatime,errors=continue 0 0
+/dev/loop6 /tmp/freetitan-root squashfs ro,relatime,errors=continue 0 0
+/dev/root /tmp/freetitan-root/bin squashfs ro,relatime,errors=continue 0 0
+/dev/root /tmp/freetitan-root/lib squashfs ro,relatime,errors=continue 0 0
+/dev/root /tmp/freetitan-root/lib squashfs ro,relatime,errors=continue 0 0
+/dev/root /tmp/freetitan-root/sbin squashfs ro,relatime,errors=continue 0 0
+/dev/loop5 /tmp/freetitan-data ext4 rw,relatime 0 0
+/dev/loop5 /tmp/freetitan-root/etc ext4 rw,relatime 0 0
+/dev/loop5 /tmp/freetitan-root/var ext4 rw,relatime 0 0
+/dev/loop5 /tmp/freetitan-root/home ext4 rw,relatime 0 0
+/dev/loop5 /tmp/freetitan-root/root ext4 rw,relatime 0 0
+/dev/loop5 /tmp/freetitan-root/opt ext4 rw,relatime 0 0
+/dev/loop5 /tmp/freetitan-root/usr/local ext4 rw,relatime 0 0
+/dev/root /tmp/freetitan-root/usr squashfs ro,relatime,errors=continue 0 0
+proc /tmp/freetitan-root/proc proc rw,relatime 0 0
+sysfs /tmp/freetitan-root/sys sysfs rw,relatime 0 0
+devtmpfs /tmp/freetitan-root/dev devtmpfs rw,relatime,size=680120k,nr_inodes=170030,mode=755 0 0
+tmpfs /tmp/freetitan-root/run tmpfs rw,nosuid,nodev,relatime,mode=755 0 0
+tmpfs /tmp/freetitan-root/tmp tmpfs rw,relatime 0 0
+/dev/mapper/mtd_apexe /tmp/freetitan-root/mtd_apexe squashfs ro,relatime,errors=continue 0 0
+/dev/nvt-part-name/apdat /tmp/freetitan-root/mtd_rwarea ext4 rw,relatime 0 0
+/dev/nvt-part-name/sw_dl /tmp/freetitan-root/swdl ext4 rw,relatime 0 0

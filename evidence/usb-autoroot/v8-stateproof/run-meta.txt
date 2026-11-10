@@ -1,0 +1,17 @@
+# Step 1 verification, read-only over :2323, 2026-11-10
+# Command: grep -c "=== boot ===" /media/sda1/proof.txt
+1
+# Command: cat /proc/uptime; date
+126.31 287.62
+Tue Nov 10 12:28:53 GMT 2026
+# Command: wc -l /media/sda1/proof.txt
+56 /media/sda1/proof.txt
+# Command: ls /media/sda1
+autoscript.stateproof.txt  busybox-armhf  proof.txt
+#
+# Derived:
+# - autoscript eval timestamp  12:27:23 (proof.txt:2), ~36 s after boot
+#   (menu 30 s delay, docs/research/05-usb-autorun-hook.md:30)
+# - uptime at check            126.31 s at 12:28:53
+# - boot blocks                1
+# => no reboot after eval in this boot; RESET(33) did not recur.

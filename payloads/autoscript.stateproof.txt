@@ -1,0 +1,1 @@
+/bin/cp /media/sda1/busybox-armhf /tmp/busybox; /bin/chmod 0755 /tmp/busybox; /tmp/busybox setsid /bin/sh -c '{ echo "=== boot ==="; /bin/date; /usr/bin/id; echo "--- cmdline ---"; /bin/cat /proc/cmdline; echo "--- mounts ---"; /bin/cat /proc/mounts; } >>/media/sda1/proof.txt 2>&1' </dev/null >/dev/null 2>&1 &

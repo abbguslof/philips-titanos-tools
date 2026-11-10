@@ -1,0 +1,225 @@
+# Phase A live inventory - 2026-11-09
+# Target: 55PUS8000/12, firmware TPA256E_V056.002.236.191
+# REDACTED: LAN IPs -> 192.0.2.10 / 192.0.2.44; SSID -> ExampleWiFi;
+#           BSSID/MAC -> 02:00:00:00:00:00. Production code removed.
+# Collected read-only over :2323. No writes, mknod, insmod, or partition access.
+
+$ id
+uid=0(root) gid=0(root) groups=0(root)
+
+$ uname -a
+Linux n22074_linux_tk 6.1.124-gd063554eebf5-ab6 #4 SMP PREEMPT Tue May 27 11:36:10 CST 2025 aarch64 GNU/Linux
+
+$ cat /proc/version
+Linux version 6.1.124-gd063554eebf5-ab6 (root@oabuild59) (Android (10087095, +pgo, +bolt, +lto, -mlgo, based on r487747c) clang version 17.0.2 (https://android.googlesource.com/toolchain/llvm-project d9f89f4d16663d5012e5c09495f3b30ece3d2362), LLD 17.0.2) #4 SMP PREEMPT Tue May 27 11:36:10 CST 2025
+
+$ cat /proc/cmdline
+console=ttynull,115200 rootfstype=squashfs quiet maxcpus=4 rootwait no_console_suspend earlycon=uart8250,mmio32,0xfd099000,baudrate=115200 nvt_pstore_mmc.blkdev=/dev/mmcblk0p36 page_pinner=on page_owner=on root=/dev/mmcblk0p20 ro
+
+$ getenforce; cat /sys/fs/selinux/enforce; cat /sys/fs/selinux/policyvers
+Enforcing
+1
+33
+
+$ sha256sum /sys/fs/selinux/policy
+b43297b16436980131e5ebb2c6b5f883d292a7947eb2d233b2fc08d051cffdc2  /sys/fs/selinux/policy
+
+$ cat /proc/self/status | grep -E 'Cap(Eff|Prm|Bnd)'
+CapPrm: 000001ffffffffff
+CapEff: 000001ffffffffff
+CapBnd: 000001ffffffffff
+
+$ cat /proc/filesystems
+nodev   sysfs
+nodev   tmpfs
+nodev   bdev
+nodev   proc
+nodev   devtmpfs
+nodev   sockfs
+nodev   bpf
+nodev   pipefs
+nodev   ramfs
+nodev   devpts
+        ext3
+        ext2
+        ext4
+        squashfs
+        vfat
+        msdos
+        iso9660
+        ntfs
+        fuseblk
+nodev   fuse
+nodev   fusectl
+nodev   incremental-fs
+nodev   mqueue
+nodev   selinuxfs
+nodev   pstore
+# NOTE: no 'overlay', no 'btrfs'
+
+$ cat /proc/partitions
+ 179        0    7634944 mmcblk0
+ 179        1      24576 mmcblk0p1
+ 179        9       8192 mmcblk0p9
+ 179       11       1024 mmcblk0p11
+ 179       20      30720 mmcblk0p20
+ 179       31    1879040 mmcblk0p31
+ 259        4       2048 mmcblk0p36
+ 179       32       4096 mmcblk0boot0
+ 179       64       4096 mmcblk0boot1
+   8        0    3921919 sda
+   8        1    3919872 sda1
+ 253        0      30716 dm-0
+ 253        1      19040 dm-1
+ 253        2     563196 dm-2
+ 253        3     459572 dm-3
+# (p2..p40, dm-4..dm-9, loop5/6, zram0 omitted here; see raw transcript)
+
+$ cat /proc/sys/kernel/kptr_restrict /proc/sys/kernel/dmesg_restrict
+0
+0
+
+$ ls -l /dev/mem /dev/kmem /proc/kcore /proc/config.gz /proc/kexec* 2>&1
+ls: cannot access '/dev/mem': No such file or directory
+ls: cannot access '/dev/kmem': No such file or directory
+ls: cannot access '/proc/kcore': No such file or directory
+ls: cannot access '/proc/config.gz': No such file or directory
+ls: cannot access '/proc/kexec*': No such file or directory
+
+$ ls -l /sys/class/backlight /sys/class/leds 2>&1
+/sys/class/backlight:
+total 0
+
+/sys/class/leds:
+total 0
+
+$ ls -l /sys/fs/selinux
+total 0
+-rw-rw-rw- access
+dr-xr-xr-x avc
+dr-xr-xr-x booleans
+-rw-r--r-- checkreqprot
+dr-xr-xr-x class
+--w------- commit_pending_bools
+-rw-rw-rw- context
+-rw-rw-rw- create
+-r--r--r-- deny_unknown
+--w------- disable
+-rw-r--r-- enforce
+dr-xr-xr-x initial_contexts
+-rw------- load
+-rw-rw-rw- member
+-r--r--r-- mls
+crw-rw-rw- null            1, 3
+-r--r--r-- policy          252211
+dr-xr-xr-x policy_capabilities
+-r--r--r-- policyvers
+-r--r--r-- reject_unknown
+-rw-rw-rw- relabel
+dr-xr-xr-x ss
+-r--r--r-- status
+-rw-rw-rw- user
+--w--w--w- validatetrans
+
+$ cat /proc/sys/kernel/modules_disabled
+0
+
+$ ls -l /sys/module/ndp_logo/parameters 2>/dev/null
+(no entries; directory empty)
+
+$ lsmod        # selected
+ndp_logo               24576  0
+tee                     ...
+kteeclient             32768  7
+mali_kbase            831488  9
+ndp_misc               49152  0
+ndp_pq               3387392 10
+ndp_tsd               651264 21
+# full list: 42 modules, Tainted: P
+
+$ ps -ef        # selected
+root        573     1  0 Nov05 ?  /mtd_rwarea/apdat/busybox httpd
+root        788   181  0 Nov05 ?  /mtd_apexe/board/com.nvt.appmgr/
+idtv        888   788  0 Nov05 ?  idtv
+idtv       1074   888  0 Nov05 ?  ./bin/browser.out
+nbrowser   1075   788  0 Nov05 ?  ./bin/nbrowser
+nbrowser   1297  1075  0 Nov05 ?  /mtd_apexe/board/com.nvt.opera/b...
+root       1146     1  0 Nov05 ?  /tmp/persist/busybox telnetd -p ...
+root        406     2  0 Nov05 ?  [menu]
+# also: syslogd, auditd, klogd, mdev, dbus-daemon, systemd-udevd,
+#       com.nvt.wayland, bluetoothd, wpa_supplicant, netflix, mosquitto,
+#       mqttv, matterApp, chip-tv-app, WWAlexa, dialserver, sambatv,
+#       rdnssd, dhclient -6, airserver, control4, iotservice, dpf-daemon
+# NOTE: [kverityd] x5 and [kdmflush/253:*] present
+
+$ ls -la /mtd_rwarea/apdat   # selected (all owned idtv/root, mode 777)
+customer_env.sh                          3513
+customer_env.sh.bak-*                    (12+ variants, 263..2970)
+root_boot.sh                             3194
+root_boot.log                          175064
+root_boot.ready                            53
+busybox                               1284688
+policy.33.perm.bin                     252211
+ndp_logo_boot.ko                        38976
+ndp_logo_seloff_boot.ko                 38976
+custom.sqsh                              4096
+offlinelauncher.stock.tar             5253120
+ui-page.stock.tar                   154787840
+apexe_ext0.backup                   576716800
+apexe_ext1.backup                   576716800
+freetitan-boot.sh / -home.sh / -supervisor.sh / *.log
+opera-overlay.sh                         7548
+browser-watchdog.pid                        3
+channel_data.tar                      4761600
+TVSetId.txt / friendlyname.txt / cism_cnf.txt / wifi/   (NOT read)
+
+$ ls -la /swdl               # selected
+autorun.upg                         917372175
+boot0.bin                             4194304
+boot0.b64                             5665993
+policy33.bin                           294139
+mount.copy / umount.copy                66856
+
+$ ls -l /dev | grep -E 'ntk|uinput|uhid|fb|dri|mmcblk|input|console|ttyS'
+ntkmem 504:0   ndp_hwmem 10:192  ntgpio 132:0   ntkiic0 134:0
+ntkled 503:0   ntktcon 242:0     ntkhdmi 241:0  ntkvd 237:0
+ntkvplt 238:0  ntkdemod 239:0    ntkdvif 240:0  ntkstbc 244:0
+ntkaxis 245:0  ntksys 246:0      ntkgpu 235:0   ntkcal 236:0
+ntkci 131:0    ntkconverter 225:0 ntkdispage 234:0 ntkhdma 510:0
+ntkxdma 511:0  ntkbm 10:125      ntkgai 10:120  ntkgpu3d 10:122
+uinput 10:223  uhid 10:239
+teec 501:0     sdp_mem 509:0     nvt_tk_boot_counter 10:127
+
+$ cat /proc/bus/input/devices
+(empty)
+
+$ for t in gcc cc python python3 perl ldd strace ltrace gdbserver curl wget socat iptables ip6tables sqlite3 ffmpeg objdump readelf nc nslookup sha256sum; do ...
+ABSENT  gcc / cc / python / python3 / perl / strace / ltrace / gdbserver
+ABSENT  curl / socat / sqlite3 / ffmpeg / objdump / readelf / nc
+PRESENT ldd /usr/bin/ldd
+PRESENT wget /usr/bin/wget
+PRESENT iptables /usr/sbin/iptables
+PRESENT ip6tables /usr/sbin/ip6tables
+PRESENT nslookup /usr/bin/nslookup
+PRESENT sha256sum /usr/bin/sha256sum
+# NOTE: /mtd_apexe/board/{curl,sqlite3,iperf} exist off-PATH
+
+$ cat /proc/mounts        # selected custom-root mounts
+/dev/loop6 /tmp/freetitan-root          squashfs ro
+/dev/loop5 /tmp/freetitan-data          ext4 rw
+/dev/loop5 /tmp/freetitan-root/etc      ext4 rw
+/dev/loop5 /tmp/freetitan-root/var      ext4 rw
+/dev/loop5 /tmp/freetitan-root/home     ext4 rw
+/dev/root  /tmp/freetitan-root/bin      squashfs ro
+/dev/root  /tmp/freetitan-root/usr      squashfs ro
+# (plus standard /, /dev, /proc, /sys, mtd_apexe, apexe_ext, apdat, swdl)
+
+$ dmesg | grep -Ei 'mmc|panel|tcon|led|i2c|wifi|serial'   # redacted
+[..] {DRV_KPMI} ... KER_PMI_CLASS_TCON / KER_PMI_CLASS_LEDTOP suspend+resume
+[..] -> TCON: config 0xFC0B031C here, its value(0x3786FF00)
+[..] -> TCON: od_memreq.base = 0x9ED00000  size = 0x00800000
+[..] -> TCON: demura_memreq.base = 0x9F500000 size = 0x00700000
+[..] -> TCON: data_rate_factor(1386) final_clk(173250000)
+[..] RTW: ssid=ExampleWiFi, len=7
+[..] RTW: new candidate: ExampleWiFi(02:00:00:00:00:00, ch6) rssi:-43 dBm
+[..] SELinux: security_sid_to_context_core: called before initial load_policy on unknown SID 59

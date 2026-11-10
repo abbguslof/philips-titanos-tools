@@ -1,0 +1,120 @@
+# Install proof 1 - durable prefix + static binary - 2026-11-10
+# Target: 55PUS8000/12, firmware TPA256E_V056.002.236.191
+# REDACTED: workstation IP -> 192.0.2.44
+
+$ /mtd_rwarea/apdat/busybox df -h /mtd_rwarea
+Filesystem                Size      Used Available Use% Mounted on
+/dev/nvt-part-name/apdat
+                          1.7G      1.3G    315.6M  81% /mtd_rwarea
+
+$ mkdir -p /mtd_rwarea/apdat/opt/{bin,etc,lib,var}
+MKDIR_OK
+
+$ wget -q -O /mtd_rwarea/apdat/opt/bin/lsblk http://192.0.2.44:8000/lsblk
+WGET_OK
+
+$ chmod 0755 /mtd_rwarea/apdat/opt/bin/lsblk
+CHMOD_OK
+
+$ sha256sum /mtd_rwarea/apdat/opt/bin/lsblk
+af07f0218ecbabb45913abdfe8ccc9beb5b16d8d4223e998b9ba977386d87f2e  /mtd_rwarea/apdat/opt/bin/lsblk
+
+$ /mtd_rwarea/apdat/opt/bin/lsblk
+NAME             MAJ:MIN      BLOCKS
+ram0             1:0  4096 KB
+ram1             1:1  4096 KB
+ram2             1:2  4096 KB
+ram3             1:3  4096 KB
+ram4             1:4  4096 KB
+ram5             1:5  4096 KB
+ram6             1:6  4096 KB
+ram7             1:7  4096 KB
+ram8             1:8  4096 KB
+ram9             1:9  4096 KB
+ram10            1:10  4096 KB
+ram11            1:11  4096 KB
+ram12            1:12  4096 KB
+ram13            1:13  4096 KB
+ram14            1:14  4096 KB
+ram15            1:15  4096 KB
+loop5            7:5  65536 KB
+loop6            7:6  45744 KB
+zram0            254:0  1048576 KB
+mmcblk0          179:0  7634944 KB
+mmcblk0p1        179:1  24576 KB
+mmcblk0p2        179:2  24576 KB
+mmcblk0p3        179:3  2048 KB
+mmcblk0p4        179:4  2048 KB
+mmcblk0p5        179:5  1024 KB
+mmcblk0p6        179:6  1024 KB
+mmcblk0p7        179:7  2048 KB
+mmcblk0p8        179:8  2048 KB
+mmcblk0p9        179:9  8192 KB
+mmcblk0p10       179:10  10240 KB
+mmcblk0p11       179:11  1024 KB
+mmcblk0p12       179:12  4096 KB
+mmcblk0p13       179:13  8192 KB
+mmcblk0p14       179:14  8192 KB
+mmcblk0p15       179:15  3072 KB
+mmcblk0p16       179:16  3072 KB
+mmcblk0p17       179:17  35840 KB
+mmcblk0p18       179:18  35840 KB
+mmcblk0p19       179:19  30720 KB
+mmcblk0p20       179:20  30720 KB
+mmcblk0p21       179:21  24576 KB
+mmcblk0p22       179:22  35840 KB
+mmcblk0p23       179:23  76800 KB
+mmcblk0p24       179:24  4096 KB
+mmcblk0p25       179:25  8192 KB
+mmcblk0p26       179:26  8192 KB
+mmcblk0p27       179:27  10240 KB
+mmcblk0p28       179:28  5120 KB
+mmcblk0p29       179:29  4096 KB
+mmcblk0p30       179:30  5120 KB
+mmcblk0p31       179:31  1879040 KB
+mmcblk0p32       259:0  563200 KB
+mmcblk0p33       259:1  563200 KB
+mmcblk0p34       259:2  563200 KB
+mmcblk0p35       259:3  563200 KB
+mmcblk0p36       259:4  2048 KB
+mmcblk0p37       259:5  5120 KB
+mmcblk0p38       259:6  1812480 KB
+mmcblk0p39       259:7  614400 KB
+mmcblk0p40       259:8  647151 KB
+mmcblk0boot0     179:32  4096 KB
+mmcblk0boot1     179:64  4096 KB
+dm-0             253:0  30716 KB
+dm-1             253:1  19040 KB
+dm-2             253:2  563196 KB
+dm-3             253:3  459572 KB
+dm-4             253:4  563196 KB
+dm-5             253:5  459572 KB
+dm-6             253:6  563196 KB
+dm-7             253:7  433476 KB
+dm-8             253:8  563196 KB
+dm-9             253:9  433476 KB
+sda              8:0  3921919 KB
+sda1             8:1  3919872 KB
+
+$ PATH=/mtd_rwarea/apdat/opt/bin:$PATH lsblk | head -12
+NAME             MAJ:MIN      BLOCKS
+ram0             1:0  4096 KB
+ram1             1:1  4096 KB
+ram2             1:2  4096 KB
+ram3             1:3  4096 KB
+ram4             1:4  4096 KB
+ram5             1:5  4096 KB
+ram6             1:6  4096 KB
+ram7             1:7  4096 KB
+ram8             1:8  4096 KB
+ram9             1:9  4096 KB
+ram10            1:10  4096 KB
+
+$ /mtd_rwarea/apdat/busybox df -h /mtd_rwarea
+Filesystem                Size      Used Available Use% Mounted on
+/dev/nvt-part-name/apdat
+                          1.7G      1.3G    315.6M  81% /mtd_rwarea
+
+$ sha256sum /mtd_rwarea/apdat/opt/bin/lsblk > /mtd_rwarea/apdat/opt/manifest.sha256
+$ cat /mtd_rwarea/apdat/opt/manifest.sha256
+af07f0218ecbabb45913abdfe8ccc9beb5b16d8d4223e998b9ba977386d87f2e  /mtd_rwarea/apdat/opt/bin/lsblk

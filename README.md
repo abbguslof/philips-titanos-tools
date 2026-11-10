@@ -46,6 +46,7 @@ channel maps, JointSpace, Ambilight, firmware extraction, and a documented resto
 | Serial `SERV.U` interactive shell | **Dead on this build** (`ttyS0` TX only; RX never received a byte) | [hardware notes](docs/research/07-hardware-serv-u.md) |
 | JointSpace engineering routes (`/6/debug`, `/6/devtools`, ...) | **Dead on this build** (`tvtype: consumer`) | [dead ends](docs/research/12-verified-findings-and-dead-ends.md) |
 | Opera/Chromium DevTools on TCP `:7788` | **Open on the LAN; local debug surface** | [webview research](docs/research/13-webview-launcher-ipc.md#chromium-devtools-on-7788) |
+| Static tools on `/mtd_rwarea/apdat/opt` and key-only Dropbear SSH on `:2222`, across a USB-less boot | **Verified on hardware** | [install prefix](docs/research/21-install-prefix-2026-11-10.md), [persistence](docs/research/22-opt-prefix-persistence-2026-11-10.md), [SSH](docs/research/23-dropbear-ssh-2026-11-10.md) |
 
 The full story, including the paths that failed, is in
 [verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md).
@@ -168,7 +169,7 @@ See [persistent root](docs/guides/persistent-root.md) and
 │   ├── reference/     formats, partition map, glossary
 │   └── adr/           architecture decisions
 ├── payloads/          autoroot.sh, persist_root.sh, nfsb_raw_mount.sh, busybox, autoscript variants
-├── tools/             USB builder, NVM/EDID/channel tools, JointSpace client, firmware tools
+├── tools/             USB builder, NVM/EDID/channel tools, JointSpace client, firmware tools, install/probe tools
 ├── tests/             40 unit tests (python -m unittest)
 ├── samples/           small, non-identifying factory samples
 ├── evidence/          curated, redacted proof runs

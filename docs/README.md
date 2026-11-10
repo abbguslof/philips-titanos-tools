@@ -28,6 +28,12 @@ Every page carries a status label:
 | 15 | [SELinux runtime control](research/15-selinux-runtime-control.md) | VERIFIED / WORKING | Whole-policy `dd` load, v33 all-types-permissive policy at boot, working `mounton`, Settings/menus verified after cold boot; `setenforce` remains `EINVAL`. |
 | 16 | [Kernel, module, and hardware control surfaces](research/16-kernel-and-hardware-control.md) | VERIFIED / PERSISTENT SELOFF | Vendor `.ko` files, unsigned module load, verified kernel code execution and `selinux_state` read/write, persistent seloff boot payload with kill switch, plus hardware nodes. |
 | 17 | [Runtime NFSB bypass: raw SquashFS mount](research/17-runtime-nfsb-squashfs.md) | VERIFIED | Direct read-only SquashFS mount at offset `0x1000`; the verifier and dm-verity guard the `nfsb` mount; flash/boot remain blocked. |
+| 18 | [Live inventory](research/18-live-inventory-2026-11-09.md) | VERIFIED / OPEN | Boot, SELinux, mounts, device nodes, TEE, dm-verity, and tooling on the live unit. |
+| 19 | [Control surfaces](research/19-phase-b-control-surfaces-2026-11-09.md) | VERIFIED / OPEN | Measured `ntkmem` ABI, V4L2 HDMI, GPIO lines, and the per-node probe order. |
+| 20 | [USB stateproof](research/20-usb-stateproof-2026-11-10.md) | VERIFIED / OPEN | A non-resetting autoscript writes boot state to the stick. |
+| 21 | [Install prefix](research/21-install-prefix-2026-11-10.md) | VERIFIED | A static tool runs from `/mtd_rwarea/apdat/opt`. |
+| 22 | [Install persistence](research/22-opt-prefix-persistence-2026-11-10.md) | VERIFIED | The prefix and `PATH` survive a cold boot with the USB removed. |
+| 23 | [Dropbear SSH](research/23-dropbear-ssh-2026-11-10.md) | VERIFIED | Static key-only SSH on `:2222` survives a cold boot. |
 
 ## Guides
 

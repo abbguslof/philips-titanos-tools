@@ -60,7 +60,7 @@ OP1=160 000 020 068 009 037 008 236
 OP2=147 004 002 148 194 036 024 000
 OP3=032 014 000 098 032 177 197 059
 OP4=255 000 000 000 000 000 001 012
-CSM_Production_code=TW123456789123
+CSM_Production_code=TW000000000000
 ```
 
 `uart_mode=1` in NVM does **not** change XBoot's `uart mode:0`; XBoot does not

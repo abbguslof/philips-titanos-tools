@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.2.0 - 2026-11-10
+
+### Added
+
+- Live inventory (`docs/research/18`): boot, SELinux, mounts, device nodes,
+  OP-TEE, dm-verity, and the freetitan overlay drift.
+- Control-surface map (`docs/research/19`): the measured `ntkmem` ABI
+  (`0x35`, `0x4d01`, `0x4d02`), V4L2 HDMI, and a GPIO line census, plus the
+  static harnesses in `tools/probe/`.
+- Non-resetting USB stateproof autoscript
+  (`payloads/autoscript.stateproof.txt`) and the v8 evidence set.
+- Install prefix on `/mtd_rwarea/apdat/opt` with a static `lsblk`
+  (`docs/research/21`, `tools/install/`).
+- USB-less persistence for the prefix (`docs/research/22`).
+- Static key-only Dropbear SSH on `:2222` (`docs/research/23`,
+  `payloads/root_boot.opt-block.sh`) with build, live, and cold-boot evidence.
+- Publication audit (`PUBLICATION_AUDIT.md`).
+
+### Changed
+
+- `root_boot.sh` appends `/mtd_rwarea/apdat/opt/bin` to `PATH` and runs the
+  opt/SSH block after the boot firewall.
+- Documented the vendor `chmod 777 -R /mtd_apdat` at `run.sh:587`; the SSH hook
+  uses a tmpfs `/root` to survive it.
+- Third-party notices cover Dropbear and Zig.
+- Version 0.2.0.
+
+### Fixed
+
+- Normalized the placeholder production code in the NVM format document to
+  `TW000000000000`.
+
 ## 0.1.1 - 2026-11-05
 
 ### Added

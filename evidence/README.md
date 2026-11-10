@@ -14,6 +14,7 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 | [v5-umfg-partitions](usb-autoroot/v5-umfg-partitions/) | 32-byte `UMFG` slices at `0x1A0200` in p1/p2. | `p1-umfg-0x1a0200.bin`, `p2-umfg-0x1a0200.bin` |
 | [v6-regression](usb-autoroot/v6-regression/) | The stick was missing `busybox-armhf`; script ran, `telnetd` did not. | `d/net4.txt` (empty), `d/tl4.txt` (refused) |
 | [v7-autoroot-success](usb-autoroot/v7-autoroot-success/) | Full cold-boot success: `uid=0`, `:2323`, `READY`. | `autoroot.log`, `autoroot-diag.txt`, `READY` |
+| [v8-stateproof](usb-autoroot/v8-stateproof/) | Non-resetting autoscript writes one boot block per cold boot. | `proof.txt`, `run-meta.txt` |
 
 ## Hardware and firmware
 
@@ -39,6 +40,22 @@ redacted capture is [persistence/output.txt](persistence/output.txt): `uid=0`,
 `system_u:system_r:initrc_t`, `telnetd pid 1500`, `READY`, listener on `:2323`,
 and the explicit `:2323` ACCEPT rule. See
 [persistence/README.md](persistence/README.md) for the procedure.
+
+## Install and SSH
+
+| Set | What it proves |
+| :--- | :--- |
+| [install/proof-1.txt](install/proof-1.txt) | A static `lsblk` runs from `/mtd_rwarea/apdat/opt/bin`. |
+| [install/proof-2.txt](install/proof-2.txt) | The prefix and `PATH` survive a USB-less cold boot. |
+| [install/ssh-build.txt](install/ssh-build.txt) | Static aarch64 Dropbear build provenance. |
+| [install/ssh-live.txt](install/ssh-live.txt) | Key-only SSH, `PATH`, and the three failures and fixes. |
+| [install/ssh-boot.txt](install/ssh-boot.txt) | SSH works after a USB-less cold boot. |
+
+## Live inventory
+
+| Set | What it proves |
+| :--- | :--- |
+| [live-inventory/phase-a-2026-11-09.txt](live-inventory/phase-a-2026-11-09.txt) | Redacted boot, SELinux, mount, device, and tooling census. |
 
 ## Evidence rules
 

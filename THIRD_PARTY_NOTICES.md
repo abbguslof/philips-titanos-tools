@@ -39,6 +39,18 @@ NVM dumps, and packet captures are **not** included in this repository. The
 for interoperability and right-to-repair research. Trademarks and firmware
 remain the property of their owners.
 
+## Dropbear SSH
+
+`docs/research/23-dropbear-ssh-2026-11-10.md` documents a static Dropbear
+build from <https://github.com/mkj/dropbear>. Dropbear carries its own
+permissive licence; see the upstream `LICENSE`. The repository ships no
+Dropbear binary. Build output stays in `dist/`, which is ignored.
+
+## Zig
+
+The Dropbear build used Zig 0.17.1 from <https://ziglang.org>. Zig is MIT
+licensed. The repository ships no Zig binary.
+
 ## Generated certificates
 
 `tools/intercept_server.py` can generate a local self-signed certificate for

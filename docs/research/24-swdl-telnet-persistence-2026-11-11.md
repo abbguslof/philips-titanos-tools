@@ -3,9 +3,11 @@
 Status: **REPORTED on hardware** by an external contributor (Pedram) on
 2026-11-11, on `55PUS8450/12`, chassis `TPN256E`, firmware
 `TPN256E_V056.010.032.001`. Not independently reproduced by this repo's
-maintainer. The vendor seam itself is **VERIFIED statically** in the extracted
-`ap0` (`run_custom_impl.sh`) and was already listed as a vendor update surface
-in [webview and IPC](13-webview-launcher-ipc.md#vendor-swdl-overlay) and
+maintainer. Subsequent USB autoroot logs confirm the unit and its USB root path,
+but they do not include the USB-less `root_boot.log`, so the persistence result
+stays REPORTED. The vendor seam itself is **VERIFIED statically** in the
+extracted `ap0` (`run_custom_impl.sh`) and was already listed as a vendor update
+surface in [webview and IPC](13-webview-launcher-ipc.md#vendor-swdl-overlay) and
 [app framework](14-app-framework.md#vendor-customization-hooks).
 
 ## Summary
@@ -28,6 +30,7 @@ installs the matching trigger.
 | Model    | 55PUS8450/12               | 55PUS8000/12               |
 | Chassis  | TPN256E                    | TPA256E / TPN256E          |
 | Firmware | `TPN256E_V056.010.032.001` | `TPA256E_V056.002.236.191` |
+| Root partition | `mmcblk0p19`         | `mmcblk0p20`               |
 | `customer_env.sh` in `run.sh` | absent       | present                    |
 | `/swdl/telnet/telnetd` check  | present      | present                    |
 
@@ -71,6 +74,19 @@ The report records these steps on the affected unit:
 5. `grep -n customer_env /mtd_apexe/board/run.sh` returned nothing.
 6. The installed files themselves checked out: content, `sh -n`, and the
    `/mtd_apdat` symlink. The only missing piece was the `run.sh` source line.
+
+## Additional autoroot evidence
+
+Pedram supplied two USB autoroot logs from the same unit. They confirm
+`uid=0(root)` with the `initrc_t` context, a USB stick mounted at
+`/media/sda1`, and `telnetd` on `:2323` across two boots. The redacted excerpt
+is in [evidence/tpn256e-variant](../../evidence/tpn256e-variant/).
+
+The logs also show `root=/dev/mmcblk0p19`; the verified target uses
+`mmcblk0p20`. Treat partition numbers as firmware-specific.
+
+The logs do not include `root_boot.log` or the `/swdl` wrapper. The USB-less
+persistence result stays REPORTED until that capture arrives.
 
 ## The vendor seam
 
@@ -125,8 +141,9 @@ The report states:
 - a later USB autoroot run still reported a clean
   `SUCCESS: telnetd listening on :2323`.
 
-The report did not include a redacted log. The cold-boot result stays
-**REPORTED**, not independently verified.
+The later autoroot logs cover the USB-stick boots only. They do not include
+`root_boot.log`. The cold-boot result stays **REPORTED**, not independently
+verified.
 
 ## Security and limits
 

@@ -16,6 +16,12 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 | [v7-autoroot-success](usb-autoroot/v7-autoroot-success/) | Full cold-boot success: `uid=0`, `:2323`, `READY`. | `autoroot.log`, `autoroot-diag.txt`, `READY` |
 | [v8-stateproof](usb-autoroot/v8-stateproof/) | Non-resetting autoscript writes one boot block per cold boot. | `proof.txt`, `run-meta.txt` |
 
+## External firmware variant
+
+| Set | What it proves |
+| :--- | :--- |
+| [tpn256e-variant](tpn256e-variant/) | External USB autoroot on `55PUS8450/12`; it does not prove the `/swdl` hook after a USB-less boot. |
+
 ## Hardware and firmware
 
 | Set | What it proves |

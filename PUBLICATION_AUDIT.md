@@ -180,12 +180,12 @@ Verdict: GO.
 ## Addendum 2026-11-11
 
 New material: `docs/research/24-swdl-telnet-persistence-2026-11-11.md`,
-`assets/banner.svg`, the rebuilt `README.md`, and the persistence hook
-detection in `payloads/persist_root.sh`.
+`evidence/tpn256e-variant/`, `assets/banner.svg`, the rebuilt `README.md`, and
+the persistence hook detection in `payloads/persist_root.sh`.
 
 Checks:
-- The new report names a model and firmware but contains no serials, MACs,
-  SSIDs, private addresses, or workstation paths.
+- The new report and evidence excerpt name a model and firmware but contain no
+  serials, MACs, SSIDs, private addresses, or workstation paths.
 - The banner and README contain no device data.
 - The test suite, Python compile step, and shell syntax checks pass.
 

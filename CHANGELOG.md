@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Redacted external autoroot evidence for the `55PUS8450/12` variant
+  (`evidence/tpn256e-variant/`). The logs confirm the USB root path and the
+  `mmcblk0p19` root partition; the `/swdl` persistence result remains REPORTED
+  until a USB-less `root_boot.log` is available.
+
 ## 0.3.0 - 2026-11-11
 
 ### Added

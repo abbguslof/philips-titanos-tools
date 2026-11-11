@@ -1,0 +1,30 @@
+# Redacted excerpt from Pedram's USB autoroot logs.
+# Unit: 55PUS8450/12, firmware TPN256E_V056.010.032.001.
+# Source: USB stick logs supplied 2026-11-11.
+# This proves the USB autoroot path on the variant unit. It does not prove the
+# /swdl/telnet/telnetd hook after a USB-less cold boot.
+
+=== autoroot start ===
+date: Tue Nov 10 23:31:48 CET 2026
+uptime: 36.39 44.10
+id: uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+cmdline: console=ttynull,115200 rootfstype=squashfs quiet maxcpus=4 rootwait no_console_suspend earlycon=uart8250,mmio32,0xfd099000,baudrate=115200 nvt_pstore_mmc.blkdev=/dev/mmcblk0p36 page_pinner=on page_owner=on root=/dev/mmcblk0p19 ro
+media mounts:
+tmpfs /media tmpfs rw,seclabel,relatime 0 0
+/dev/sda1 /media/sda1 vfat rw,relatime,fmask=0000,dmask=0000,allow_utime=0022,codepage=437,iocharset=iso8859-1,shortname=winnt,utf8,errors=continue 0 0
+telnetd pid 2462
+SUCCESS: telnetd listening on :2323
+
+=== autoroot start ===
+date: Wed Nov 11 00:37:50 CET 2026
+uptime: 36.45 14.61
+id: uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+cmdline: console=ttynull,115200 rootfstype=squashfs quiet maxcpus=4 rootwait no_console_suspend earlycon=uart8250,mmio32,0xfd099000,baudrate=115200 nvt_pstore_mmc.blkdev=/dev/mmcblk0p36 page_pinner=on page_owner=on root=/dev/mmcblk0p19 ro
+media mounts:
+tmpfs /media tmpfs rw,seclabel,relatime 0 0
+/dev/sda1 /media/sda1 vfat rw,relatime,fmask=0000,dmask=0000,allow_utime=0022,codepage=437,iocharset=iso8859-1,shortname=winnt,utf8,errors=continue 0 0
+telnetd pid 2418
+SUCCESS: telnetd listening on :2323
+
+=== listener check ===
+tcp        0      0 :::2323                 :::*                    LISTEN

@@ -37,6 +37,12 @@ One page to keep the claims honest. Target: `55PUS8000/12`, chassis
 | `mmcblk0boot0` is readable (4 MiB); `policy33.bin` and `boot0.bin` were copied to `/swdl`. | [SELinux runtime](15-selinux-runtime-control.md) |
 | `TPVisionDebug.cookie` / `enable_log2usb` are inert on this build. | [dead ends](#dead-ends) |
 
+### External reports
+
+| Finding | Evidence |
+| :--- | :--- |
+| On `55PUS8450/12`, firmware `TPN256E_V056.010.032.001`, `run.sh` does not source `customer_env.sh`; the vendor `/swdl/telnet/telnetd` seam restores USB-less persistence. **REPORTED**, not independently reproduced. | [variant note](24-swdl-telnet-persistence-2026-11-11.md) |
+
 ## Dead ends
 
 | Vector | Result | Why |

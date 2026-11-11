@@ -70,7 +70,9 @@ the read-only application partition, including:
 
 `/swdl` is a writable ext4 partition. This is a persistent, non-DNS update
 surface. It is also the cleanest place to experiment with a local UI or browser
-configuration, provided you keep a recovery path.
+configuration, provided you keep a recovery path. The same block also executes
+`/swdl/telnet/telnetd` if it is executable; see the
+[`/swdl` persistence variant](24-swdl-telnet-persistence-2026-11-11.md).
 
 ## Why this matters
 

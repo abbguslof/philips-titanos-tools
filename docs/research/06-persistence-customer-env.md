@@ -1,8 +1,22 @@
 # Persistence via `customer_env.sh`
 
-Status: **VERIFIED on hardware** (root survived a cold boot with the USB stick
-removed). The redacted capture is in
+Status: **VERIFIED on hardware** on the documented target (root survived a cold
+boot with the USB stick removed). The redacted capture is in
 [evidence/persistence/output.txt](../../evidence/persistence/output.txt).
+
+> **Firmware variants.** On at least one later `TPN256E` build
+> (`TPN256E_V056.010.032.001`), `run.sh` does not reference
+> `customer_env.sh`. Check before installing:
+>
+> ```sh
+> grep -n customer_env.sh /mtd_apexe/board/run.sh
+> ```
+>
+> If that prints nothing, `run.sh` will never source the file. Use the
+> [`/swdl/telnet/telnetd` fallback](24-swdl-telnet-persistence-2026-11-11.md)
+> instead. `payloads/persist_root.sh` now detects the hook and installs the
+> matching one automatically. The report is external; see the variant note for
+> the target and status.
 
 ## Why this hook exists
 
@@ -69,10 +83,14 @@ From the USB autoroot root shell:
 The installer:
 
 - refuses to run unless it is root and `/mtd_rwarea/apdat` is writable;
+- detects whether `run.sh` sources `customer_env.sh`, or whether the firmware
+  has the `/swdl/telnet/telnetd` seam;
 - copies the running `/tmp/busybox` to `apdat/busybox`;
 - writes `root_boot.sh`;
-- backs up an existing `customer_env.sh` to `customer_env.sh.bak`;
-- appends the hook only if it is not already present;
+- on the `customer_env.sh` path, backs up an existing file to
+  `customer_env.sh.bak` and appends the hook only if it is not already present;
+- on the `/swdl` path, writes the wrapper and backs up any existing file to
+  `/swdl/telnet/telnetd.bak`;
 - prints the resulting files and the test commands.
 
 ## Verify without rebooting
@@ -95,14 +113,21 @@ is the cold boot:
 ## Restore
 
 ```sh
+# customer_env.sh variant:
 sed -i '/root_boot.sh/d' /mtd_rwarea/apdat/customer_env.sh
+
+# /swdl/telnet/telnetd variant:
+rm -f /swdl/telnet/telnetd
+
 rm -f /mtd_rwarea/apdat/root_boot.sh /mtd_rwarea/apdat/busybox \
       /mtd_rwarea/apdat/root_boot.log /mtd_rwarea/apdat/root_boot.ready \
       /mtd_rwarea/apdat/root_boot.ready.failed
 ```
 
 Cold boot afterwards. If the hook breaks and you lose the shell, the USB
-autoroot stick is the recovery path.
+autoroot stick is the recovery path. See the
+[`/swdl` variant restore notes](24-swdl-telnet-persistence-2026-11-11.md#restore)
+for the `.bak` case.
 
 ## Why not modify the rootfs?
 

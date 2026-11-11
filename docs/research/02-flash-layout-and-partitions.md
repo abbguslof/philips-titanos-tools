@@ -72,8 +72,11 @@ From `/proc/mounts` in the root shell:
 | `/dev/nvt-part-name/tmpdat` | `/mtd_tmpdat` | ext4, rw |
 
 `/mtd_apdat` is a symlink to `/mtd_rwarea/apdat`. The vendor `run.sh` sources
-`/mtd_apdat/customer_env.sh`; that is the persistence hook. See
-[persistence](06-persistence-customer-env.md).
+`/mtd_apdat/customer_env.sh`; that is the persistence hook on the verified
+target. Some later firmware does not source it and uses the vendor
+`/swdl/telnet/telnetd` check instead. See
+[persistence](06-persistence-customer-env.md) and the
+[`/swdl` variant](24-swdl-telnet-persistence-2026-11-11.md).
 
 ## SELinux
 

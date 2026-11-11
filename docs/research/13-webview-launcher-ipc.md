@@ -129,6 +129,8 @@ fi
 path for a local UI or browser configuration. The full list also includes
 `framework-daemon`, `libnettvp.so`, `rpc_plugins`, and a telnetd/FTP update
 service. Treat it as a vendor update surface; use it only with a recovery path.
+The telnetd check is also the persistence fallback on later firmware; see the
+[`/swdl` variant](24-swdl-telnet-persistence-2026-11-11.md).
 
 ## Chromium DevTools on `:7788`
 

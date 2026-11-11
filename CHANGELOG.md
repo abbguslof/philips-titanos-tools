@@ -4,6 +4,7 @@
 
 ### Added
 
+- Repo banner at `assets/banner.svg` for the front README.
 - Firmware-variant persistence via the vendor `/swdl/telnet/telnetd` seam
   (`docs/research/24`), reported and hardware-tested by **Pedram** on
   `55PUS8450/12`, firmware `TPN256E_V056.010.032.001`. The report is labelled
@@ -19,6 +20,8 @@
 
 ### Changed
 
+- Rebuilt the front README around a quick-start path, firmware-hook diagram,
+  verification tables, tool index, and proof section.
 - Persistent-root and restore-to-stock guides now diagnose the live hook before
   installing and cover both variants.
 - Glossary, payload, partition, research cross-reference, and index docs cover

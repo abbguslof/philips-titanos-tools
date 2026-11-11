@@ -2,11 +2,15 @@
 
 Every page carries a status label:
 
-- **VERIFIED** — reproduced on the target TV or checked against the shipped artifact.
+- **VERIFIED** — reproduced on a tested TV or checked against the shipped artifact.
 - **REPORTED** — reproduced on hardware by an external contributor, with the unit and firmware named; not independently reproduced by this repo's maintainer.
 - **TESTED-NEGATIVE** — attempted and failed; the reason is documented.
 - **INFERRED** — follows from evidence but was not directly observed.
 - **OPEN** — not resolved.
+
+Hardware results were produced on the Philips `55PUS8000/12` unless a page names another unit.
+
+The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may differ; reports and PRs are welcome.
 
 ## Research
 

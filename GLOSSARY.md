@@ -56,7 +56,7 @@ root and starts a shell on TCP `:2323`. Ephemeral: remove the stick and cold
 boot.
 
 **Persistence hook** — a vendor boot-time seam used to start a persistent root
-listener. On the verified target it is `customer_env.sh` on the writable
+listener. On the tested `55PUS8000/12` it is `customer_env.sh` on the writable
 `apdat` partition. Some later firmware uses the vendor
 `/swdl/telnet/telnetd` check in `run_custom_impl.sh` instead.
 
@@ -74,7 +74,7 @@ application partition. In `auto` mode it waits for the driver marker, finds
 lines.
 
 **`customer_env.sh`** — the vendor customer-branding environment file sourced by
-`run.sh` on the verified target. The persistence hook appends one line to it.
+`run.sh` on the tested `55PUS8000/12`. The persistence hook appends one line to it.
 Later firmware may not source it; check with
 `grep -n customer_env.sh /mtd_apexe/board/run.sh`.
 

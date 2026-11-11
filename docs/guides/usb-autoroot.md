@@ -2,6 +2,10 @@
 
 Status: **VERIFIED** on `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`.
 
+The path targets Titan OS on the Novatek NT72690 platform. It was verified on
+this model only; other models may differ. Reports and PRs for other models are
+welcome.
+
 This gives an interactive `uid=0` shell on TCP `:2323` from a cold boot. It
 writes nothing to flash. Restore is: remove the stick, cold boot.
 

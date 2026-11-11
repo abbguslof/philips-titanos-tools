@@ -3,6 +3,10 @@
 Use the smallest tier that solves the problem. The documented root paths do not
 write to flash, so most experiments need only a cold boot.
 
+The hook names below were tested on `55PUS8000/12`. Other models may use
+different hooks; check the live `run.sh` and `run_custom_impl.sh` before you
+remove anything.
+
 ## Tier 1: Remove the USB autorun
 
 1. Pull the USB stick.

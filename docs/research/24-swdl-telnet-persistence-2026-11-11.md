@@ -25,7 +25,7 @@ installs the matching trigger.
 
 ## Target
 
-|          | This report                | Repo's documented target   |
+|          | This report                | Maintainer's tested model  |
 | :------- | :------------------------- | :------------------------- |
 | Model    | 55PUS8450/12               | 55PUS8000/12               |
 | Chassis  | TPN256E                    | TPA256E / TPN256E          |
@@ -34,8 +34,8 @@ installs the matching trigger.
 | `customer_env.sh` in `run.sh` | absent       | present                    |
 | `/swdl/telnet/telnetd` check  | present      | present                    |
 
-The model and firmware differ from the verified target. Treat this as a
-firmware variant, not a replacement for the documented path. The
+The model and firmware differ from the tested unit. Treat this as a firmware
+variant, not a replacement for the documented path. The
 `/swdl/telnet/telnetd` check is present in the extracted `ap0` used by this
 repo, so the same fallback is available on the target if `customer_env.sh`
 disappears in a later update.
@@ -49,9 +49,9 @@ grep -n customer_env.sh /mtd_apexe/board/run.sh
 grep -n '/swdl/telnet/telnetd' /mtd_apexe/board/run_custom_impl.sh
 ```
 
-- The first command prints the `source` block on the verified target.
-- The second prints the vendor check on both the verified target and the
-  reported variant.
+- The first command prints the `source` block on the tested model.
+- The second prints the vendor check on both the tested model and the reported
+  variant.
 - If the first prints nothing, do not append to `customer_env.sh`. The file
   will look installed but will never run.
 
@@ -82,7 +82,7 @@ Pedram supplied two USB autoroot logs from the same unit. They confirm
 `/media/sda1`, and `telnetd` on `:2323` across two boots. The redacted excerpt
 is in [evidence/tpn256e-variant](../../evidence/tpn256e-variant/).
 
-The logs also show `root=/dev/mmcblk0p19`; the verified target uses
+The logs also show `root=/dev/mmcblk0p19`; the tested model uses
 `mmcblk0p20`. Treat partition numbers as firmware-specific.
 
 The logs do not include `root_boot.log` or the `/swdl` wrapper. The USB-less

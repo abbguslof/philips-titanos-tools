@@ -1,8 +1,8 @@
 # Verified findings and dead ends
 
-One page to keep the claims honest. Target: `55PUS8000/12`, chassis
+One page to keep the claims honest. Tested unit: `55PUS8000/12`, chassis
 `TPA256E`/`TPN256E`, mainboard `715GD542`, firmware
-`TPA256E_V056.002.236.191`.
+`TPA256E_V056.002.236.191`. Other models may differ.
 
 ## Verified
 

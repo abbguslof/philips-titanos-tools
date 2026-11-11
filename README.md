@@ -10,8 +10,9 @@
   [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   [![Tests](https://img.shields.io/badge/tests-43-brightgreen.svg)](tests/)
-  [![Target](https://img.shields.io/badge/target-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
+  [![Tested on](https://img.shields.io/badge/tested%20on-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
+  [![Help wanted](https://img.shields.io/badge/help%20wanted-other%20models-blue.svg)](https://github.com/abbguslof/philips-titanos-tools/issues)
 </div>
 
 > **Scope.** This repo is for TVs you own. The root path needs physical USB access and a cold boot. It is not a remote exploit, a firmware mirror, or a custom OS. Read [SECURITY.md](SECURITY.md) before you start.
@@ -28,24 +29,31 @@
 
 ## What this is
 
-This is a right-to-repair and reverse-engineering project for the Philips **55PUS8000/12** (`TPA256E` / `TPN256E`) on the Novatek **NT72690** platform. It covers the full path from a USB stick to a live root shell, plus the firmware, NVM, channel-map, JointSpace, and Ambilight research behind it.
+This is a right-to-repair and reverse-engineering project for Philips TVs running Titan OS on the Novatek **NT72690** platform. It covers the full path from a USB stick to a live root shell, plus the firmware, NVM, channel-map, JointSpace, and Ambilight research behind it.
 
 It is built for owners, repair techs, and reverse engineers who want to inspect or modify a television they control.
 
 | Detail | Value |
 | :--- | :--- |
-| Verified target | `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard `715GD542` |
-| Verified firmware | `TPA256E_V056.002.236.191` |
+| Tested model | `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard `715GD542` |
+| Tested firmware | `TPA256E_V056.002.236.191` |
+| Other models | Untested. Other Titan OS / NT72690 models may share the same paths. Reports and PRs welcome. |
 | Platform | Novatek NT72690, Linux 6.1.124, ARM64 kernel with `armv7l` userspace |
 | Root path | USB autoroot at boot, physical access required |
-| Persistence | `customer_env.sh` on the verified target; `/swdl/telnet/telnetd` on a reported later firmware |
+| Persistence | `customer_env.sh` on the tested model; `/swdl/telnet/telnetd` on a reported later firmware. Check the live hook first. |
 | Restore | Remove the USB stick, or delete the selected persistence hook and cold boot |
 
 | This repo is | This repo is not |
 | :--- | :--- |
-| A reproducible research repo for a TV you own: firmware parsing, boot-chain notes, NVM/channel-map tooling, a verified USB root path, and a persistent root hook. | A remote exploit, a cloud bypass for third-party devices, or a vendor firmware mirror. |
+| A reproducible research repo for a TV you own: firmware parsing, boot-chain notes, NVM/channel-map tooling, a USB root path verified on `55PUS8000/12`, and a persistent root hook. | A remote exploit, a cloud bypass for third-party devices, or a vendor firmware mirror. |
 | A local-control toolkit: JointSpace, Ambilight `expert` mode, SAM export/import, and the `:2323` root shell. | A custom OS. Product/custom-OS work lives in a separate private project. |
 | A physical-access path: USB stick + cold boot, with a documented restore. | A no-risk modification. Read the safety and restore notes first. |
+
+## Model support
+
+I own and test on the Philips **55PUS8000/12** (`TPA256E` / `TPN256E`). The toolkit targets Titan OS on the Novatek NT72690 platform, so other Philips models may share the same boot hooks, partitions, and userspace.
+
+I cannot test them. If you have another model, open an issue with the model, chassis, firmware, and what worked or failed. Other models are welcome.
 
 ## How it works
 
@@ -106,13 +114,15 @@ From the root shell, serve the repo on your workstation and run the installer:
 /bin/sh /tmp/persist_root.sh
 ```
 
-The installer detects which hook the firmware reads. On the verified target it uses `customer_env.sh`. On later firmware that dropped that hook, it writes the `/swdl/telnet/telnetd` wrapper. Remove the USB stick, cold boot, and reconnect.
+The installer detects which hook the firmware reads. On the tested `55PUS8000/12` it uses `customer_env.sh`. On later firmware that dropped that hook, it writes the `/swdl/telnet/telnetd` wrapper. Remove the USB stick, cold boot, and reconnect.
 
 See [persistent root](docs/guides/persistent-root.md) for the full test and recovery procedure.
 
 ## Verified on hardware
 
-Status labels: **Verified** means reproduced on the target or checked against the shipped artifact. **Reported** means an external contributor tested it on hardware and named the unit and firmware. **Dead** means the path failed on this build.
+Hardware checks below ran on the `55PUS8000/12` unless a row names another unit.
+
+Status labels: **Verified** means reproduced on a tested TV or checked against the shipped artifact. **Reported** means an external contributor tested it on hardware and named the unit and firmware. **Dead** means the path failed on this build.
 
 ### Root and persistence
 
@@ -221,4 +231,4 @@ The suite covers the dual-CRC32 NVM format, CRC-16/MODBUS channel maps, EDID int
 
 ## Keywords
 
-Philips Titan OS jailbreak, Titan OS root, Philips TV root, Philips TV SSH, 55PUS8000/12, TPA256E, TPN256E, Novatek NT72690, USB autoroot, persistent root, XBoot, ATF, firmware extraction, TIMG, PIMG, NFSB, SquashFS, raw SquashFS mount, runtime NFSB bypass, U-Boot NVM, dual CRC32, SAM, Service Alignment Mode, channel maps, CRC-16/MODBUS, JointSpace, Ambilight, local control, right-to-repair, smart TV reverse engineering, telemetry audit, debloat.
+Philips Titan OS jailbreak, Titan OS root, Philips TV root, Philips TV SSH, Philips TV models, Titan OS models, 55PUS8000/12, TPA256E, TPN256E, Novatek NT72690, USB autoroot, persistent root, XBoot, ATF, firmware extraction, TIMG, PIMG, NFSB, SquashFS, raw SquashFS mount, runtime NFSB bypass, U-Boot NVM, dual CRC32, SAM, Service Alignment Mode, channel maps, CRC-16/MODBUS, JointSpace, Ambilight, local control, right-to-repair, smart TV reverse engineering, telemetry audit, debloat.

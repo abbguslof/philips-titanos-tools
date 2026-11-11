@@ -3,14 +3,14 @@
 ## What this project is
 
 This repository documents and implements a **physical-access** jailbreak for a
-television you own. The verified path is:
+television you own. The tested path is:
 
 1. Format a USB stick as unlabelled FAT32 with an `autoscript.txt`.
 2. Cold boot the TV with the stick inserted.
 3. The vendor `quick_debug/menu auto` hook evaluates the script as root.
 4. The script starts `telnetd` on `:2323` and opens one firewall rule.
-5. Optionally install a persistent `customer_env.sh` hook on the writable
-   `apdat` partition.
+5. Optionally install a persistence hook (`customer_env.sh`, or
+   `/swdl/telnet/telnetd` on newer firmware) on a writable partition.
 
 The root path does **not** exploit a remote network service. It requires the
 attacker to have physical access, the ability to plug in a USB device, and the
@@ -18,10 +18,14 @@ ability to power-cycle the TV. The persistent hook requires root first.
 
 ## Supported scope
 
-- **Verified:** Philips `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard
+- **Tested:** Philips `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard
   `715GD542`, firmware `TPA256E_V056.002.236.191`.
-- **Not claimed:** other models, other firmware versions, remote exploitation,
-  bypassing Widevine/DRM, or defeating hardware secure boot.
+- **Not claimed:** that every other Philips model or firmware uses the same
+  hooks, partitions, or firmware layout. The toolkit targets Titan OS on the
+  Novatek NT72690 platform; verify each model before use.
+- **Welcome:** reports and PRs for other models and firmware versions.
+- **Not claimed:** remote exploitation, bypassing Widevine/DRM, or defeating
+  hardware secure boot.
 
 ## Threat model
 

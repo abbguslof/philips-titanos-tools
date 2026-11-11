@@ -57,6 +57,8 @@ sh -n payloads/autoroot.sh payloads/persist_root.sh
 ## Pull requests
 
 1. Describe the hardware/firmware used and whether the change was verified.
+   Reports for other models are welcome; name the model, chassis, firmware, and
+   what worked or failed.
 2. Include the test output.
 3. Confirm that no secrets or real identifiers are included.
 4. Update the relevant doc and the evidence index.

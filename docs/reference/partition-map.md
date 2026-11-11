@@ -1,7 +1,9 @@
 # Partition map
 
-Canonical numbers for the verified unit. `mmcblk0` is 7,634,944 KiB with 40
-user-area partitions. The two eMMC boot areas are separate devices.
+Canonical numbers for the tested `55PUS8000/12`. `mmcblk0` is 7,634,944 KiB
+with 40 user-area partitions. The two eMMC boot areas are separate devices.
+Other models may differ; confirm against your own `/proc/partitions` and
+`/proc/mounts`.
 
 | Device | Name / role | Access | Notes |
 | :--- | :--- | :--- | :--- |

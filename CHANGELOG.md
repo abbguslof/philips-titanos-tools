@@ -9,6 +9,13 @@
   `mmcblk0p19` root partition; the `/swdl` persistence result remains REPORTED
   until a USB-less `root_boot.log` is available.
 
+### Changed
+
+- Front-facing docs now present the toolkit for Philips TVs running Titan OS on
+  the Novatek NT72690 platform. The `55PUS8000/12` is named as the maintainer's
+  tested model, other models are marked untested, and reports or PRs for other
+  models are invited.
+
 ## 0.3.0 - 2026-11-11
 
 ### Added

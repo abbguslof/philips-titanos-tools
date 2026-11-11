@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Firmware-variant persistence via the vendor `/swdl/telnet/telnetd` seam
+  (`docs/research/24`), reported and hardware-tested by **Pedram** on
+  `55PUS8450/12`, firmware `TPN256E_V056.010.032.001`. The report is labelled
+  `REPORTED`; it is not independently reproduced by this repo.
+- Research note 24 records the negative result (`customer_env.sh` absent from
+  `run.sh`), the working `/swdl` wrapper, the USB-less cold-boot check, and the
+  other `/swdl` service seams as open follow-ups.
+- `payloads/persist_root.sh` now detects whether `run.sh` sources
+  `customer_env.sh` or whether `run_custom_impl.sh` has the
+  `/swdl/telnet/telnetd` check, and installs the matching hook. It aborts
+  without writing if neither is present.
+- `REPORTED` status label for external hardware reports.
+
+### Changed
+
+- Persistent-root and restore-to-stock guides now diagnose the live hook before
+  installing and cover both variants.
+- Glossary, payload, partition, research cross-reference, and index docs cover
+  `/swdl` and both hooks.
+- Test coverage is 43 tests.
+
 ## 0.2.0 - 2026-11-10
 
 ### Added

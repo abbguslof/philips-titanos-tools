@@ -27,8 +27,10 @@ only runtime dependency is `requests` (used by the JointSpace client).
   license/source to `THIRD_PARTY_NOTICES.md`.
 - **Keep evidence small.** Prefer a 32-byte slice, a short log, or a hash over a
   multi-megabyte dump.
-- **Label status.** Use `VERIFIED`, `TESTED-NEGATIVE`, `INFERRED`, or `OPEN` in
-  research docs. Do not mix a design idea into a verified section.
+- **Label status.** Use `VERIFIED`, `REPORTED`, `TESTED-NEGATIVE`, `INFERRED`,
+  or `OPEN` in research docs. `REPORTED` means an external contributor tested
+  on hardware and named the unit/firmware; it is not maintainer-reproduced. Do
+  not mix a design idea into a verified section.
 
 ## Code style
 

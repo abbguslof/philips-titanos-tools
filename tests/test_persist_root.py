@@ -7,12 +7,20 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 INSTALLER = REPO_ROOT / "payloads" / "persist_root.sh"
 
 
-def embedded_root_boot() -> str:
+def embedded_script(marker_name: str) -> str:
     text = INSTALLER.read_text(encoding="utf-8")
-    marker = "<<'ROOTBOOT'\n"
-    start = text.index(marker) + len(marker)
-    end = text.index("\nROOTBOOT\n", start)
+    marker = f"<<'{marker_name}'"
+    start = text.index("\n", text.index(marker)) + 1
+    end = text.index(f"\n{marker_name}\n", start)
     return text[start:end] + "\n"
+
+
+def embedded_root_boot() -> str:
+    return embedded_script("ROOTBOOT")
+
+
+def embedded_swdl_hook() -> str:
+    return embedded_script("SWDLHOOK")
 
 
 class TestPersistRoot(unittest.TestCase):
@@ -31,11 +39,31 @@ class TestPersistRoot(unittest.TestCase):
             self.installer,
         )
 
+    def test_installer_detects_the_swdl_fallback(self):
+        self.assertIn("/mtd_apexe/board/run.sh", self.installer)
+        self.assertIn("/mtd_apexe/board/run_custom_impl.sh", self.installer)
+        self.assertIn("/swdl/telnet/telnetd", self.installer)
+        self.assertIn("HOOK=customer_env", self.installer)
+        self.assertIn("HOOK=swdl", self.installer)
+        self.assertIn("no known boot hook found", self.installer)
+        self.assertIn("rm -f /swdl/telnet/telnetd", self.installer)
+
     def test_root_boot_script_syntax(self):
         result = subprocess.run(
             ["sh", "-n"], input=self.root_boot, text=True, capture_output=True
         )
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_swdl_wrapper_syntax(self):
+        result = subprocess.run(
+            ["sh", "-n"], input=embedded_swdl_hook(), text=True, capture_output=True
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_swdl_wrapper_backgrounds_root_boot(self):
+        hook = embedded_swdl_hook()
+        self.assertIn("/mtd_rwarea/apdat/root_boot.sh", hook)
+        self.assertRegex(hook, r"root_boot\.sh &\s*$")
 
     def test_root_boot_is_network_only_and_delayed(self):
         self.assertIn("/tmp/persist/busybox", self.root_boot)

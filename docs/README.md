@@ -3,6 +3,7 @@
 Every page carries a status label:
 
 - **VERIFIED** — reproduced on the target TV or checked against the shipped artifact.
+- **REPORTED** — reproduced on hardware by an external contributor, with the unit and firmware named; not independently reproduced by this repo's maintainer.
 - **TESTED-NEGATIVE** — attempted and failed; the reason is documented.
 - **INFERRED** — follows from evidence but was not directly observed.
 - **OPEN** — not resolved.
@@ -34,6 +35,7 @@ Every page carries a status label:
 | 21 | [Install prefix](research/21-install-prefix-2026-11-10.md) | VERIFIED | A static tool runs from `/mtd_rwarea/apdat/opt`. |
 | 22 | [Install persistence](research/22-opt-prefix-persistence-2026-11-10.md) | VERIFIED | The prefix and `PATH` survive a cold boot with the USB removed. |
 | 23 | [Dropbear SSH](research/23-dropbear-ssh-2026-11-10.md) | VERIFIED | Static key-only SSH on `:2222` survives a cold boot. |
+| 24 | [Firmware variant: `/swdl/telnet/telnetd`](research/24-swdl-telnet-persistence-2026-11-11.md) | REPORTED | A later `TPN256E` firmware dropped `customer_env.sh`; the vendor `/swdl` seam restores USB-less persistence. |
 
 ## Guides
 
@@ -59,7 +61,7 @@ Every page carries a status label:
 
 ## Decisions
 
-- [ADRs](adr/) — why the repo uses two USB workflows, a `customer_env.sh` hook,
+- [ADRs](adr/) — why the repo uses two USB workflows, vendor boot hooks,
   redacted evidence, and a fresh public tree.
 
 The public repo stops at research and root. Product/custom-OS ideas are out of

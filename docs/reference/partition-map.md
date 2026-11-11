@@ -39,7 +39,7 @@ user-area partitions. The two eMMC boot areas are separate devices.
 | `/aqtbl` | `aq` | ro |
 | `/pqtbl` | `pq` | ro |
 | `/nvm_file` | `nvm_file` | rw |
-| `/swdl` | `sw_dl` | rw |
+| `/swdl` | `sw_dl` | rw; vendor update overlays and the `/swdl/telnet/telnetd` boot hook. |
 | `/mtd_rwarea` | `apdat` | rw |
 | `/mtd_tmpdat` | `tmpdat` | rw |
 

@@ -1,16 +1,32 @@
 # Persistent root
 
-Status: **VERIFIED on hardware** (root after a cold boot with the USB removed).
-The redacted capture is in
-[evidence/persistence/output.txt](../../evidence/persistence/output.txt).
+Status: **VERIFIED on hardware** on the documented target (root after a cold
+boot with the USB removed). The redacted capture is in
+[evidence/persistence/output.txt](../../evidence/persistence/output.txt). The
+`/swdl` fallback is **REPORTED**; see the
+[variant note](../research/24-swdl-telnet-persistence-2026-11-11.md).
 
-The hook lives on the writable `apdat` partition. It does not modify the
+The payload lives on the writable `apdat` partition. The boot hook is either
+`customer_env.sh` on `apdat` or, on the reported firmware variant, a wrapper at
+`/swdl/telnet/telnetd` on the writable `/swdl` partition. Neither modifies the
 read-only rootfs or the bootloader.
 
 ## Start from the USB root shell
 
 Complete [USB autoroot](usb-autoroot.md) first. You need `/tmp/busybox` to be
 present; it is the binary that the USB payload is already running from.
+
+Before installing, check which boot hook your firmware reads:
+
+```sh
+grep -n customer_env.sh /mtd_apexe/board/run.sh
+grep -n '/swdl/telnet/telnetd' /mtd_apexe/board/run_custom_impl.sh
+```
+
+A match in the first command means the documented `customer_env.sh` path
+applies. If the first command prints nothing but the second matches, the
+installer will use the [`/swdl/telnet/telnetd` fallback](../research/24-swdl-telnet-persistence-2026-11-11.md).
+If neither matches, stop and report both outputs with your firmware version.
 
 ## Option A: pull the installer over LAN
 
@@ -35,20 +51,47 @@ file, and paste it into the root shell. It is POSIX `sh` and writes its own
 
 ## What the installer writes
 
+Both variants always get the payload on `apdat`:
+
 ```text
 /mtd_rwarea/apdat/busybox              static armhf BusyBox
 /mtd_rwarea/apdat/root_boot.sh         boot script
+```
+
+If `run.sh` sources `customer_env.sh`, it also writes:
+
+```text
 /mtd_rwarea/apdat/customer_env.sh      vendor hook + one appended line
 /mtd_rwarea/apdat/customer_env.sh.bak  backup if the file already existed
 ```
-
-It runs `restorecon` on the three files so they keep the `idtv_data_t` label.
 
 The appended line is:
 
 ```sh
 [ -f /mtd_rwarea/apdat/root_boot.sh ] && /bin/sh /mtd_rwarea/apdat/root_boot.sh &
 ```
+
+It runs `restorecon` on `busybox`, `root_boot.sh`, and `customer_env.sh` so
+they keep the `idtv_data_t` label.
+
+If `run.sh` no longer sources `customer_env.sh` but `run_custom_impl.sh` has the
+`/swdl/telnet/telnetd` check, the installer writes only this extra file:
+
+```text
+/swdl/telnet/telnetd                   wrapper that backgrounds root_boot.sh
+/swdl/telnet/telnetd.bak               backup if a vendor file already existed
+```
+
+The `/swdl` wrapper is:
+
+```sh
+#!/bin/sh
+[ -f /mtd_rwarea/apdat/root_boot.sh ] && /bin/sh /mtd_rwarea/apdat/root_boot.sh &
+```
+
+It does not run `restorecon` on the `/swdl` wrapper; that path has a different
+policy context. See the
+[`/swdl` variant note](../research/24-swdl-telnet-persistence-2026-11-11.md).
 
 ## Test without rebooting
 
@@ -89,20 +132,43 @@ read:
 cat /mtd_rwarea/apdat/root_boot.log
 cat /mtd_rwarea/apdat/root_boot.ready.failed
 ls -l /mtd_rwarea/apdat
+grep -n customer_env.sh /mtd_apexe/board/run.sh
+grep -n '/swdl/telnet/telnetd' /mtd_apexe/board/run_custom_impl.sh
+ls -l /swdl/telnet/telnetd
 ```
+
+If `root_boot.log` has no entry for the fresh boot, the installer picked a
+hook this firmware does not read. The `grep` output tells you which variant
+applies. Do not keep rebooting; fix the hook first.
 
 The TV still boots normally if the hook fails; the hook is a background script,
 not an init replacement.
 
 ## Remove persistence
 
+Remove the hook that the installer selected:
+
 ```sh
+# customer_env.sh variant:
 sed -i '/root_boot.sh/d' /mtd_rwarea/apdat/customer_env.sh
+
+# /swdl/telnet/telnetd variant:
+rm -f /swdl/telnet/telnetd
+rmdir /swdl/telnet 2>/dev/null || true
+```
+
+Then remove the shared `apdat` payload:
+
+```sh
 rm -f /mtd_rwarea/apdat/root_boot.sh /mtd_rwarea/apdat/busybox \
       /mtd_rwarea/apdat/root_boot.log /mtd_rwarea/apdat/root_boot.ready \
       /mtd_rwarea/apdat/root_boot.ready.failed
 ```
 
-Cold boot. If `customer_env.sh` was created only by this project, you can remove
-it too; if it existed before, keep the rest of its content and only delete the
-hook line. See [restore to stock](restore-to-stock.md).
+If `/swdl/telnet/telnetd.bak` exists, the installer saved a pre-existing file
+there. Inspect it before deleting or restoring it.
+
+Cold boot. If this project created `customer_env.sh` and it contains nothing
+else, you can remove it too. If the file existed before, keep the rest of its
+content and delete only the hook line. See
+[restore to stock](restore-to-stock.md).

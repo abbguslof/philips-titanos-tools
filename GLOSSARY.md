@@ -55,12 +55,18 @@ EDID, and channel data.
 root and starts a shell on TCP `:2323`. Ephemeral: remove the stick and cold
 boot.
 
-**Persistence hook** — the vendor `customer_env.sh` file on the writable
-`apdat` partition. It is sourced early in boot and is used to start a persistent
-root listener.
+**Persistence hook** — a vendor boot-time seam used to start a persistent root
+listener. On the verified target it is `customer_env.sh` on the writable
+`apdat` partition. Some later firmware uses the vendor
+`/swdl/telnet/telnetd` check in `run_custom_impl.sh` instead.
 
 **`apdat`** — the writable ext4 partition `mmcblk0p31`, mounted at
 `/mtd_rwarea`; `/mtd_apdat` is a symlink to `/mtd_rwarea/apdat`.
+
+**`/swdl`** — the writable ext4 `sw_dl` partition. The vendor
+`run_custom_impl.sh` executes `/swdl/telnet/telnetd` if it exists, and
+bind-mounts other `/swdl` update payloads over the read-only application
+partition.
 
 **`quick_debug/menu auto`** — the vendor debug menu in the `mtd_apexe`
 application partition. In `auto` mode it waits for the driver marker, finds
@@ -68,7 +74,9 @@ application partition. In `auto` mode it waits for the driver marker, finds
 lines.
 
 **`customer_env.sh`** — the vendor customer-branding environment file sourced by
-`run.sh`. The persistence hook appends one line to it.
+`run.sh` on the verified target. The persistence hook appends one line to it.
+Later firmware may not source it; check with
+`grep -n customer_env.sh /mtd_apexe/board/run.sh`.
 
 **`initrc_t`** — the SELinux domain of the vendor init/run scripts. The root
 shell and the persistence hook run in this domain.

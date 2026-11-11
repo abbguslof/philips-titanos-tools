@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-40-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-43-brightgreen.svg)](tests/)
 [![Target](https://img.shields.io/badge/target-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
 [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
 
@@ -38,6 +38,7 @@ channel maps, JointSpace, Ambilight, firmware extraction, and a documented resto
 | :--- | :--- | :--- |
 | Interactive `uid=0` shell over TCP `:2323` from a cold boot with a USB stick | **Verified on hardware** | [v4](evidence/usb-autoroot/v4-shell-uid0/), [v7](evidence/usb-autoroot/v7-autoroot-success/) |
 | Root shell survives reboot without the USB stick (`customer_env.sh` hook) | **Verified on hardware** | [persistence evidence](evidence/persistence/output.txt) |
+| Root shell survives reboot on a later `TPN256E` firmware via the vendor `/swdl/telnet/telnetd` seam | **Reported on hardware** (external contributor) | [variant note](docs/research/24-swdl-telnet-persistence-2026-11-11.md) |
 | USB autorun stick builder (MBR/FAT32, empty label, SHA-256 verified) | **Verified on hardware** | [`tools/autoroot_usb.py`](tools/autoroot_usb.py) |
 | Firmware container parsing (`TIMG` / `PIMG` / `NFSB` / SquashFS LZO) | **Verified statically** | [firmware guide](docs/guides/firmware-extraction.md) |
 | U-Boot-style NVM environment read/write with dual CRC32 | **Verified on hardware** | [NVM reference](docs/reference/file-formats.md#uboot-nvm-nvm_ubootdatdata) |
@@ -116,7 +117,7 @@ The detailed walkthrough, failure modes, and restore path are in
 
 ### 2. Make it persistent
 
-From the root shell, install the `customer_env.sh` hook:
+From the root shell, run the installer:
 
 ```sh
 # Serve this repo from your workstation:
@@ -125,8 +126,11 @@ From the root shell, install the `customer_env.sh` hook:
 /bin/sh /tmp/persist_root.sh
 ```
 
-Remove the USB stick, cold boot, and reconnect. The hook waits for the boot
-firewall, starts `telnetd` on `:2323` from `/tmp/persist/busybox`, and writes
+It detects which hook the live firmware reads. On the verified target it uses
+`customer_env.sh`; on later `TPN256E` firmware that dropped that hook, it writes
+the `/swdl/telnet/telnetd` wrapper instead. Remove the USB stick, cold boot, and
+reconnect. The selected hook waits for the boot firewall, starts `telnetd` on
+`:2323` from `/tmp/persist/busybox`, and writes
 `/mtd_rwarea/apdat/root_boot.log`.
 
 See [persistent root](docs/guides/persistent-root.md) and
@@ -142,11 +146,11 @@ See [persistent root](docs/guides/persistent-root.md) and
 | [Boot chain: XBoot -> ATF -> Linux](docs/research/01-boot-chain-xboot-atf.md) | Why there is no interactive U-Boot |
 | [Flash layout and partitions](docs/research/02-flash-layout-and-partitions.md) | The canonical p9/p11/p20/p31/p36 map |
 | [Firmware container format](docs/research/03-firmware-container-timg-pimg-nfsb.md) | `TIMG`, `PIMG`, `NFSB`, MD5 vs RSA/SHA-256 |
-| [What root unlocks](docs/guides/what-root-unlocks.md) | What you can actually do after the `uid=0` shell |
+| [What root unlocks](docs/guides/what-root-unlocks.md) | What you can do after the `uid=0` shell |
 | [Firmware acquisition](docs/guides/firmware-acquisition.md) | How the package was found, including the historical curl example |
 | [Firmware extraction](docs/guides/firmware-extraction.md) | Parse and carve a package without hardcoded offsets |
 | [USB autorun hook](docs/research/05-usb-autorun-hook.md) | The exact boot-time eval chain |
-| [Persistent root](docs/guides/persistent-root.md) | `customer_env.sh` -> `root_boot.sh` |
+| [Persistent root](docs/guides/persistent-root.md) | Vendor boot hook -> `root_boot.sh`, including the `/swdl` firmware variant |
 | [Hardware `SERV.U`](docs/research/07-hardware-serv-u.md) | Pinout, electrical tests, why RX is dead |
 | [JointSpace API](docs/research/08-jointspace-api.md) | Local control, pairing, Ambilight |
 | [Service mode (SAM)](docs/research/09-service-mode-sam.md) | NVM/channel/EDID export-import |
@@ -170,7 +174,7 @@ See [persistent root](docs/guides/persistent-root.md) and
 │   └── adr/           architecture decisions
 ├── payloads/          autoroot.sh, persist_root.sh, nfsb_raw_mount.sh, busybox, autoscript variants
 ├── tools/             USB builder, NVM/EDID/channel tools, JointSpace client, firmware tools, install/probe tools
-├── tests/             40 unit tests (python -m unittest)
+├── tests/             43 unit tests (python -m unittest)
 ├── samples/           small, non-identifying factory samples
 ├── evidence/          curated, redacted proof runs
 └── .github/workflows/ CI
@@ -197,7 +201,7 @@ are documented, not faked.
 - **Owned devices only.** Do not use this on a TV you do not own or lack permission to modify.
 - **Physical access required.** The root path is a boot-time USB autorun; it is not remote.
 - **Warranty and brick risk.** The documented paths avoid flash writes, but you are responsible for your hardware.
-- **Restore path.** Pull the USB and cold boot for the ephemeral path; remove the `customer_env.sh` hook for persistence. See [restore to stock](docs/guides/restore-to-stock.md).
+- **Restore path.** Pull the USB and cold boot for the ephemeral path; remove the selected persistence hook (`customer_env.sh` or `/swdl/telnet/telnetd`). See [restore to stock](docs/guides/restore-to-stock.md).
 - **The runtime raw mount is read-only.** It does not flash, re-sign, or boot a modified NFSB image. Do not write the boot partitions.
 - **No vendor firmware in the repo.** The 1.5 GB package is not redistributed. The acquisition guide explains how to obtain the package for your own model and verify it.
 - **No real device data.** Serials, MACs, SSIDs, PINs, pairing credentials, and raw captures are redacted or excluded. See [evidence/README.md](evidence/README.md).

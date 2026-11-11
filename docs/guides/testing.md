@@ -8,7 +8,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (40 tests):
+Current coverage (43 tests):
 
 | Test file | Covers |
 | :--- | :--- |
@@ -20,7 +20,7 @@ Current coverage (40 tests):
 | `test_firmware_parse.py` | TIMG/PIMG header parsing and component extraction. |
 | `test_jointspace_client.py` | HMAC signature, mocked network calls, key sequence. |
 | `test_nfsb_raw_mount.py` | Raw NFSB mount helper syntax, usage, and contract. |
-| `test_persist_root.py` | Installer tokens, embedded script syntax, no USB dependency. |
+| `test_persist_root.py` | Installer hook detection, embedded script syntax, `/swdl` wrapper, no USB dependency. |
 | `test_stage_usb.py` | SAM canary staging and CRC verification. |
 | `test_uboot_nvm_tool.py` | Dual CRC32, factory verification, bit-identical round-trip. |
 
@@ -29,7 +29,7 @@ Current coverage (40 tests):
 Hardware tests are documented, not faked:
 
 - USB autoroot on a cold-boot TV.
-- Persistent `customer_env.sh` hook across a reboot.
+- Persistent `customer_env.sh` or `/swdl/telnet/telnetd` hook across a reboot.
 - SAM NVM/EDID write.
 - Serial capture and electrical measurements.
 - Runtime raw SquashFS mount of a live NFSB partition. CI checks the helper

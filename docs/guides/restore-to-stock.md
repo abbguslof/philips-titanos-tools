@@ -14,22 +14,42 @@ normally. Nothing was written to flash.
 
 ## Tier 2: Remove the persistence hook
 
-From any root shell (USB or persistent):
+From any root shell (USB or persistent), remove the hook that the installer
+selected:
 
 ```sh
+# customer_env.sh variant:
 sed -i '/root_boot.sh/d' /mtd_rwarea/apdat/customer_env.sh
+
+# /swdl/telnet/telnetd variant:
+rm -f /swdl/telnet/telnetd
+rmdir /swdl/telnet 2>/dev/null || true
+```
+
+Then remove the shared `apdat` payload:
+
+```sh
 rm -f /mtd_rwarea/apdat/root_boot.sh /mtd_rwarea/apdat/busybox \
       /mtd_rwarea/apdat/root_boot.log /mtd_rwarea/apdat/root_boot.ready \
       /mtd_rwarea/apdat/root_boot.ready.failed
 ```
 
-If you want to be extra sure, inspect the file first:
+Inspect the files first if you want to be sure:
 
 ```sh
 cat /mtd_rwarea/apdat/customer_env.sh
+cat /swdl/telnet/telnetd
 ```
 
-If `customer_env.sh` was created only by this project and contains nothing else,
+If `/swdl/telnet/telnetd.bak` exists, the installer saved a pre-existing vendor
+file there before replacing it. Inspect it and restore it if needed:
+
+```sh
+ls -l /swdl/telnet/telnetd.bak
+# mv /swdl/telnet/telnetd.bak /swdl/telnet/telnetd
+```
+
+If this project created `customer_env.sh` and the file contains nothing else,
 you can remove it entirely:
 
 ```sh

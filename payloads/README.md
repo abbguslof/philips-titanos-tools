@@ -4,7 +4,7 @@
 | :--- | :--- |
 | `autoscript.autoroot.txt` | One-line autoscript staged by `tools/autoroot_usb.py`. |
 | `autoroot.sh` | USB root payload: diagnostics, BusyBox, firewall, `telnetd` on `:2323`, `READY`. |
-| `persist_root.sh` | Installs the `customer_env.sh` persistence hook. |
+| `persist_root.sh` | Installs the persistence hook the live firmware reads: `customer_env.sh`, or `/swdl/telnet/telnetd` on later `TPN256E` firmware. |
 | `nfsb_raw_mount.sh` | Read-only mount of the SquashFS inside an NFSB partition. Run on the TV as root. |
 | `autoscript.diag.txt` | Older, broader diagnostic autoscript from the v4 research runs. Not the canonical autoroot payload. |
 | `autoscript.stateproof.txt` | One-line, non-resetting autoscript that appends boot state to `/media/sda1/proof.txt`. |
@@ -35,6 +35,7 @@ running persistent binary.
 ## Safety
 
 The payloads do not flush the firewall, do not use `pkill`, and do not write to
-the read-only rootfs. The persistent installer writes only under
-`/mtd_rwarea/apdat` and `/tmp`. The raw NFSB mount copies to `/tmp` and mounts
-read-only; it does not write the source partition.
+the read-only rootfs. The persistent installer writes under
+`/mtd_rwarea/apdat` and `/tmp`; on the `/swdl/telnet/telnetd` variant it also
+writes that one wrapper under `/swdl`. The raw NFSB mount copies to `/tmp` and
+mounts read-only; it does not write the source partition.

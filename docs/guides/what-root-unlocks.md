@@ -45,8 +45,8 @@ The USB autoroot path gives an interactive `uid=0` shell in the vendor
 ## Run your own code at boot
 
 - Start a one-shot root shell from a USB cold boot.
-- Install a reversible `customer_env.sh` persistence hook that starts your own
-  userspace service.
+- Install a reversible vendor boot hook (`customer_env.sh` or
+  `/swdl/telnet/telnetd`) that starts your own userspace service.
 - Use the vendor `/swdl` overlay or `/mtd_rwarea/apdat` for local UI/config
   experiments.
 

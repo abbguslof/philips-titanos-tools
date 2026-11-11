@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 - 2026-11-11
 
 ### Added
 
@@ -27,6 +27,7 @@
 - Glossary, payload, partition, research cross-reference, and index docs cover
   `/swdl` and both hooks.
 - Test coverage is 43 tests.
+- Version 0.3.0.
 
 ## 0.2.0 - 2026-11-10
 

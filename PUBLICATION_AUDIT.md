@@ -157,7 +157,7 @@ Converted from `docs/research/12-verified-findings-and-dead-ends.md` open questi
 - [x] Drift: README tables vs research docs consistency
 - [x] Provenance: BusyBox, third-party dependencies
 - [x] Samples: Change notes vs stock files
-- [x] Release mechanics: Version in pyproject.toml (0.2.0)
+- [x] Release mechanics: Version in pyproject.toml (0.3.0)
 - [x] Safety surface: Write-capable tools have verify subcommands
 
 ---
@@ -173,6 +173,20 @@ New material: `docs/research/18-23`, `tools/probe/`, `tools/install/`,
 Checks:
 - No real IPs, MACs, SSIDs, serials, or workstation paths in the new files.
 - `dist/` stays ignored. No binaries are committed.
+- The test suite, Python compile step, and shell syntax checks pass.
+
+Verdict: GO.
+
+## Addendum 2026-11-11
+
+New material: `docs/research/24-swdl-telnet-persistence-2026-11-11.md`,
+`assets/banner.svg`, the rebuilt `README.md`, and the persistence hook
+detection in `payloads/persist_root.sh`.
+
+Checks:
+- The new report names a model and firmware but contains no serials, MACs,
+  SSIDs, private addresses, or workstation paths.
+- The banner and README contain no device data.
 - The test suite, Python compile step, and shell syntax checks pass.
 
 Verdict: GO.

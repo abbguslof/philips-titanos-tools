@@ -77,6 +77,11 @@ The package also carries a RAM-only update environment:
 | `sys_run` | gzip tar, 5,176,607 -> 19,005,440 | `/dev/null` | `run.sh`, `nvt_eburner`, `ndp_preinit.ko`, `ndp_gfx.ko` |
 | `nvt_eburner` | static ARM32 ELF, 721 KiB | inside `sys_run` | the eMMC burner |
 
+`part_tbl` is a plaintext partition list. It includes `kerupm;49152` (24 MiB)
+and the A/B `ker0/ker1`, `secos0/1`, `fdt0/1`, `fs0/1`, `apexe0/1`,
+`apexe_ext0/1`, `misc`, `devcfg`, `nvm_dat`, and `boot0/1` entries. The
+`kerupm` component and the partition table agree on the 24 MiB target.
+
 `sys_run/run.sh` is executed in the update environment. It installs the two
 kernel modules, copies `stty`, then runs:
 

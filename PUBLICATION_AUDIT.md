@@ -191,4 +191,22 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-12
+
+New material: `tools/deep_probe.py`, `tools/bootchain_dump.py`,
+`tools/bootchain_inspect.py`, `tools/boot_metadata.py`, `payloads/emmc_backup.sh`,
+`docs/research/25`-`29`, `evidence/deep/2026-11-12-8000-bootchain.md`, the
+read-only 8000 boot-chain map, and the update-package map.
+
+Checks:
+- The new tools default to `dist/` output and write only on the workstation.
+- The deep probe redacts IPv4/IPv6/MAC/SSID/token/serial-like values and
+  preserves documentation ranges.
+- The bootchain dumper issues only `dd if=...` reads; it has no `of=` path.
+- Raw NVM, pstore, boot slots, partition images, and vendor package components are not committed.
+- Test coverage is 67 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

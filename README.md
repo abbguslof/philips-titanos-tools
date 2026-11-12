@@ -9,7 +9,7 @@
 
   [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![Tests](https://img.shields.io/badge/tests-43-brightgreen.svg)](tests/)
+  [![Tests](https://img.shields.io/badge/tests-67-brightgreen.svg)](tests/)
   [![Tested on](https://img.shields.io/badge/tested%20on-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![Help wanted](https://img.shields.io/badge/help%20wanted-other%20models-blue.svg)](https://github.com/abbguslof/philips-titanos-tools/issues)
@@ -26,6 +26,7 @@
 | Inspect or extract firmware | [Firmware extraction](docs/guides/firmware-extraction.md) |
 | Remove root and return to stock | [Restore to stock](docs/guides/restore-to-stock.md) |
 | See what is proven and what is dead | [Verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md) |
+| Plan the deepest jailbreak | [Deep jailbreak roadmap](docs/research/25-deep-jailbreak-roadmap.md) |
 
 ## What this is
 
@@ -176,6 +177,10 @@ Once you have `uid=0`, you can inspect the live system, back up and verify NVM/E
 | `tools/firmware/fetch.py` | Find firmware links for your own model. |
 | `tools/firmware/parse_timg.py` | List, verify, and extract `TIMG`/`PIMG` components. |
 | `tools/probe/` | Static control-surface probes for `ntkmem`, GPIO, and input. |
+| `tools/deep_probe.py` | Read-only deep inventory with redaction; safe for the 8000 lab and field units. |
+| `tools/bootchain_dump.py` | Read-only local pull of the 8000 boot areas and metadata partitions. |
+| `tools/bootchain_inspect.py` | Local uImage/CRC/entropy inspection of the boot dumps. |
+| `tools/boot_metadata.py` | Parses `PPCH`/`STBC`/`VTBL` and scans the `p9` boot metadata. |
 
 ## Documentation map
 

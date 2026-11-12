@@ -40,6 +40,11 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 22 | [Install persistence](research/22-opt-prefix-persistence-2026-11-10.md) | VERIFIED | The prefix and `PATH` survive a cold boot with the USB removed. |
 | 23 | [Dropbear SSH](research/23-dropbear-ssh-2026-11-10.md) | VERIFIED | Static key-only SSH on `:2222` survives a cold boot. |
 | 24 | [Firmware variant: `/swdl/telnet/telnetd`](research/24-swdl-telnet-persistence-2026-11-11.md) | REPORTED | A later `TPN256E` firmware dropped `customer_env.sh`; the vendor `/swdl` seam restores USB-less persistence. |
+| 25 | [Deep jailbreak roadmap](research/25-deep-jailbreak-roadmap.md) | PLAN / STARTED | The 8000 lab ladder, Level 3.5 vs Level 4, field-unit rules, and the recovery gate. |
+| 26 | [Recovery engineering](research/26-recovery-engineering.md) | PLAN | Boot-area, eMMC ISP/JTAG, UART RX, restore test, and stop conditions. |
+| 27 | [55PUS8450/12 portability](research/27-8450-portability.md) | REPORTED / PLAN | Field-unit differences, read-only comparison, and `/swdl` persistence proof. |
+| 28 | [Boot image map](research/28-boot-image-map.md) | VERIFIED (read-only) | Protected A/B secure slots, plain `p21` `kerupm` upgrade kernel, `p1/p2` UMFG slots, and the `p9` slot map. |
+| 29 | [Update package map](research/29-update-package-map.md) | VERIFIED (local package) | Package-to-live component match; signed secure components; plain `kerupm`; RAM update environment and the MD5-only burner. |
 
 ## Guides
 

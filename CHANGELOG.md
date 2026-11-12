@@ -8,6 +8,19 @@
   (`evidence/tpn256e-variant/`). The logs confirm the USB root path and the
   `mmcblk0p19` root partition; the `/swdl` persistence result remains REPORTED
   until a USB-less `root_boot.log` is available.
+- `tools/deep_probe.py`: redacted read-only live inventory for the 8000 lab and
+  field units.
+- `tools/bootchain_dump.py`: read-only local pull of the 8000 boot areas and
+  metadata partitions.
+- `tools/bootchain_inspect.py`: local uImage header/data CRC, entropy, embedded
+  image, and marker inspection.
+- `tools/boot_metadata.py`: local `PPCH`/`STBC`/`VTBL` parsing and `p9` boot
+  metadata scanning.
+- `payloads/emmc_backup.sh`: read-only full eMMC user-area and boot-area
+  backup to a mounted USB filesystem.
+- Deep-jailbreak roadmap, recovery-engineering plan, 8450 portability plan,
+  boot-image map, and update-package map (`docs/research/25`-`29`).
+- Deep boot-chain evidence summary (`evidence/deep/`).
 
 ### Changed
 
@@ -15,6 +28,7 @@
   the Novatek NT72690 platform. The `55PUS8000/12` is named as the maintainer's
   tested model, other models are marked untested, and reports or PRs for other
   models are invited.
+- Test coverage is 67 tests.
 
 ## 0.3.0 - 2026-11-11
 

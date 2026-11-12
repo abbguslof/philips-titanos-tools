@@ -8,7 +8,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (43 tests):
+Current coverage (67 tests):
 
 | Test file | Covers |
 | :--- | :--- |
@@ -19,6 +19,11 @@ Current coverage (43 tests):
 | `test_firmware_fetch.py` | Support-page link extraction and candidate filename generation. |
 | `test_firmware_parse.py` | TIMG/PIMG header parsing and component extraction. |
 | `test_jointspace_client.py` | HMAC signature, mocked network calls, key sequence. |
+| `test_deep_probe.py` | Redaction and the read-only command allowlist. |
+| `test_bootchain_dump.py` | Read-only item selection, alignment, and dry-run behavior. |
+| `test_bootchain_inspect.py` | uImage header/data CRC parsing, embedded images, entropy, markers. |
+| `test_boot_metadata.py` | `PPCH` entries, `STBC` slot, `VTBL` length, magic scanning. |
+| `test_emmc_backup.py` | Read-only full eMMC backup syntax and target-safety contract. |
 | `test_nfsb_raw_mount.py` | Raw NFSB mount helper syntax, usage, and contract. |
 | `test_persist_root.py` | Installer hook detection, embedded script syntax, `/swdl` wrapper, no USB dependency. |
 | `test_stage_usb.py` | SAM canary staging and CRC verification. |
@@ -42,7 +47,7 @@ update `evidence/README.md`.
 
 ```bash
 python3 -m compileall -q tools tests
-sh -n payloads/autoroot.sh payloads/persist_root.sh payloads/nfsb_raw_mount.sh
+sh -n payloads/autoroot.sh payloads/persist_root.sh payloads/nfsb_raw_mount.sh payloads/emmc_backup.sh
 sh -n tools/usb_prep.sh tools/bootstrap/bootstrap.sh
 ```
 

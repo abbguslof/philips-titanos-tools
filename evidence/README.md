@@ -29,6 +29,15 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 | [hardware/xboot-serial.log](hardware/xboot-serial.log) | XBoot -> ATF -> EL1, `uart mode:0`, boot timing. |
 | [firmware/upgrade_loader.html](firmware/upgrade_loader.html) | The historical Google Drive mirror returned a virus-scan warning page, not a loader. |
 
+## Deep boot chain
+
+| Set | What it proves |
+| :--- | :--- |
+| [deep/2026-11-12](deep/2026-11-12-8000-bootchain.md) | Read-only 8000 boot map: protected A/B secure slots; plain `p21` `kerupm` upgrade kernel; `p1/p2` UMFG slots; `p9` slot map; package-to-live matches and update environment. |
+
+Raw partitions and NVM remain under `dist/` and are not published. See
+[boot image map](../docs/research/28-boot-image-map.md) and [update package map](../docs/research/29-update-package-map.md).
+
 ## Runtime NFSB
 
 | Set | What it proves |

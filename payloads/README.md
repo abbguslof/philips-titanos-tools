@@ -6,6 +6,7 @@
 | `autoroot.sh` | USB root payload: diagnostics, BusyBox, firewall, `telnetd` on `:2323`, `READY`. |
 | `persist_root.sh` | Installs the persistence hook the live firmware reads: `customer_env.sh`, or `/swdl/telnet/telnetd` on later `TPN256E` firmware. |
 | `nfsb_raw_mount.sh` | Read-only mount of the SquashFS inside an NFSB partition. Run on the TV as root. |
+| `emmc_backup.sh` | Read-only full eMMC user-area and boot-area backup to a mounted USB filesystem. Run on the TV as root. |
 | `autoscript.diag.txt` | Older, broader diagnostic autoscript from the v4 research runs. Not the canonical autoroot payload. |
 | `autoscript.stateproof.txt` | One-line, non-resetting autoscript that appends boot state to `/media/sda1/proof.txt`. |
 | `root_boot.opt-block.sh` | Block for `root_boot.sh`: tmpfs `/root`, `opt` PATH, firewall, and Dropbear start. |

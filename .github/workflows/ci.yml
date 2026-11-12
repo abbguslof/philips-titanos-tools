@@ -26,4 +26,4 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover tests -v
       - name: Check shell payload syntax
-        run: sh -n payloads/autoroot.sh payloads/persist_root.sh tools/usb_prep.sh tools/bootstrap/bootstrap.sh
+        run: sh -n payloads/autoroot.sh payloads/persist_root.sh payloads/nfsb_raw_mount.sh payloads/emmc_backup.sh tools/usb_prep.sh tools/bootstrap/bootstrap.sh

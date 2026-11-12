@@ -205,6 +205,8 @@ Checks:
   preserves documentation ranges.
 - The bootchain dumper issues only `dd if=...` reads; it has no `of=` path.
 - Raw NVM, pstore, boot slots, partition images, and vendor package components are not committed.
+- The changelog is cut to 0.4.0; `pyproject.toml` is 0.4.0 and there is no
+  Unreleased section.
 - Test coverage is 67 tests; the suite, compile step, and shell syntax checks
   pass.
 

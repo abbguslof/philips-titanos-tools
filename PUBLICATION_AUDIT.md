@@ -199,7 +199,8 @@ New material: `tools/deep_probe.py`, `tools/bootchain_dump.py`,
 read-only 8000 boot-chain map, and the update-package map.
 
 Checks:
-- The new tools default to `dist/` output and write only on the workstation.
+- `deep_probe` and `bootchain_dump` write only under `dist/` on the workstation;
+  `bootchain_inspect` and `boot_metadata` read local dumps only.
 - The deep probe redacts IPv4/IPv6/MAC/SSID/token/serial-like values and
   preserves documentation ranges.
 - The bootchain dumper issues only `dd if=...` reads; it has no `of=` path.

@@ -98,8 +98,8 @@ image failed`, partition-write callbacks for `xboot`, `stbc`, `vtbl`, `fdt`,
 **MD5-based verification**; no RSA/SHA verification strings were observed in
 this binary.
 
-The update environment is loaded to RAM (`/dev/null`). Only `kerupm` targets a
-persistent partition (`p21`).
+The update environment components target `/dev/null`. The package's `kerupm`
+component targets the persistent `p21` partition.
 
 ### The trust gap
 

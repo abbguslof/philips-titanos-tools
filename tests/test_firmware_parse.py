@@ -10,10 +10,33 @@ from pathlib import Path
 from tools.firmware.parse_timg import (
     PIMG_HEADER_SIZE,
     TIMG_HEADER_SIZE,
+    VER40_PIMG_HEADER_SIZE,
     extract_component,
     parse_pimg_header,
     parse_timg,
 )
+
+
+def build_ver40_pimg(name: str, stored_payload: bytes, compression: str = "gzip") -> bytes:
+    header = bytearray(VER40_PIMG_HEADER_SIZE)
+    header[0:4] = b"PIMG"
+    struct.pack_into("<I", header, 0x04, len(stored_payload))
+    header[0x08:0x18] = hashlib.md5(stored_payload).digest()
+    header[0x18:0x18 + len(name)] = name.encode()
+    header[0x28:0x28 + 8] = b"/dev/nvt"  # target prefix, VER40 style
+    header[0x48:0x48 + len(compression)] = compression.encode()
+    return bytes(header) + stored_payload
+
+
+def build_ver40_timg(components: list[bytes]) -> bytes:
+    # 0x120 container header (magic TIMGPKGVER40), then a PPCH/vertbl table
+    # region, then back-to-back components running to EOF.
+    header = bytearray(TIMG_HEADER_SIZE)
+    header[0:12] = b"TIMGPKGVER40"
+    vertbl = bytearray(0x720 - TIMG_HEADER_SIZE)
+    vertbl[0:4] = b"PPCH"
+    vertbl[0x100:0x104] = b"PIMG"  # decoy: a PIMG magic inside the vertbl must not be treated as a component
+    return bytes(header) + bytes(vertbl) + b"".join(components)
 
 
 def build_pimg(name: str, payload: bytes, compression: str = "enc=none", md5_data: bytes | None = None) -> bytes:
@@ -69,6 +92,47 @@ class TestTimgParser(unittest.TestCase):
             self.assertEqual(components[0].compression, "enc=gzip")
             out = extract_component(pkg, components[0], Path(tmp) / "out")
             self.assertEqual(out.read_bytes(), plain)
+
+
+class TestVer40Parser(unittest.TestCase):
+    def test_parse_ver40(self):
+        stored_a = b"\xde\xad\xbe\xef" * 8
+        stored_b = b"\x01\x02\x03" * 11
+        blob = build_ver40_timg(
+            [build_ver40_pimg("fs", stored_a, "gzip"), build_ver40_pimg("kernel", stored_b, "none")]
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            pkg = Path(tmp) / "test.upg"
+            pkg.write_bytes(blob)
+            meta, components = parse_timg(pkg)
+            self.assertEqual(meta["format"], "VER40")
+            self.assertEqual(meta["component_count"], 2)
+            self.assertEqual([c.name for c in components], ["fs", "kernel"])
+            self.assertEqual([c.compression for c in components], ["gzip", "none"])
+            self.assertEqual(components[0].md5, hashlib.md5(stored_a).hexdigest())
+            self.assertIsNone(meta["payload_md5"])
+
+    def test_extract_ver40_md5_is_over_stored_payload(self):
+        stored = b"stored-encrypted-bytes"
+        blob = build_ver40_timg([build_ver40_pimg("fs", stored, "gzip")])
+        with tempfile.TemporaryDirectory() as tmp:
+            pkg = Path(tmp) / "test.upg"
+            pkg.write_bytes(blob)
+            _, components = parse_timg(pkg)
+            out = extract_component(pkg, components[0], Path(tmp) / "out", ver40=True)
+            # stored payload is kept as-is (vendor-encrypted, no decrypt here)
+            self.assertEqual(out.read_bytes(), stored)
+
+    def test_ver40_decoy_pimg_in_vertbl_is_skipped(self):
+        blob = build_ver40_timg([build_ver40_pimg("fs", b"payload")])
+        # the decoy lives in the vertbl region (see build_ver40_timg); parsing
+        # must start at the first *valid* component, not the first magic
+        with tempfile.TemporaryDirectory() as tmp:
+            pkg = Path(tmp) / "test.upg"
+            pkg.write_bytes(blob)
+            meta, components = parse_timg(pkg)
+            self.assertEqual(meta["component_count"], 1)
+            self.assertEqual(components[0].name, "fs")
 
 
 if __name__ == "__main__":

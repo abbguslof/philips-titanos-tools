@@ -2,6 +2,21 @@
 
 Status: **VERIFIED** against the research package. The package is not included.
 
+Two container revisions exist:
+
+- **Classic `TIMG`** (research package `PH_..._TPN256E_...pkg`, and older):
+  0x120 container header with u64 length + MD5, 0x488-byte `PIMG` headers,
+  `enc=gzip` payloads are ordinary gzip streams. The whole container is
+  verifiable against one MD5.
+- **`TIMGPKGVER40`** (newer 2023+ Titan OS packages, shipped as
+  `autorun.upg`): 0x460-byte `PIMG` headers with u32 length, no container-level
+  MD5 (components run to EOF), and **every stored payload is vendor-encrypted**
+  — including `none`-labelled ones. `parse_timg.py` detects the magic and
+  handles both layouts; it carves and MD5-verifies (against the stored payload)
+  but cannot decrypt. Use `unixtract` (`github.com/theubusu/unixtract`) for the
+  decryption step, then continue with the NFSB/SquashFS flow below. See the
+  VER40 section in the [container format doc](../research/03-firmware-container-timg-pimg-nfsb.md).
+
 ## Inspect the container
 
 ```bash

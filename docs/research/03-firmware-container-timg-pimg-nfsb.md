@@ -82,6 +82,65 @@ partition.
 - The extraction guide uses a parser, not hardcoded byte offsets. See
   [firmware extraction](../guides/firmware-extraction.md).
 
+## `TIMGPKGVER40`: the 2023 Titan OS revision
+
+Status: **VERIFIED** by parsing the shipped `TPN236E_236.006.135.001` package
+(43PUS7608/12, 621 MB `autorun.upg`): all 19 component MD5s checked against the
+stored payloads. Not yet verified against hardware.
+
+Newer 2023 Titan OS packages replace the layout above:
+
+```text
++----------------------+------------------------------------------------------+
+| Offset               | Field                                                |
++----------------------+------------------------------------------------------+
+| 0x00                 | magic "TIMGPKGVER40" (12 bytes)                      |
+| 0x120                | "PPCH"/vertbl partition table (~0x34C bytes,         |
+|                      | 13 name->target entries), variable length            |
+| first PIMG           | first component header (0x720 in the reference pkg)  |
+| EOF                  | last component payload ends exactly here             |
++----------------------+------------------------------------------------------+
+```
+
+There is **no whole-container length/MD5 field**: the component region runs
+from the first `PIMG` header to EOF, and components are back-to-back
+(`next = header + size + length`). A `PIMG` byte sequence also occurs inside
+the vertbl region and inside (encrypted) payloads, so a scanner must validate
+candidate offsets by walking the chain to EOF, not by magic alone.
+
+Each component has a **1,120-byte (`0x460`) `PIMG` header**:
+
+```text
++--------+--------------------------------------------------------------+
+| Offset | Field                                                        |
++--------+--------------------------------------------------------------+
+| +0x00  | magic "PIMG"                                                 |
+| +0x04  | 32-bit payload length                                        |
+| +0x08  | 16-byte MD5 of the component's *stored* payload              |
+| +0x18  | component name (16 bytes: vertbl, xboot, kernel, fs, ap, ...)|
+| +0x28  | target device path / partition (32 bytes)                    |
+| +0x48  | compression: "none" or "gzip"                                |
++--------+--------------------------------------------------------------+
+```
+
+Two differences matter:
+
+- **Every stored payload is vendor-encrypted** with a fixed key — including
+  `none`-labelled components (a raw extraction of `kernel` does not start with
+  the uImage magic; the decrypted one does). The `compression` field describes
+  the state *after* decryption, and the `PIMG` MD5 covers the **stored
+  (encrypted)** payload, so MD5 verification succeeds against ciphertext and
+  proves nothing about plaintext. The fixed keys are embedded in the vendor
+  update library (`libfwup.so` `.data`) and match the keys used by the
+  third-party `unixtract` extractor (`github.com/theubusu/unixtract`), which
+  performs the decryption.
+- After decryption, `fs`/`ap`/`apext` are `NFSB`-wrapped SquashFS 4.0 LZO
+  exactly as in the classic layout (`fs` targets `/dev/mmcblk0p16` on this
+  package); `kernel`/`fdt`/`uboot`/`secos` are uImages, `bootlogo` a JPEG.
+
+`tools/firmware/parse_timg.py` detects the container magic and supports both
+layouts; it carves and MD5-verifies components but does not decrypt.
+
 ## Acquisition
 
 The package used for this research is not redistributed. See

@@ -22,6 +22,10 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 | :--- | :--- |
 | [tpn256e-variant](tpn256e-variant/) | External USB autoroot on `55PUS8450/12`; it does not prove the `/swdl` hook after a USB-less boot. |
 
+An additional [77OLED760/12 (TPN258E) report](tpn258e-77oled760/) includes
+USB autoroot, a USB-less cold boot using the `/swdl` persistence hook, and
+key-authenticated SSH after a subsequent USB-less cold boot. Status: **REPORTED** (external hardware test).
+
 ## Hardware and firmware
 
 | Set | What it proves |

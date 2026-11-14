@@ -4,6 +4,9 @@ Status: **VERIFIED (local package comparison)** on `55PUS8000/12`, firmware
 `TPA256E_V056.002.236.191`. No TV writes. The vendor package is local-only and
 is not published.
 
+> The 2026-11-14 analysis in [research/30](30-update-path-2026-11-14.md) maps
+> the burner checks and the prepared dump-only test package.
+
 Phase B also mapped the firmware package to the live partitions. The package
 exposes one **plain, unsigned-at-component-level** kernel.
 

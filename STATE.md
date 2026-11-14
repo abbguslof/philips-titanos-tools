@@ -25,6 +25,7 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Boot areas | `mmcblk0boot0`/`boot1` 4 MiB, identical, `force_ro=1`, `ro=1`, sha256 `eee415012095a8c51be032d1e713ac120211408aeebe029b8791526bbe4d30bd` | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Boot map | `p1`/`p2` UMFG slots; `p9` slot map; `p13`/`p14` ATF; `p15`/`p16` FDT; `p17`/`p18` kernel; `p19`/`p20` rootfs; `p21` plain `kerupm` | [Boot image map](docs/research/28-boot-image-map.md) |
 | Recovery backup | Full `mmcblk0` image and boot areas; `sha256sum -c` passes | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
+| Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
 ## Live drift
@@ -46,10 +47,15 @@ The public repo documents research and root. The live unit is further along:
 - [x] Full eMMC and boot-area backup (2026-11-14). Restore not tested.
 - [ ] Restore test: write the same bytes back, cold boot, verify. The boot
   areas are `force_ro=1`; the write procedure is unproven.
-- [ ] Update trigger and loader map.
-- [ ] Dump-only `sys_run` package test.
-- [ ] `kerupm` update-mode verification.
-- [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map.
+- [ ] Update trigger and loader map. Component map and burner checks are done;
+  the trigger and the app-layer RSA gate are open. See
+  [update path](docs/research/30-update-path-2026-11-14.md).
+- [ ] Dump-only `sys_run` package test. The package is prepared; it is blocked
+  on the restore test.
+- [x] `kerupm` package/live match: plain uImage, valid data CRC, exact bytes at
+  `p21`. Update-mode selection is still open.
+- [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map. The `p9` `PPCH` slot map is
+  decoded; the live `VTBL`/`STBC` differ from the package.
 - [ ] Generalize the kernel carrier.
 - [ ] Dual-boot or external recovery slot.
 
@@ -58,9 +64,11 @@ The public repo documents research and root. The live unit is further along:
 1. Keep a second copy of the 2026-11-14 backup off the TV.
 2. Decide on the restore test. Use the stock bytes first; do not write a
    modified image.
-3. Read-only work that can proceed now: parse the bootchain dump with
-   `tools/bootchain_inspect.py`, map `VTBL`/`NVHC`, and prepare the dump-only
-   `sys_run` package.
+3. Read-only work that can proceed now: review the
+   [update path](docs/research/30-update-path-2026-11-14.md), map the update
+   trigger and the `libfwup.so` gate, and inspect the `sub_123ac` partition
+   write order. The dump-only `sys_run` package is prepared in `dist/` and is
+   blocked on the restore test.
 
 ## Stop conditions
 
@@ -76,4 +84,5 @@ The public repo documents research and root. The live unit is further along:
 - [Recovery engineering](docs/research/26-recovery-engineering.md)
 - [Boot image map](docs/research/28-boot-image-map.md)
 - [Update package map](docs/research/29-update-package-map.md)
+- [Update path](docs/research/30-update-path-2026-11-14.md)
 - [2026-11-14 backup evidence](evidence/deep/2026-11-14-emmc-backup.md)

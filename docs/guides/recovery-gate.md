@@ -98,3 +98,7 @@ is required.
 - No way to select or recover the boot area.
 - Any uncertainty about the partition's role.
 - Field units: do not write.
+
+The update-path analysis and the prepared dump-only test package are in
+[research/30](../research/30-update-path-2026-11-14.md). The package is blocked
+on this gate.

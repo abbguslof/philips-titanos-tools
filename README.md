@@ -149,6 +149,7 @@ Status labels: **Verified** means reproduced on a tested TV or checked against t
 | Capability | Status | Evidence |
 | :--- | :--- | :--- |
 | Firmware container parsing (`TIMG` / `TIMGPKGVER40` / `PIMG` / `NFSB` / SquashFS LZO) | **Verified statically** | [firmware guide](docs/guides/firmware-extraction.md) |
+| Update-package component map and MD5-only burner checks | **Verified (local package)** | [Update path](docs/research/30-update-path-2026-11-14.md) |
 | U-Boot-style NVM environment read/write with dual CRC32 | **Verified** | [NVM reference](docs/reference/file-formats.md#uboot-nvm-nvm_ubootdatdata) |
 | Runtime raw SquashFS mount inside an NFSB image (read-only) | **Verified** | [runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md), [evidence](evidence/runtime-nfsb/) |
 | JointSpace local control (keys, volume, input, Ambilight `expert` mode) | **Verified** | [JointSpace research](docs/research/08-jointspace-api.md) |

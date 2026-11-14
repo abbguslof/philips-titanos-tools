@@ -47,6 +47,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 27 | [55PUS8450/12 portability](research/27-8450-portability.md) | REPORTED / PLAN | Field-unit differences, read-only comparison, and `/swdl` persistence proof. |
 | 28 | [Boot image map](research/28-boot-image-map.md) | VERIFIED (read-only) | Protected A/B secure slots, plain `p21` `kerupm` upgrade kernel, `p1/p2` UMFG slots, and the `p9` slot map. |
 | 29 | [Update package map](research/29-update-package-map.md) | VERIFIED (local package) | Package-to-live component match; signed secure components; plain `kerupm`; RAM update environment and the MD5-only burner. |
+| 30 | [Update path: package map, burner checks, and the dump-only test](research/30-update-path-2026-11-14.md) | VERIFIED / INFERRED | Component map, MD5-only burner checks, live slot matches, and the prepared dump-only test package. |
 
 ## Guides
 

@@ -234,16 +234,21 @@ Verdict: GO.
 
 ## Addendum 2026-11-14 (recovery backup)
 
-New material: `STATE.md`, `docs/guides/recovery-gate.md`, and
-`evidence/deep/2026-11-14-emmc-backup.md`.
+New material: `STATE.md`, `docs/guides/recovery-gate.md`,
+`evidence/deep/2026-11-14-emmc-backup.md`,
+`docs/research/30-update-path-2026-11-14.md`, and
+`evidence/deep/2026-11-14-update-path.md`.
 
 Checks:
 - The backup evidence contains sizes and hashes only. Raw images and the
   bootchain dump stay off the repository.
+- The update-path note contains offsets, hashes, function addresses, and no
+  vendor payloads or keys. The dump-only package is local under `dist/` and is
+  not committed.
 - The note names no serial, MAC, SSID, IP, or credential.
 - The live-drift section records the freetitan mounts without documenting their
   internals.
-- The changelog has an Unreleased section for the post-0.4.1 docs.
+- The changelog is cut to 0.4.2; `pyproject.toml` is 0.4.2.
 - Test coverage remains 71 tests; the suite, compile step, and shell syntax
   checks pass.
 

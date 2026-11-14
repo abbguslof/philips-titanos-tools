@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security policy
+    url: https://github.com/abbguslof/philips-titanos-tools/security/policy
+    about: Use the private security channel to report vulnerabilities. Do not post device identifiers or pairing credentials.

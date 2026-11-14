@@ -29,9 +29,11 @@ excerpt shows the session, not the auth method). Status: **REPORTED**
 (external hardware test).
 
 A [70PUS8108/60 (TPN236E) field report](../docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md)
-records read-only port and JointSpace 6.1 probes. No raw capture was supplied;
+records read-only port and JointSpace 6.1 probes. The same-day follow-up
+corrected the POST `503` result to a `curl --digest` bodyless-probe artifact and
+recorded an unauthenticated `1926` control surface. No raw capture was supplied;
 the research note keeps the observations **REPORTED** and does not treat the
-closed ports as a family fact.
+closed ports or the auth gap as family facts.
 
 ## Hardware and firmware
 

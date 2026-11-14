@@ -1,12 +1,20 @@
 # 70PUS8108/60 (TPN236E): network surface and JointSpace 6.1
 
-Status: **REPORTED** on hardware by an external owner on 2026-11-14. Not
-independently reproduced by this repo's maintainer. Read-only probes only.
+Status: **REPORTED** on hardware by an external owner on 2026-11-14, including
+a same-day correction. The maintainer has not reproduced it. Read-only probes,
+plus owner-approved `VolumeUp` executions.
 
 This note records a field report for a 2023 Titan OS unit that is not the lab.
-It tests the rest of the family against the `55PUS8000/12` reference and records
-a JointSpace `POST` anomaly. It is not a root path and does not claim a remote
-exploit.
+It tests the rest of the family against the `55PUS8000/12` reference. It is not
+a root path and does not claim a remote exploit.
+
+> **Correction (2026-11-14).** The first version of this note said every `POST`
+> returned `503` and did not execute, and that `/6/pair/grant` succeeded despite
+> a `503`. The follow-up retracts both. The `503` was a `curl --digest` artifact:
+> curl sends a bodyless, unauthenticated probe first; this TV never issues a
+> `401` challenge and answers a bodyless POST with `503`, so curl aborts before
+> sending the body. With a body, `POST /6/input/key` returns `200` and executes.
+> Pairing was not demonstrated, and this build does not enforce it on `1926`.
 
 ## Target
 
@@ -24,11 +32,12 @@ This note uses `<TV_IP>`.
 
 ## Scope
 
-- GET/HEAD requests and TCP connect scans from a Windows 11 LAN client.
-- No writes to the TV. No firmware was flashed, no USB stick was used, no
-  settings were changed.
-- The only state change was the standard JointSpace PIN pairing: request,
-  on-screen PIN, HMAC-SHA1 grant, then Digest auth.
+- GET/HEAD requests, TCP connect scans, and owner-approved `VolumeUp` POSTs from
+  a Windows 11 LAN client.
+- No firmware was flashed, no USB stick was used, no settings were changed.
+- The owner approved the `VolumeUp` executions used to prove POST behavior.
+- The original PIN pairing was not confirmed to complete. The follow-up treats
+  pairing as not required on this build; see [Pairing](#pairing).
 
 ## Network surface
 
@@ -73,47 +82,126 @@ Caveats:
 `GET /6/audiodata` is **404** on this build. Volume is at
 `/6/audio/volume`, which is also the path this repo documents.
 
+The follow-up re-tested these GETs on `1926` with **no credentials**; all
+worked. On `1925`, only `/6/system` worked unauthenticated; other GETs returned
+`403`.
+
 ### Blocked and missing
 
 | Endpoint | Result |
 | :--- | :--- |
-| `/6/applications`, `/6/sources`, `/6/volume`, `/6/notify` | `403` |
+| `/6/applications`, `/6/sources`, `/6/volume`, `/6/notify` | `403` (first pass) |
 | `/6/audiodata` | `404` |
 | `/6/ambilight/lampsettings`, `/6/ambilight/processedlayerinformation`, `/6/ambilight/measuredlayerconfiguration`, `/6/ambilight/speed`, `/6/ambilight/brightness` | `404` |
 | `GET /6/menuitems/settings/current` | `404` |
 
+The `403` row is from the first pass. The follow-up re-tested only the working
+GETs above on `1926`; it did not re-test `/6/sources`, `/6/volume`,
+`/6/applications`, or `/6/notify`, so their `403` status stands as reported.
 `/6/applications` is an engineering route behind the same `tvtype: consumer`
-gate as the lab unit. The report does not explain the `403` on `/6/sources` or
-`/6/volume`; do not assume the lab client's source switching works there.
+gate as the lab unit. Do not assume the lab client's source switching works
+there.
 
-### POST returns 503
+### POST behavior and the 503 artifact
 
-Every tested `POST` returned HTTP `503 Service Unavailable`:
+The first report concluded that POSTs returned `503` and did not execute. That
+was wrong. The `503` was a client artifact from `curl --digest`: curl sends a
+bodyless, unauthenticated probe first and waits for a `401` plus
+`WWW-Authenticate` challenge. This TV never sends that challenge; it answers a
+bodyless POST with `503`, so curl aborts before sending the body.
 
-- `POST /6/input/key {"key":"VolumeUp"}`: `503`, no volume change on screen
-  across 8 attempts spaced 1 s apart.
-- `POST /6/audio/volume {"current":12}`: `503`, no effect; a later `GET`
-  reported the old value.
-- The other tested POST paths also returned `503`.
+With a plain POST (no `--digest`) on `1926` and the JSON body, the request is
+accepted and executes:
 
-The exception is `POST /6/pair/grant`: it returned `503`, but the pairing
-succeeded and the issued credentials authenticate correctly on later Digest
-requests. On this build, `503` is therefore **not** a reliable indicator that a
-POST did not execute. The cause is unknown and recorded as **OPEN**.
+```http
+POST /6/input/key HTTP/1.1
+Host: <TV_IP>:1926
+User-Agent: curl/8.13.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 18
 
-The repo's `tools/jointspace_client.py` raises on a non-2xx control response, so
-a control command such as `key` will report an error on this build unless the
-cause is understood. The pairing path already parses the grant body without
-requiring a 2xx status.
+{"key":"VolumeUp"}
+```
+
+```http
+HTTP/1.1 200 OK
+Date: Sat, 14 Nov 2026 19:56:39 GMT
+Content-type: text/html; charset=utf=8
+Cache-Control: no-cache
+Access-Control-Allow-Origin: *
+Content-Length: 58
+
+<html><head><title>Ok</title></head><body>Ok</body></html>
+```
+
+`GET /6/audio/volume` returned `current: 1` before the POST and `current: 2`
+after. No `Server` header and no `WWW-Authenticate` were observed on any
+response. The `charset=utf=8` value is reproduced as reported, not corrected.
+
+The failing probe, for contrast:
+
+```http
+POST /6/input/key HTTP/1.1
+Host: <TV_IP>:1926
+User-Agent: curl/8.13.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 0
+```
+
+```http
+HTTP/1.1 503 Service Unavailable
+Content-type: text/html; charset=utf-8
+Content-Length: 92
+```
+
+The same empty-body `503` appeared for `POST /6/audio/volume`,
+`POST /6/pair/grant`, and `POST /6/menuitems/settings/current` in the first
+pass. Those paths were not re-tested with a body. `POST /6/input/key` is the
+verified execution.
+
+An invalid key (`{"key":"Invalid"}`) also returns `200` "Ok"; the TV ignores
+the key.
+
+`tools/jointspace_client.py` now treats a non-JSON 2xx body as success and
+returns the body text. It does not require a completed pairing to send a key on
+this build.
+
+### Authentication is not enforced
+
+On `1926`, the tested GETs and `POST /6/input/key` work with no credentials.
+The follow-up compared a harmless no-op POST (`{"key":"Invalid"}`):
+
+| Request on `1926` | Result |
+| :--- | :--- |
+| No `Authorization` header | `200` "Ok" |
+| `Authorization: Basic <valid pairing creds>` | `200` "Ok" |
+| `Authorization: Basic <wrong user:pass>` | `200` "Ok" |
+| `Authorization: ZZZZ garbage-token` | `200` "Ok" |
+
+No `401` and no `WWW-Authenticate` were observed. On `1925`, GETs other than
+`/6/system` and POSTs with a body return `403`, with or without credentials.
+
+So the advertised `pairing_type: digest_auth_pairing` and
+`secured_transport: true` are not enforced on the tested build. The `1926`
+control surface is open on the LAN. This is not a root path; it is an
+unauthenticated local control surface. The owner should treat the LAN as
+trusted. The repo's threat model assumes local JointSpace needs pairing; this
+build is an exception.
 
 ### Pairing
 
-The standard v6 flow works: `/6/pair/request` -> on-screen PIN ->
-`/6/pair/grant` with the HMAC-SHA1 signature -> Digest auth.
+The first report's "pairing succeeded despite `503`" is withdrawn. The grant's
+first request was a bodyless probe and got `503`; a completed handshake was not
+demonstrated. Because `1926` does not enforce authentication, later requests
+working does not prove pairing. Whether a body-bearing `/6/pair/grant` completes
+is untested.
 
-After an expired or unconfirmed grant, a new `/6/pair/request` returns
-`CONCURRENT_PAIRING` for roughly 20-30 s before the session clears; a later
-retry succeeds.
+After an expired or unconfirmed grant, a new `/6/pair/request` returned
+`CONCURRENT_PAIRING` for 20-30 s before the session cleared; a later retry
+succeeded. That is recorded as observed, but it does not prove a completed
+pairing.
 
 ### DIAL
 
@@ -124,7 +212,11 @@ such as `Disney` and `Max` return `404`.
 
 ## Entry-vector assessment
 
-- No network entry surface was found in the tested set.
+- No **root** entry vector was found in the tested set. The open `1926` API can
+  send keys, change volume, and read Ambilight state; it does not provide a
+  shell, file access, or code execution.
+- The first report's "no network entry surface" was too broad. The control
+  surface is open; it is not a root path.
 - This does **not** prove that the USB `quick_debug/menu auto` autoroot chain is
   absent. The reporter expects that chain to be absent on the 2023 family based
   on the earlier TPN236E static analysis (issue #3); this report did not insert
@@ -133,7 +225,8 @@ such as `Disney` and `Max` return `404`.
   control surface on this unit. If it holds across the family, it narrows the
   options; it does not create an entry vector.
 - The closed `7788` removes the browser CDP debug surface on this unit.
-- No engineering JointSpace route was reachable.
+- The engineering routes tested (for example `/6/applications`) still returned
+  `403`. The open `1926` surface is the consumer control API, not engineering.
 - The owner keeps the unit on its current build. Boot-chain or USB tests need a
   proven entry vector and the lab rules; they were out of scope.
 
@@ -153,17 +246,21 @@ unverified and is not a repo claim.
 - The report supplied no raw capture; the observations above are its summary.
   Only the maintainer can move a row to VERIFIED, and only on the same unit and
   firmware.
-- Confirm `8883`/`:7788` on another `TPN236E`/`TPN237E`/`TPN238E` unit before
-  treating the closed ports as a family fact.
-- Characterize the `503`: capture the exact request and response headers
-  (`WWW-Authenticate`, `Server`, body), compare `1925` and `1926`, and repeat a
-  harmless POST after pairing. Do not assume execution from a `503`.
+- Re-test `POST /6/audio/volume` with a body and `POST /6/pair/grant` with a
+  body. The first shows whether the body rule is general; the second shows
+  whether a completed pairing is possible at all.
+- Confirm the unauthenticated `1926` surface and `8883`/`:7788` on another
+  `TPN236E`/`TPN237E`/`TPN238E` unit before treating either as a family fact.
+- Do not expose this unit to an untrusted LAN while `1926` accepts control
+  requests without authentication. If the gap matters to the vendor, use the
+  private-disclosure path in [SECURITY.md](../../SECURITY.md), not this note.
 - Test the USB hook only with the owner's agreement and the autoroot stick;
   record whether `quick_debug/menu auto` runs and stop before any boot-area
   write.
-- Parse a public `autorun.upg` for this model with
-  `tools/firmware/parse_timg.py`. The VER40 parser is static and does not
-  decrypt; do not publish vendor firmware.
+- A second external contributor parsed the public
+  `TPN236E_236.006.135.001` VER40 package with 19/19 component MD5s OK on a
+  fresh copy. See [the firmware container](03-firmware-container-timg-pimg-nfsb.md).
+  Do not publish vendor firmware.
 
 ## Related
 
@@ -176,4 +273,5 @@ unverified and is not a repo claim.
 ## Credit
 
 Reported by an external owner on 2026-11-14; the report redacted the unit's
-identifiers. Thanks for the read-only probes and the precise failure modes.
+identifiers. Thanks for the read-only probes, the correction, and the precise
+failure modes.

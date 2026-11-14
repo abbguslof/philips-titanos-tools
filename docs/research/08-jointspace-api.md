@@ -84,15 +84,25 @@ another build.
 A `70PUS8108/60` (`TPN236E`, `TPN236E_V236.004.269.01`) field report recorded:
 
 - `GET /6/audio/volume` works; `GET /6/audiodata` is 404.
-- `GET /6/sources` and `/6/volume` returned 403, as did `/6/applications` and
-  `/6/notify`.
-- Every tested `POST` returned 503 with no effect, except `POST /6/pair/grant`,
-  which returned 503 but completed the pairing. Treat 503 as ambiguous on that
-  build (OPEN).
+- `GET /6/sources` and `/6/volume` returned 403 in the first pass, as did
+  `/6/applications` and `/6/notify`. The follow-up re-tested only the working
+  GETs on `1926`.
+- On `1926`, the tested GETs and `POST /6/input/key` worked with **no
+  credentials**, and no `401`/`WWW-Authenticate` challenge was ever issued.
+  Basic auth with valid, wrong, or garbage credentials all returned `200`. The
+  advertised digest pairing is not enforced on this build.
+- `POST /6/input/key` with a JSON body returned `200` (`text/html` "Ok") and
+  executed: volume changed 1 -> 2. A bodyless POST returned `503`. The first
+  report's `503` was a `curl --digest` bodyless-probe artifact, not a TV-side
+  refusal.
+- The client now accepts a non-JSON 2xx body and returns
+  `{"status_code": ..., "body": ...}`. Pairing is not required for control on
+  this build.
 - `8883` and DevTools `:7788` were closed on that unit; both are open on the lab
   unit.
-- After an expired grant, `/6/pair/request` returns `CONCURRENT_PAIRING` for
-  about 20-30 s before a retry succeeds.
+- A completed pairing was not demonstrated. After an unconfirmed grant,
+  `/6/pair/request` returned `CONCURRENT_PAIRING` for about 20-30 s before a
+  retry succeeded.
 
 See [the TPN236E field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md).
 Status: **REPORTED**.

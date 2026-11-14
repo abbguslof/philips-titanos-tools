@@ -71,6 +71,26 @@ class TestJointSpaceClient(unittest.TestCase):
         self.assertEqual(res, {})
 
     @patch("requests.Session.request")
+    def test_send_key_accepts_non_json_success(self, mock_request):
+        mock_resp = MagicMock()
+        mock_resp.ok = True
+        mock_resp.status_code = 200
+        mock_resp.text = "<html><head><title>Ok</title></head><body>Ok</body></html>"
+        mock_resp.json.side_effect = ValueError("not json")
+        mock_request.return_value = mock_resp
+
+        client = JointSpaceClient(
+            "192.0.2.10",
+            port=1926,
+            protocol="https",
+            username="testuser",
+            password="testpass",
+        )
+        res = client.send_key("VolumeUp")
+        self.assertEqual(res["status_code"], 200)
+        self.assertIn("Ok", res["body"])
+
+    @patch("requests.Session.request")
     def test_send_sequence(self, mock_request):
         mock_resp = MagicMock()
         mock_resp.ok = True

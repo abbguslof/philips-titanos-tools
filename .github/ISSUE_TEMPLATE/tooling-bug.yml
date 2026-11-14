@@ -1,0 +1,83 @@
+name: Tooling, docs, or accessibility
+description: A script, parser, test, doc, or Ambilight studio control failed or is hard to use.
+title: "[issue] <area>: <symptom>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for the repo's tools, docs, and Ambilight studio. For a TV-side security issue, read the [security policy](https://github.com/abbguslof/philips-titanos-tools/blob/main/SECURITY.md). Do not post device identifiers or vendor firmware.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Tool or parser
+        - Docs
+        - Ambilight studio accessibility
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: subject
+    attributes:
+      label: Tool, page, or control
+      placeholder: tools/firmware/parse_timg.py
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Repo version or commit
+      description: The release tag or `git rev-parse --short HEAD`.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Python, OS, browser, or assistive technology
+      description: Include what matters for the area. For a tool bug, give the Python and OS. For the studio, give the browser and assistive technology.
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command or steps
+      description: The exact command, or the steps that reproduce the problem. Remove device identifiers and paths.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include the traceback, the screen-reader output, or the visible result.
+    validations:
+      required: true
+
+  - type: textarea
+    id: input
+    attributes:
+      label: Input or sample
+      description: The smallest non-vendor input that reproduces it. For a doc or accessibility issue, link the page or control. Do not attach a firmware package.
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Redaction and tests
+      options:
+        - label: I removed device identifiers, credentials, and vendor firmware.
+          required: true
+        - label: For a tool or parser bug, I ran `python3 -m unittest discover tests` and included the result.
+          required: false

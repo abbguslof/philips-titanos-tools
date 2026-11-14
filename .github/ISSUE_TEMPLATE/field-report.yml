@@ -1,0 +1,85 @@
+name: Field report (other model)
+description: Report what worked and what failed on a TV other than the tested 55PUS8000/12.
+title: "[field report] <model> / <firmware>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read the [contributing rules](https://github.com/abbguslof/philips-titanos-tools/blob/main/CONTRIBUTING.md) and the [security policy](https://github.com/abbguslof/philips-titanos-tools/blob/main/SECURITY.md) before you post.
+
+        Use read-only probes unless you own the unit and have a recovery path. Remove serials, MACs, SSIDs, IPs, PINs, and pairing credentials. Do not attach vendor firmware or raw captures.
+
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: The full model string.
+      placeholder: 55PUS8000/12
+    validations:
+      required: true
+
+  - type: input
+    id: chassis
+    attributes:
+      label: Chassis
+      description: Use the service menu, firmware string, or label. Write "unknown" if you cannot confirm it.
+    validations:
+      required: true
+
+  - type: input
+    id: firmware
+    attributes:
+      label: Firmware
+      description: The full version string.
+      placeholder: TPA256E_V056.002.236.191
+    validations:
+      required: true
+
+  - type: input
+    id: platform
+    attributes:
+      label: Platform or SoC
+      description: Write "unknown" if you cannot confirm it.
+
+  - type: textarea
+    id: worked
+    attributes:
+      label: What worked
+      description: Commands or paths that produced the expected result. Include the exact output where it matters.
+      placeholder: |
+        - USB autoroot: ...
+        - JointSpace: ...
+
+  - type: textarea
+    id: failed
+    attributes:
+      label: What failed
+      description: The exact failure. Include status codes, errors, and whether you repeated it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: probes
+    attributes:
+      label: Probes and evidence
+      description: The commands you ran and the redacted output. Keep it small. Do not paste firmware or raw captures.
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety and redaction
+      options:
+        - label: I own this TV or have the owner's permission.
+          required: true
+        - label: I used read-only probes, or I had a recovery path for any write.
+          required: true
+        - label: I removed serials, MACs, SSIDs, IPs, PINs, pairing credentials, and vendor firmware.
+          required: true
+        - label: I did not attach a raw packet capture or a full device dump.
+          required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else
+      description: Recovery path, region, or links to earlier reports.

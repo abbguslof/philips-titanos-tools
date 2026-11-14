@@ -36,6 +36,12 @@ ability to power-cycle the TV. The persistent hook requires root first.
 | Local JointSpace control | LAN access + pairing (or the vendor app secret) |
 | Firmware inspection | Local copy of a package you obtained for your own device |
 
+Pairing is not a security boundary on every build. A `70PUS8108/60`
+(`TPN236E_V236.004.269.01`) field report found that `1926` accepted JointSpace
+control requests without authentication, despite advertising
+`digest_auth_pairing`. Treat the TV's LAN as trusted and verify the live build
+before relying on pairing. See [the field report](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md).
+
 The USB autorun is a vendor diagnostic feature, not a remote vulnerability. The
 persistent hook is a normal writable-partition startup hook.
 

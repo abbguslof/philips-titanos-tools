@@ -140,6 +140,16 @@ class JointSpaceClient:
                     pass
                 self._session = None
 
+    @staticmethod
+    def _decode_body(status_code: int, text: str) -> Any:
+        """Return JSON when present, or a small result for a non-JSON success."""
+        if not text.strip():
+            return {}
+        try:
+            return json.loads(text)
+        except ValueError:
+            return {"status_code": status_code, "body": text}
+
     def request(
         self, path: str, method: str = "GET", data: Optional[Dict] = None
     ) -> Dict[str, Any]:
@@ -164,7 +174,7 @@ class JointSpaceClient:
 
                 if not r.ok:
                     raise RuntimeError(f"HTTP {r.status_code}: {r.reason} - {r.text}")
-                return r.json() if r.text.strip() else {}
+                return self._decode_body(r.status_code, r.text)
 
         # Fallback to standard urllib for unauthenticated requests
         encoded_data = json.dumps(data).encode("utf-8") if data else None
@@ -178,7 +188,7 @@ class JointSpaceClient:
                 req, timeout=self.timeout, context=self._ctx
             ) as resp:
                 body = resp.read().decode("utf-8")
-                return json.loads(body) if body.strip() else {}
+                return self._decode_body(resp.getcode(), body)
         except urllib.error.HTTPError as e:
             err_body = e.read().decode("utf-8", errors="replace")
             raise RuntimeError(f"HTTP {e.code}: {e.reason} - {err_body}")
@@ -212,7 +222,13 @@ class JointSpaceClient:
         if not r.ok:
             raise RuntimeError(f"Pairing request failed (HTTP {r.status_code}): {r.text}")
 
-        res = r.json()
+        try:
+            res = r.json() if r.text.strip() else {}
+        except ValueError:
+            raise RuntimeError(
+                f"Pairing request returned a non-JSON response "
+                f"(HTTP {r.status_code}): {r.text}"
+            )
         auth_key = res.get("auth_key")
         timestamp = res.get("timestamp")
 
@@ -254,9 +270,14 @@ class JointSpaceClient:
             timeout=self.timeout,
         )
 
-        grant_res = r2.json() if r2.text.strip() else {}
+        try:
+            grant_res = r2.json() if r2.text.strip() else {}
+        except ValueError:
+            grant_res = {}
         if grant_res.get("error_id") != "SUCCESS":
-            raise RuntimeError(f"Pairing grant rejected by TV: {grant_res}")
+            raise RuntimeError(
+                f"Pairing grant not confirmed (HTTP {r2.status_code}): {r2.text}"
+            )
 
         creds = {
             "host": self.host,

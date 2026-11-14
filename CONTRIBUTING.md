@@ -14,6 +14,10 @@ python3 -m unittest discover tests
 Python 3.8+ is supported. The tests use the standard library `unittest`; the
 only runtime dependency is `requests` (used by the JointSpace client).
 
+## Issues
+
+Use the **Field report (other model)** form for a new TV and the **Tooling, docs, or accessibility** form for a repo problem. The forms ask for the redaction checks; do not bypass them.
+
 ## Repository rules
 
 - **No real device data.** Serials, MACs, SSIDs, PINs, pairing credentials, home

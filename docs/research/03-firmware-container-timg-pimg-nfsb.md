@@ -84,11 +84,13 @@ partition.
 
 ## `TIMGPKGVER40`: the 2023 Titan OS revision
 
-Status: **VERIFIED** by parsing the shipped `TPN236E_236.006.135.001` package
-(43PUS7608/12, 621 MB `autorun.upg`): all 19 component MD5s checked against the
-stored payloads. Not yet verified against hardware. The artifact was
-contributor-supplied; the maintainer reproduced the parser logic and the
-classic-package regression, but not the 19/19 VER40 check.
+Status: **VERIFIED** statically. A contributor-supplied
+`TPN236E_236.006.135.001` package (43PUS7608/12, 621 MB `autorun.upg`) had all
+19 component MD5s checked against the stored payloads. A second external
+contributor repeated the `--verify` run on a fresh public copy (2026-11-14):
+19/19 OK. The maintainer reproduced the parser logic and the classic-package
+regression, but not the 19/19 VER40 check, and the package has not been verified
+against hardware.
 
 Newer 2023 Titan OS packages replace the layout above:
 
@@ -139,6 +141,31 @@ Two differences matter:
 - After decryption, `fs`/`ap`/`apext` are `NFSB`-wrapped SquashFS 4.0 LZO
   exactly as in the classic layout (`fs` targets `/dev/mmcblk0p16` on this
   package); `kernel`/`fdt`/`uboot`/`secos` are uImages, `bootlogo` a JPEG.
+
+Reference component list for `TPN236E_236.006.135.001` from that `--verify`
+run (19 components, back-to-back `PIMG` entries; no container-level MD5):
+
+| # | name | compression | length | target |
+| ---: | :--- | :--- | ---: | :--- |
+| 0 | `vertbl` | none | 548 | `/dev/nvt-part-name/boot0` |
+| 1 | `xboot` | none | 369,544 | `/dev/mmcblk0boot0` |
+| 2 | `ddrcfg` | none | 737,280 | `/dev/nvt-part-name/ddrcfg0` |
+| 3 | `xbootdat` | none | 23,552 | `/dev/nvt-part-name/lvdsdat0` |
+| 4 | `stbc_emmc` | none | 65,796 | `/dev/mmcblk0boot0` |
+| 5 | `uboot` | none | 458,325 | `/dev/nvt-part-name/boot0` |
+| 6 | `secos` | none | 4,256,828 | `/dev/nvt-part-name/secos0` |
+| 7 | `fdt` | none | 655,360 | `/dev/nvt-part-name/fdt0` |
+| 8 | `kernel` | none | 19,245,396 | `/dev/nvt-part-name/ker0` |
+| 9 | `fs` | gzip | 7,713,885 | `/dev/mmcblk0p16` |
+| 10 | `ap` | gzip | 296,048,113 | `/dev/nvt-part-name/apexe0` |
+| 11 | `apext` | gzip | 283,849,590 | `/dev/nvt-part-name/apexe_ext0` |
+| 12 | `aqtbl` | gzip | 11,402 | `/dev/nvt-part-name/aq` |
+| 13 | `pqtbl` | gzip | 208,202 | `/dev/nvt-part-name/pq` |
+| 14 | `tconfw` | none | 32,768 | `/dev/nvt-part-name/tcon` |
+| 15 | `tconcfg` | none | 270,352 | `/dev/nvt-part-name/tcon` |
+| 16 | `frcfw` | none | 5,242,880 | `/dev/nvt-part-name/frc_fw` |
+| 17 | `bootlogo` | none | 1,880,679 | `/dev/nvt-part-name/bootlogo` |
+| 18 | `version_info` | none | 512 | `/dev/nvt-part-name/misc` |
 
 `tools/firmware/parse_timg.py` detects the container magic and supports both
 layouts; it carves and MD5-verifies components but does not decrypt.

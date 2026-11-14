@@ -375,20 +375,27 @@ Verdict: GO.
 
 ## Addendum 2026-11-14 (TPN236E field report)
 
-New material: `docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md`
-and the index rows in `docs/README.md`, `docs/research/12`, `docs/research/08`,
-`README.md`, and `evidence/README.md`.
+New material: `docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md`,
+its same-day correction, the VER40 confirmation in `docs/research/03`, the
+non-JSON success handling in `tools/jointspace_client.py`, the issue forms, and
+`ACCESSIBILITY.md`, plus the index rows in `docs/README.md`, `docs/research/12`,
+`docs/research/08`, `README.md`, and `evidence/README.md`.
 
 Checks:
-- The report records a third-party, read-only probe. It stays REPORTED and is
-  not presented as maintainer-verified.
+- The report records a third-party, read-only probe plus owner-approved
+  `VolumeUp` executions. It stays REPORTED and is not presented as
+  maintainer-verified.
 - The note uses placeholders and contains no serials, MACs, SSIDs, IPs, PINs,
   pairing credentials, private keys, or vendor firmware.
+- The note records that `1926` accepted control requests without enforcing the
+  advertised pairing. It is a local-LAN finding, not a remote exploit, and it
+  does not claim a root entry vector.
 - The note does not claim a USB entry vector or an exploit. Hardware tests are
-  explicitly out of scope until an entry vector exists.
-- The changelog is cut to 0.4.9; `pyproject.toml` is 0.4.9.
-- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
-  pass.
+  out of scope until an entry vector exists.
+- The issue forms and `ACCESSIBILITY.md` contain no device identifiers,
+  credentials, or vendor data.
+- Docs, the issue forms, and the JointSpace client decoder changed. Test
+  coverage is 72 tests; the suite, compile step, and shell syntax checks pass.
 
 Verdict: GO.
 

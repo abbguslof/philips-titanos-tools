@@ -50,7 +50,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 30 | [Update path: package map, burner checks, and the dump-only test](research/30-update-path-2026-11-14.md) | VERIFIED / INFERRED | Component map, MD5-only burner checks, live slot matches, and the prepared dump-only test package. |
 | 31 | [App-layer update gate: `/swdl` trigger and RSA verification](research/31-app-update-gate-2026-11-14.md) | VERIFIED / OPEN | USB trigger, `/swdl/autorun.upg` is VER40, RSA public-key verifier, no private key, direct staging bypass plan. |
 | 32 | [NDAL V4L2 reset path and the eburner retries](research/32-ndal-v4l2-reset-2026-11-14.md) | VERIFIED (static) / TESTED-NEGATIVE / OPEN | The exact control (`0x0f170f1f`), 20-byte layout, `/dev/video24`, the full AC-on wrapper consuming the package, and the eburner loader/script. |
-| 33 | [70PUS8108/60 (TPN236E) network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md) | REPORTED | Read-only port and JointSpace 6.1 probes on a 2023 TPN236E unit: no network entry vector, the POST 503 anomaly, and `8883`/`:7788` closed. |
+| 33 | [70PUS8108/60 (TPN236E) network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md) | REPORTED | Read-only port and JointSpace 6.1 probes on a 2023 TPN236E unit: no root entry vector, an unauthenticated `1926` control surface, the corrected POST `503`, and `8883`/`:7788` closed. |
 
 ## Guides
 

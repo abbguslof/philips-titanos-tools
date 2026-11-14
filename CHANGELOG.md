@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.5 - 2026-11-14
+
+### Added
+
+- Eburner flag mapping: `PKG_ready<path>` at `misc + 0x3e00`, STBC ioctl
+  `0xc0105310`, and a no-op eburner status function.
+- Direct `/swdl` staging plan in the app-layer update gate note and evidence.
+
+### Changed
+
+- Test coverage is 71 tests.
+
 ## 0.4.4 - 2026-11-14
 
 ### Added

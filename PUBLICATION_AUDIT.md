@@ -347,4 +347,22 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (TPN236E field report)
+
+New material: `docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md`
+and the index rows in `docs/README.md`, `docs/research/12`, `docs/research/08`,
+`README.md`, and `evidence/README.md`.
+
+Checks:
+- The report records a third-party, read-only probe. It stays REPORTED and is
+  not presented as maintainer-verified.
+- The note uses placeholders and contains no serials, MACs, SSIDs, IPs, PINs,
+  pairing credentials, private keys, or vendor firmware.
+- The note does not claim a USB entry vector or an exploit. Hardware tests are
+  explicitly out of scope until an entry vector exists.
+- Docs-only; no version bump. Test coverage is 71 tests; the suite, compile
+  step, and shell syntax checks pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

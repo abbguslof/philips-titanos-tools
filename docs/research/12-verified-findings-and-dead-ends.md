@@ -42,6 +42,7 @@ One page to keep the claims honest. Tested unit: `55PUS8000/12`, chassis
 | Finding | Evidence |
 | :--- | :--- |
 | On `55PUS8450/12`, firmware `TPN256E_V056.010.032.001`, `run.sh` does not source `customer_env.sh`; the vendor `/swdl/telnet/telnetd` seam restores USB-less persistence. **REPORTED**, not independently reproduced. | [variant note](24-swdl-telnet-persistence-2026-11-11.md) |
+| On `70PUS8108/60` (`TPN236E`, `TPN236E_V236.004.269.01`), read-only probes found no network entry vector: `/6/applications`, `/6/sources`, `/6/volume`, and `/6/notify` returned 403; every tested POST returned 503 with no effect, but `POST /6/pair/grant` returned 503 and still paired; `8883` and `:7788` were closed. **REPORTED**, not independently reproduced. | [field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md) |
 
 ## Dead ends
 
@@ -74,6 +75,8 @@ One page to keep the claims honest. Tested unit: `55PUS8000/12`, chassis
   script reads `UMFG`/`DEBUG_FUNC_LEVEL` from `/dev/nvt-part-name/boot0`, but
   XBoot still reports mode 0 with the observed slices.
 - Whether a future firmware build keeps the same `quick_debug/menu auto` hook.
+- Whether the `503` on POST from the `TPN236E` field unit is an auth/transport
+  state or a response-layer bug; `POST /6/pair/grant` returned `503` but paired.
 - Whether the user trust store can be extended from USB to defeat `DP_203`.
 - Whether the channel-map import parser has a memory-safety bug. Not tested.
 - Whether the two v33-only netlink permissions (`nlmsg_readpriv`,

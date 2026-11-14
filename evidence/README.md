@@ -28,6 +28,11 @@ SSH after a subsequent USB-less cold boot (documented key-only setup; the
 excerpt shows the session, not the auth method). Status: **REPORTED**
 (external hardware test).
 
+A [70PUS8108/60 (TPN236E) field report](../docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md)
+records read-only port and JointSpace 6.1 probes. No raw capture was supplied;
+the research note keeps the observations **REPORTED** and does not treat the
+closed ports as a family fact.
+
 ## Hardware and firmware
 
 | Set | What it proves |

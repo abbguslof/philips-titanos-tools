@@ -75,6 +75,28 @@ The loopback path is still useful for unauthenticated `/1/system` and for
 observing that the firewall does not filter `lo`, but it does not unlock the
 engineering routes.
 
+## Model and firmware variance
+
+The verified rows above are from the lab `55PUS8000/12` (`TPA256E`/`TPN256E`,
+`TPA256E_V056.002.236.191`). Do not assume the same keys, ports, or endpoints on
+another build.
+
+A `70PUS8108/60` (`TPN236E`, `TPN236E_V236.004.269.01`) field report recorded:
+
+- `GET /6/audio/volume` works; `GET /6/audiodata` is 404.
+- `GET /6/sources` and `/6/volume` returned 403, as did `/6/applications` and
+  `/6/notify`.
+- Every tested `POST` returned 503 with no effect, except `POST /6/pair/grant`,
+  which returned 503 but completed the pairing. Treat 503 as ambiguous on that
+  build (OPEN).
+- `8883` and DevTools `:7788` were closed on that unit; both are open on the lab
+  unit.
+- After an expired grant, `/6/pair/request` returns `CONCURRENT_PAIRING` for
+  about 20-30 s before a retry succeeds.
+
+See [the TPN236E field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md).
+Status: **REPORTED**.
+
 ## Ambilight
 
 The TV has 16 LEDs: left 4, top 8, right 4, bottom 0. `expert` mode disables the

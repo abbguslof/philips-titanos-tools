@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- External `70PUS8108/60` (`TPN236E`) field report: read-only network surface,
+  JointSpace 6.1 behavior, the POST `503` anomaly, and no network entry vector.
+  Status: REPORTED. No raw capture was supplied.
+
 ## 0.4.7 - 2026-11-14
 
 ### Added

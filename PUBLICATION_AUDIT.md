@@ -424,4 +424,25 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (vendor VER40 USB update and A/B activation)
+
+New material: the vendor update result in
+`docs/research/31-app-update-gate-2026-11-14.md`,
+`evidence/deep/2026-11-14-ndal-v4l2-reset.md`, `STATE.md`, and
+`docs/research/32-ndal-v4l2-reset-2026-11-14.md`.
+
+Checks:
+- The notes and evidence contain hashes, addresses, symbol names, and slot
+  identifiers. They do not contain private keys, raw vendor payloads, or device
+  identifiers. The vendor package stays local.
+- The update wrote active slot 0 and boot0 with the genuine vendor package; the
+  recovery pair is slot 1/boot1. The old boot-area and p9 backups remain on the
+  host. No deliberately corrupted boot area was written.
+- Root and persistence survived; the TV runs `002.236.191`.
+- The changelog is cut to 0.4.12; `pyproject.toml` is 0.4.12.
+- Test coverage is 72 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

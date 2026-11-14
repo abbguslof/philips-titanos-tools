@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.4.12 - 2026-11-14
+
+### Added
+
+- Genuine vendor VER40 USB update verified on the 8000: the app-layer accepted
+  `PH_2K25_ALL_EU_NT72690_TPN256E_V056.002.236.191_upgrade.pkg` as
+  `autorun.upg`, loaded it, validated it, and programmed active slot 0
+  (`p15`/`p17`/`p19`). AC-on activated it; firmware `002.236.191`.
+- The eMMC boot area changed: boot0 `1c74949e…` new; boot1 `eee415…` recovery.
+  The old main slot 1 (`p16`/`p18`/`p20`) is the recovery pair.
+- Root and persistence survived the update: `uid=0`, dropbear `:2222`,
+  telnetd `:2323`, `customer_env.sh`, freetitan.
+- `p9` post-update `7e8fca3d…`; `p1`/`p2`, `p13`/`p14`, `p21` unchanged.
+
+### Changed
+
+- The app-layer RSA verifier is the barrier for a modified package. The next
+  route is the patched `libfwup` and a modified VER40 component.
+- Test coverage is 72 tests.
+
 ## 0.4.11 - 2026-11-14
 
 ### Added

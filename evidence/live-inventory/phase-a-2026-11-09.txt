@@ -162,12 +162,10 @@ busybox                               1284688
 policy.33.perm.bin                     252211
 ndp_logo_boot.ko                        38976
 ndp_logo_seloff_boot.ko                 38976
-custom.sqsh                              4096
 offlinelauncher.stock.tar             5253120
 ui-page.stock.tar                   154787840
 apexe_ext0.backup                   576716800
 apexe_ext1.backup                   576716800
-freetitan-boot.sh / -home.sh / -supervisor.sh / *.log
 opera-overlay.sh                         7548
 browser-watchdog.pid                        3
 channel_data.tar                      4761600
@@ -203,16 +201,6 @@ PRESENT ip6tables /usr/sbin/ip6tables
 PRESENT nslookup /usr/bin/nslookup
 PRESENT sha256sum /usr/bin/sha256sum
 # NOTE: /mtd_apexe/board/{curl,sqlite3,iperf} exist off-PATH
-
-$ cat /proc/mounts        # selected custom-root mounts
-/dev/loop6 /tmp/freetitan-root          squashfs ro
-/dev/loop5 /tmp/freetitan-data          ext4 rw
-/dev/loop5 /tmp/freetitan-root/etc      ext4 rw
-/dev/loop5 /tmp/freetitan-root/var      ext4 rw
-/dev/loop5 /tmp/freetitan-root/home     ext4 rw
-/dev/root  /tmp/freetitan-root/bin      squashfs ro
-/dev/root  /tmp/freetitan-root/usr      squashfs ro
-# (plus standard /, /dev, /proc, /sys, mtd_apexe, apexe_ext, apdat, swdl)
 
 $ dmesg | grep -Ei 'mmc|panel|tcon|led|i2c|wifi|serial'   # redacted
 [..] {DRV_KPMI} ... KER_PMI_CLASS_TCON / KER_PMI_CLASS_LEDTOP suspend+resume

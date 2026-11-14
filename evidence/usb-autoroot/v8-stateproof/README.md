@@ -14,7 +14,7 @@ boot.
 
 ## Label
 
-- Self-report per boot: VERIFIED (`proof.txt:1-56`).
+- Self-report per boot: VERIFIED (`proof.txt:1-35`).
 - No reset on this boot: VERIFIED (`run-meta.txt:3-8`).
 - Exact `RESET(33)` trigger: UNKNOWN (n=1 boot).
 

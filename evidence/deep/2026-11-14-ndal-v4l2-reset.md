@@ -225,7 +225,7 @@ and were reverted. The eburner entry trigger remains open.
 | Recovery slot 1 | FDT `p16` `7d7535e9…`; kernel `p18` `c6be43cf…`; rootfs `p20` `2dbca39e…` |
 | Boot areas | boot0 `1c74949e…` (new); boot1 `eee415…` (old recovery); both `force_ro=1`, `ro=1` |
 | p9 | `7e8fca3d…` (post-update); `p1`/`p2`, `p13`/`p14`, `p21` unchanged |
-| Root/persistence | `uid=0`, dropbear `:2222`, telnetd `:2323`, `customer_env.sh`, freetitan |
+| Root/persistence | `uid=0`, dropbear `:2222`, telnetd `:2323`, `customer_env.sh`, persistent root |
 | Vendor `/swdl/autorun.upg` | `74d2790a…`, 917,372,175 bytes; size/version `917372175`/`940186113` |
 
 The first reboot after programming used the old slot (`RESET(33)`); the AC-on

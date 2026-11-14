@@ -120,7 +120,7 @@ mount --bind /tmp /tmp/mnttest3
 umount /tmp/mnttest3
 ```
 
-This is the permission that denied the stock appmgr/FreeTitan overlay. The
+This is the permission that denied the stock appmgr overlay. The
 `bin_t` `unconfined_t` workaround is no longer needed for `mounton`.
 
 ## Post-change check

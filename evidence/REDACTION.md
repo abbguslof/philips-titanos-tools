@@ -19,6 +19,7 @@ to support a claim.
 | 3 MB system logs | Not published; selected redacted excerpts only. |
 | Full 4 MB partition dumps | Replaced with 32-byte `UMFG` slices and hashes. |
 | Firmware packages / extracted rootfs | Not published; acquisition and extraction are documented. |
+| Private custom userspace | Removed; the userspace is outside this repository. |
 | Private keys / generated certs | Not published; regenerate locally. |
 
 ## Placeholder conventions

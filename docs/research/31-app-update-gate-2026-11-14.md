@@ -223,7 +223,7 @@ to `7e8fca3d…`; `p1`/`p2`, `p13`/`p14`, and `p21` are unchanged. The live
 The serial log showed `PowerOnEvt:AC ON(2)`, `switched:0`, `dual_all_same:0`,
 `addon_stats=2`, `boot_area:1`, and `lnikauth pass`. Root and persistence
 survived: `uid=0`, dropbear `:2222`, telnetd `:2323`, `customer_env.sh`, and
-freetitan.
+the persistent root.
 
 The app-layer RSA verifier is now the barrier for a modified package. The next
 step is a patched `libfwup` plus a modified VER40 component; the recovery pair

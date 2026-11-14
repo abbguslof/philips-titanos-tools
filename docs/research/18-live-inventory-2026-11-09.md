@@ -159,27 +159,15 @@ The device is **far past** the documented root/persist state. On
 | `busybox` | 1,284,688 B | durable busybox |
 | `policy.33.perm.bin` | 252,211 B | permissive v33 policy |
 | `ndp_logo_boot.ko`, `ndp_logo_seloff_boot.ko` | 38,976 B each | no-op and seloff carriers |
-| `custom.sqsh` | 4,096 B | custom squashfs stub |
 | `offlinelauncher.stock.tar` | 5,253,120 B | launcher backup |
 | `ui-page.stock.tar` | 154,787,840 B | UI backup |
 | `apexe_ext0.backup`,`apexe_ext1.backup` | 576,716,800 B each | partition backups |
-| `freetitan-*.sh/.on/.log` | 0.9–121 KB | custom-root supervisor set |
-
-Mounted custom rootfs (live `/proc/mounts`):
-
-```
-/dev/loop6 /tmp/freetitan-root            squashfs ro
-/dev/loop5 /tmp/freetitan-data            ext4 rw
-bind: loop5 -> /tmp/freetitan-root/{etc,var,home,root,opt,usr/local}
-bind: /dev/root -> .../{bin,lib,sbin,usr}  squashfs ro
-```
 
 `/swdl` (rw) holds `autorun.upg` (917,372,175 B), `boot0.bin` (4,194,304 B),
 `boot0.b64`, `policy33.bin` (294,139 B), `mount.copy`, `umount.copy`.
 
-Label: VERIFIED presence. This is the "separate private OS project" the
-README says lives elsewhere; it is now live on this unit and contradicts the
-public-scope statement. Flagged, not resolved.
+The private custom userspace is outside this repository's scope and is not
+documented here.
 
 ## Discrepancies against published docs (do not silently upgrade)
 
@@ -189,7 +177,6 @@ public-scope statement. Flagged, not resolved.
 | 16 | node list | missing `teec`, `sdp_mem`, `nvt_tk_boot_counter`, `ndp_tsmux`, `ndpcust`, `ndppq`, `ntkxdma`, `ntkhdma` | extend doc 16 |
 | 16 | no TEE | OP-TEE present (`teec`, `kteeclient`) | new DOC/OPEN |
 | 12/16 | seloff via `logomajor` side channel | `ndp_logo` params empty | re-verify carrier variant |
-| README | "public repo stops at research and root" | freetitan custom rootfs live | state-scope mismatch |
 | README | root context `initrc_t` | `id` printed no context (seloff) | clarify |
 
 ## Open / UNKNOWN (Phase A did not answer)

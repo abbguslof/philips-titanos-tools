@@ -251,6 +251,10 @@ unverified and is not a repo claim.
   whether a completed pairing is possible at all.
 - Confirm the unauthenticated `1926` surface and `8883`/`:7788` on another
   `TPN236E`/`TPN237E`/`TPN238E` unit before treating either as a family fact.
+- The second TPN236E field report in
+  [research/34](34-tpn236e-43pus7608-2026-11-14.md) has `:8883` and `:9080`
+  open, uses `:49152`, and has `:7788` closed. The port surface varies within
+  the family.
 - Do not expose this unit to an untrusted LAN while `1926` accepts control
   requests without authentication. If the gap matters to the vendor, use the
   private-disclosure path in [SECURITY.md](../../SECURITY.md), not this note.
@@ -265,6 +269,7 @@ unverified and is not a repo claim.
 ## Related
 
 - [Firmware container](03-firmware-container-timg-pimg-nfsb.md)
+- [43PUS7608/12 field scan and static notes](34-tpn236e-43pus7608-2026-11-14.md)
 - [JointSpace API](08-jointspace-api.md)
 - [Verified findings and dead ends](12-verified-findings-and-dead-ends.md)
 - [Deep jailbreak roadmap](25-deep-jailbreak-roadmap.md)

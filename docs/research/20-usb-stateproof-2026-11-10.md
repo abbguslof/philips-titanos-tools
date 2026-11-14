@@ -47,10 +47,9 @@ check time means the unit did not reboot after the eval. Boot blocks = 1.
 ## Recorded for Step 2 (not acted on)
 
 The same proof already captures the boot filesystem posture:
-`/` is `squashfs ro` (`proof.txt:7`), `apdat`/`mtd_rwarea` is `ext4 rw`
-(`proof.txt:29`), and a custom root is bind/loop-mounted at
-`/tmp/freetitan-root` from `loop6` (squashfs ro, `proof.txt:36`) and `loop5`
-(ext4 rw, `proof.txt:41-47`). Step 2 is not started.
+`/` is `squashfs ro` (`proof.txt:7`) and `apdat`/`mtd_rwarea` is `ext4 rw`
+(`proof.txt:29`). The private custom userspace is outside this repository's
+scope and is not documented here. Step 2 is not started.
 
 ## Safety
 

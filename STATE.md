@@ -1,6 +1,6 @@
 # Current state
 
-Updated: 2026-11-14.
+Updated: 2026-11-15.
 
 Target: Philips `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard
 `715GD542`, firmware `TPA256E_V056.002.236.191`.
@@ -36,21 +36,20 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 
 The public repo documents research and root. The live unit is further along:
 
-- `/tmp/freetitan-root` is mounted (SquashFS root, ext4 data binds).
 - `/root` is a 700 tmpfs; `/etc/profile.d` is bind-mounted from `apdat`.
 - `/mtd_rwarea/apdat` holds `customer_env.sh` (3513 B), `root_boot.sh`,
   `busybox`, `policy.33.perm.bin`, `ndp_logo_boot.ko`,
-  `ndp_logo_seloff_boot.ko`, `opt/`, and the freetitan scripts and logs.
-- `/swdl` holds `autorun.upg` (917,372,175 B), `autorun_size.txt`,
-  `autorun_version.txt`, and the freetitan directory.
+  `ndp_logo_seloff_boot.ko`, `opt/`, and the persistent-root scripts and logs.
+- `/swdl` holds `autorun.upg` (917,372,175 B), `autorun_size.txt`, and
+  `autorun_version.txt`.
 - The vendor VER40 USB update wrote active slot 0 (`p15`/`p17`/`p19`) and
   boot0; AC-on activated it. Firmware `002.236.191`; recovery slot 1/boot1 is
   the previous `002.235.191`. Root and persistence survived.
 - The earlier 2026-11-14 eburner retries restored the vendor
   `/swdl/autorun.upg`, the p9 `misc`, and the STBC mode. Those boot areas are
   now the recovery pair.
-- The freetitan custom rootfs is outside this repository's public scope. This
-  page records its presence, not its internals.
+- The private custom userspace is outside this repository's public scope. This
+  page records the root hook, not its internals.
 
 ## Open gates
 
@@ -131,5 +130,6 @@ The public repo documents research and root. The live unit is further along:
 - [Update path](docs/research/30-update-path-2026-11-14.md)
 - [App-layer update gate](docs/research/31-app-update-gate-2026-11-14.md)
 - [NDAL V4L2 reset](docs/research/32-ndal-v4l2-reset-2026-11-14.md)
+- [43PUS7608/12 field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md)
 - [2026-11-14 backup evidence](evidence/deep/2026-11-14-emmc-backup.md)
 - [2026-11-14 NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md)

@@ -139,8 +139,9 @@ Two differences matter:
   third-party `unixtract` extractor (`github.com/theubusu/unixtract`), which
   performs the decryption.
 - After decryption, `fs`/`ap`/`apext` are `NFSB`-wrapped SquashFS 4.0 LZO
-  exactly as in the classic layout (`fs` targets `/dev/mmcblk0p16` on this
-  package); `kernel`/`fdt`/`uboot`/`secos` are uImages, `bootlogo` a JPEG.
+  exactly as in the classic layout (`fs` targets `/dev/mmcblk0p16` on the
+  TPN236E package; on TPN256E, `fs0`/`fs1` target `p19`/`p20`);
+  `kernel`/`fdt`/`uboot`/`secos` are uImages, `bootlogo` a JPEG.
 
 Reference component list for `TPN236E_236.006.135.001` from that `--verify`
 run (19 components, back-to-back `PIMG` entries; no container-level MD5):
@@ -169,6 +170,10 @@ run (19 components, back-to-back `PIMG` entries; no container-level MD5):
 
 `tools/firmware/parse_timg.py` detects the container magic and supports both
 layouts; it carves and MD5-verifies components but does not decrypt.
+
+The contributor also reported no `quick_debug` and an OverlayFS RW area on
+this TPN236E package. Those findings are TPN236E-specific, not platform-wide.
+See [the 43PUS7608/12 note](34-tpn236e-43pus7608-2026-11-14.md).
 
 ## Acquisition
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.4 - 2026-11-14
+
+### Added
+
+- App-layer update gate analysis: USB trigger, `/swdl/autorun.upg` is
+  `TIMGPKGVER40`, RSA public-key verifier, no private key, and the direct
+  `/swdl` staging bypass plan.
+- `docs/research/31-app-update-gate-2026-11-14.md` and
+  `evidence/deep/2026-11-14-app-update-gate.md`.
+- Correction in `docs/research/30`: the app-layer USB update expects
+  `TIMGPKGVER40`; the local classic package is not valid for that path.
+
+### Changed
+
+- Test coverage is 71 tests.
+
 ## 0.4.3 - 2026-11-14
 
 ### Added

@@ -25,6 +25,7 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Boot areas | `mmcblk0boot0`/`boot1` 4 MiB, identical, `force_ro=1`, `ro=1`, sha256 `eee415012095a8c51be032d1e713ac120211408aeebe029b8791526bbe4d30bd` | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Boot map | `p1`/`p2` UMFG slots; `p9` slot map; `p13`/`p14` ATF; `p15`/`p16` FDT; `p17`/`p18` kernel; `p19`/`p20` rootfs; `p21` plain `kerupm` | [Boot image map](docs/research/28-boot-image-map.md) |
 | Recovery backup | Full `mmcblk0` image and boot areas; `sha256sum -c` passes | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
+| Restore | Same-byte write to both boot areas, read-back hashes, and cold boots verified | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
@@ -44,9 +45,12 @@ The public repo documents research and root. The live unit is further along:
 
 ## Open gates
 
-- [x] Full eMMC and boot-area backup (2026-11-14). Restore not tested.
-- [ ] Restore test: write the same bytes back, cold boot, verify. The boot
-  areas are `force_ro=1`; the write procedure is unproven.
+- [x] Full eMMC and boot-area backup (2026-11-14).
+- [x] Same-byte restore test: wrote the stock bytes back to `mmcblk0boot0` and
+  `mmcblk0boot1`, read back the hashes, restored `force_ro`, and cold-booted
+  both times. See [backup evidence](evidence/deep/2026-11-14-emmc-backup.md).
+- [ ] Corrupted-image restore: prove recovery from a deliberately corrupted
+  boot area. This needs the eMMC boot-area selection or ISP/JTAG path.
 - [ ] Update trigger and loader map. Component map and burner checks are done;
   the trigger and the app-layer RSA gate are open. See
   [update path](docs/research/30-update-path-2026-11-14.md).
@@ -62,8 +66,8 @@ The public repo documents research and root. The live unit is further along:
 ## Next action
 
 1. Keep a second copy of the 2026-11-14 backup off the TV.
-2. Decide on the restore test. Use the stock bytes first; do not write a
-   modified image.
+2. The same-byte restore is done. Before a modified boot image, prove the
+   corrupted-image recovery path.
 3. Read-only work that can proceed now: review the
    [update path](docs/research/30-update-path-2026-11-14.md), map the update
    trigger and the `libfwup.so` gate, and inspect the `sub_123ac` partition
@@ -73,7 +77,7 @@ The public repo documents research and root. The live unit is further along:
 ## Stop conditions
 
 - No full backup.
-- No verified restore.
+- No verified restore of a deliberately corrupted boot area.
 - No way to select or recover the boot area.
 - Field units (`TPN236E`, `TPN258E`, `TPN256E` variants): read-only only.
 

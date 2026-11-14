@@ -94,6 +94,10 @@ Before a boot-chain write, prove the restore on the same unit:
 
 Do not use a modified image for the first restore test.
 
+2026-11-14 result: same-byte writes to `mmcblk0boot0` and `mmcblk0boot1`,
+read-back hashes, and cold boots succeeded. A deliberately corrupted boot area
+is still untested; the boot-area selection and ISP/JTAG path remain open.
+
 ## Stop conditions
 
 - No full backup.

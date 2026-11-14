@@ -1,6 +1,7 @@
 # Recovery gate: back up the eMMC before boot-chain work
 
-Status: **VERIFIED backup**, **restore not tested**. This is the gate from the
+Status: **VERIFIED backup**, **same-byte restore tested on both boot areas**.
+A deliberately corrupted boot area is still untested. This is the gate from the
 [deep jailbreak roadmap](../research/25-deep-jailbreak-roadmap.md) and
 [recovery engineering](../research/26-recovery-engineering.md).
 
@@ -86,15 +87,19 @@ Do this before any modified payload. It is a write.
 3. Write the same bytes back to the same area.
 4. Cold boot and verify the stock boot log and the root shell.
 
-Do not use a modified image for the first restore test. The tested unit reports
-`force_ro=1` and `ro=1` on `mmcblk0boot0`/`boot1`. Clearing `force_ro` and
-writing the boot area is unproven. If the restore fails, the eMMC ISP/JTAG path
-is required.
+2026-11-14 result: the stock bytes were written back to `mmcblk0boot0` and
+`mmcblk0boot1`, read back, and cold-booted after each write. Both boots
+returned `uid=0` with a fresh uptime and a new `root_boot.ready`; both areas
+stayed `force_ro=1` and hash `eee415…`. The same-byte restore is verified.
+
+Do not use a modified image for the first restore test. Recovery from a
+deliberately corrupted boot area is still untested; it needs the eMMC
+boot-area selection or ISP/JTAG path.
 
 ## Stop conditions
 
 - No full backup.
-- No verified restore.
+- No verified restore of a deliberately corrupted boot area.
 - No way to select or recover the boot area.
 - Any uncertainty about the partition's role.
 - Field units: do not write.

@@ -142,7 +142,8 @@ Status labels: **Verified** means reproduced on a tested TV or checked against t
 | Capability | Status | Evidence |
 | :--- | :--- | :--- |
 | Read-only full eMMC and boot-area backup | **Verified** | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
-| Restore from backup | **Not tested** | [Recovery gate](docs/guides/recovery-gate.md) |
+| Restore from backup (same bytes, both boot areas) | **Verified** | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
+| Corrupted-image restore | **Not tested** | [Recovery gate](docs/guides/recovery-gate.md) |
 
 ### Research and local control
 

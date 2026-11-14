@@ -1,6 +1,7 @@
 # 2026-11-14 recovery backup
 
-Status: **VERIFIED read-only backup**. Restore not tested.
+Status: **VERIFIED read-only backup and same-byte restore**. A modified-image
+restore is not tested.
 
 Target: `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, firmware
 `TPA256E_V056.002.236.191`.
@@ -38,6 +39,26 @@ read-only over SSH instead of using the TV-side `emmc_backup.sh` path.
 The full manifest is in `dist/bootchain/2026-11-14/manifest.json`. It stays
 out of the repo.
 
+## Restore test (2026-11-14)
+
+The test wrote the stock bytes back to each eMMC boot area, read them back, and
+cold-booted after each write. The source image matched the live area before the
+write.
+
+| Step | Result |
+| :--- | :--- |
+| `mmcblk0boot0` | `force_ro=0`, `dd` 4,194,304 bytes, `dd_rc=0`, read-back `eee415…30bd`, `force_ro=1` |
+| cold boot 1 | `uid=0`, uptime 60.74 s, new `root_boot.ready`, no MMC errors |
+| `mmcblk0boot1` | `force_ro=0`, `dd` 4,194,304 bytes, `dd_rc=0`, read-back `eee415…30bd`, `force_ro=1` |
+| cold boot 2 | `uid=0`, uptime 48.92 s, new `root_boot.ready` at 17:02:09, no MMC errors |
+
+Both boot areas are still `force_ro=1`, `ro=1`, and hash
+`eee415012095a8c51be032d1e713ac120211408aeebe029b8791526bbe4d30bd`.
+
+This proves the write path and a same-byte restore on both boot areas. It does
+not prove recovery from a deliberately corrupted or modified boot area. The
+eMMC boot-area selection and ISP/JTAG path remain open for that case.
+
 ## Storage and redaction
 
 The images and the bootchain dump are on a local media drive, not in this
@@ -46,6 +67,8 @@ serial numbers, MAC addresses, SSIDs, or credentials are published.
 
 ## Next
 
-Keep a second copy off the TV. The restore test is the next gate and is not
-tested here. See [the recovery gate](../../docs/guides/recovery-gate.md) and
+Keep a second copy off the TV. The same-byte restore is verified. The next gate
+is recovery from a deliberately corrupted boot area, which needs the eMMC
+boot-area selection or ISP/JTAG path. See
+[the recovery gate](../../docs/guides/recovery-gate.md) and
 [recovery engineering](../../docs/research/26-recovery-engineering.md).

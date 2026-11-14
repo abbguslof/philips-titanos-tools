@@ -66,7 +66,9 @@ Tools and evidence:
 - `docs/research/26-recovery-engineering.md`.
 
 Stop condition: if a deliberately corrupted boot area cannot be restored, do
-not write a boot image.
+not write a boot image. The 2026-11-14 same-byte restore on `mmcblk0boot0` and
+`mmcblk0boot1` passed; the deliberately corrupted case and the boot-area
+selection/ISP path remain open.
 
 ## Phase B: Boot-chain reverse engineering (read-only)
 
@@ -189,8 +191,10 @@ writes until Phase R.
 - [x] `p9` `PPCH`/`STBC`/`VTBL` parsing and package-to-live mapping.
 - [x] Update environment mapped (`eburner`/`sys_run`/`nvt_eburner`).
 - [x] Full eMMC/boot-area backup (recovery gate). See
-  [2026-11-14 backup](../../evidence/deep/2026-11-14-emmc-backup.md). Restore
-  not tested.
+  [2026-11-14 backup](../../evidence/deep/2026-11-14-emmc-backup.md).
+- [x] Same-byte restore test: both boot areas written, read-back verified, both
+  cold boots returned root. A deliberately corrupted boot area is still
+  untested.
 - [ ] Update trigger and package-loader mapping.
 - [ ] Dump-only `sys_run` package test.
 - [ ] `kerupm` update-mode verification and boot selection.

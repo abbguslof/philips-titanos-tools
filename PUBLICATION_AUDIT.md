@@ -254,4 +254,23 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (same-byte restore)
+
+New material: the same-byte restore result in
+`evidence/deep/2026-11-14-emmc-backup.md`, `STATE.md`,
+`docs/guides/recovery-gate.md`, and the recovery tables.
+
+Checks:
+- The test wrote only the stock bytes back to `mmcblk0boot0` and
+  `mmcblk0boot1`. No modified image was written.
+- Both cold boots returned `uid=0`, a fresh uptime, and a new
+  `root_boot.ready`. Both boot areas are still `force_ro=1` and hash `eee415…`.
+- The docs keep the corrupted-image restore and the boot-area selection/ISP path
+  open.
+- The changelog is cut to 0.4.3; `pyproject.toml` is 0.4.3.
+- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

@@ -24,7 +24,9 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 
 An additional [77OLED760/12 (TPN258E) report](tpn258e-77oled760/) includes
 USB autoroot, a USB-less cold boot using the `/swdl` persistence hook, and
-key-authenticated SSH after a subsequent USB-less cold boot. Status: **REPORTED** (external hardware test).
+SSH after a subsequent USB-less cold boot (documented key-only setup; the
+excerpt shows the session, not the auth method). Status: **REPORTED**
+(external hardware test).
 
 ## Hardware and firmware
 

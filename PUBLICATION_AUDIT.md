@@ -347,6 +347,32 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (NDAL V4L2 helper and the full AC-on wrapper)
+
+New material: the corrected NDAL V4L2 control and layout in
+`docs/research/32-ndal-v4l2-reset-2026-11-14.md` and
+`evidence/deep/2026-11-14-ndal-v4l2-reset.md`, the full-wrapper result in
+`docs/research/31-app-update-gate-2026-11-14.md`, and the updated `STATE.md`.
+
+Checks:
+- The notes and evidence contain hashes, symbol names, addresses, and offsets.
+  They do not contain private keys, raw vendor payloads, or device identifiers.
+- The helper and TV libraries stay local; the helper source is not published.
+- The test wrote `/swdl` and the p9 flag and set the STBC mode. Cleanup
+  restored the vendor `/swdl` package, `autorun_size.txt`,
+  `autorun_version.txt`, the p9 `misc`, and the STBC mode; the boot areas were
+  not written.
+- The vendor package `74d2790a…`, p9 `c32f354f…`, and boot areas `eee415…` are
+  restored. The TV and `appmgr` run.
+- The full `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` wrapper consumed
+  `/swdl/autorun.upg` but produced no `PKG_SUCCESS` or proof; the eburner
+  loader/script remains open.
+- The changelog is cut to 0.4.8; `pyproject.toml` is 0.4.8.
+- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 ## Addendum 2026-11-14 (TPN236E field report)
 
 New material: `docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md`

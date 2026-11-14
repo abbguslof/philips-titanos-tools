@@ -8,6 +8,27 @@
   JointSpace 6.1 behavior, the POST `503` anomaly, and no network entry vector.
   Status: REPORTED. No raw capture was supplied.
 
+## 0.4.8 - 2026-11-14
+
+### Added
+
+- NDAL V4L2 reset helper test: `NDAL_VideoExt_OpenDevice(0, 0xA)` selects
+  `/dev/video24`, then `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` resets the TV.
+  The full wrapper consumed `/swdl/autorun.upg`; p9 stayed `PKG_ready`,
+  `misc + 0x4000` was zero, `/swdl/eburner-proof.txt` was absent, and the boot
+  areas were unchanged.
+- The raw V4L2 `G_EXT_CTRLS` reset the TV but left the package intact; the
+  full wrapper is the stronger trigger.
+
+### Changed
+
+- Corrected the NDAL V4L2 control: id `0x0f170f1f` (AC-on) and `0x0f170f29`
+  (plain), class `0x0f170000`, ioctl `0xc0185647`, 20-byte controls with value
+  pointers, target `/dev/video24`, provider `libv4l2.so.0`, and the ioctl fd at
+  `0x50d90`.
+- The eburner script/loader is still the blocker.
+- Test coverage is 71 tests.
+
 ## 0.4.7 - 2026-11-14
 
 ### Added

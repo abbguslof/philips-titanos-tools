@@ -86,7 +86,9 @@ partition.
 
 Status: **VERIFIED** by parsing the shipped `TPN236E_236.006.135.001` package
 (43PUS7608/12, 621 MB `autorun.upg`): all 19 component MD5s checked against the
-stored payloads. Not yet verified against hardware.
+stored payloads. Not yet verified against hardware. The artifact was
+contributor-supplied; the maintainer reproduced the parser logic and the
+classic-package regression, but not the 19/19 VER40 check.
 
 Newer 2023 Titan OS packages replace the layout above:
 

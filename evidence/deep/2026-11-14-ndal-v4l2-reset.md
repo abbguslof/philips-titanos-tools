@@ -1,9 +1,10 @@
 # 2026-11-14 NDAL V4L2 reset and the eburner retries
 
-Status: **TESTED-NEGATIVE** for the paused-`appmgr` retry and for the script
-run after the full AC-on wrapper. **VERIFIED static** for the NDAL V4L2
-functions, the control layout, and the `/dev/video24` target. **OPEN** for the
-eburner loader/extraction and the `sys_run` script.
+Status: **TESTED-NEGATIVE** for the paused-`appmgr` retry, the script after
+the full AC-on wrapper, and the p9-metadata entry attempts. **VERIFIED static**
+for the NDAL V4L2 functions, the control layout, the `/dev/video24` target, the
+classic eburner USB-image initramfs, and the p9 metadata layout. **OPEN** for
+the eburner entry trigger and the `sys_run` script.
 
 Target: Philips `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`.
 
@@ -146,15 +147,78 @@ The log ends at `calling reset`; the wrapper reset the TV. The `fd3` is the log
 file in that run; the opened video node was fd 4. The independent live check is
 `gfd` = 61 -> `/dev/video24`.
 
+## Eburner initramfs and p9 metadata
+
+`eburner` component: `02-eburner.img`, u-boot uImage, Linux ARM64 5.4.254,
+22,566,920 payload bytes. The gzip cpio initramfs is at component offset
+`0xfd8948`; it contains `etc/init.d/S21eburner.sh`,
+`bin/nvt_extract_sys_run`, `bin/nvt_eburner`, and busybox.
+
+`S21eburner.sh` uses a USB image, not `/swdl`:
+
+```text
+IMAGE_PATH=nvt_tv_firmware.img
+parse /proc/cmdline for nvt_eburner_img=*
+wait for /dev/sda1 and /media/sda1/${IMAGE_PATH}
+nvt_ctrl_adc_reset disable
+nvt_extract_sys_run ${UPDATE_FNAME}
+/tmp/sys_run/run.sh ${UPDATE_FNAME}
+```
+
+Live/package p9 metadata:
+
+| Offset | Live p9 | Package component |
+| ---: | :--- | :--- |
+| `0x400` | `PPCH` pptbl0 | `pptbl0` (1536 B, exact) |
+| `0xa00` | `PPCH` pptbl1 | `pptbl1` (1536 B, exact) |
+| `0x1000` | `FWVR` vinfo | `vinfo` (512 B, exact) |
+| `0x3600` | `UPST` factory status | `upst` (512 B, update status) |
+| `0x3800` | zeros | `bflag` (`BTFG`, 512 B; offset inferred) |
+| `0x3e00` | `_ALL_EU_…` / `PKG_ready` | app `SetPKGFlag` |
+
+`libfwup.so`: `nvtfw_get_bflag` `0x6dbc`, `nvtfw_emmc_read_pptbl` `0x7d48`,
+`nvtfw_emmc_write_pptbl` `0x7ea8`, `nvtfw_emmc_sync_dbflag_boot_part`
+`0xa75c`, `BTFG` `0x198e0`. `nvtfw_emmc_write_pptbl` writes a 0x600-byte PPCH
+table at a block offset.
+
+STBC: `DEV_UART_Set_SWEburnerOnOff` (libdev `0x49dec`) opens `/dev/ntkstbc`
+O_RDWR, ioctl `0xc0105310`, 16-byte struct `00 00 00 00 c9 <arg> 00 00 c9 ...`.
+`APP_MGR_SYS_Reset` -> `PLAT_SYS_Reset` (`libplat` `0xb2ee8`, normal reboot);
+`...PowerOnEventACOnForUpgrade` -> the HWWDT wrapper (`0xb6ad0`).
+
+Additional tests:
+
+| Test | `/swdl` | USB image | p9 metadata | Result |
+| :--- | :--- | :--- | :--- | :--- |
+| HWWDT, p9 `/swdl`, no USB | consumed | none | live | reset; no script |
+| HWWDT/normal reset, p9 `/swdl` + USB p9 | intact/consumed | p9 | live | no script |
+| HWWDT/reset, p9 `/swdl` + USB full | intact | full `ccba5334…` | live | no script |
+| `PLAT_SYS_Reset`, p9 `/swdl` + USB full | intact | full | live | helper blocked; no reset |
+| HWWDT/reset, p9 `/swdl` + USB full | intact | full | `UPST` 0x3600, `BTFG` 0x3800, `PKG_ready` 0x3e00 | no script |
+
+The full USB package `dumponly.pkg` (`ccba5334…`, 1.53 GB) was verified and
+left intact; no `update-proof.txt` appeared. The p9 metadata writes persisted
+and were reverted. The eburner entry trigger remains open.
+
+## Next
+
+- Capture the eburner serial console (`ttyS0`, 115200; the TV TX is alive) to
+  see whether the eburner boots and why the USB image is not used.
+- Or analyze the bootloader/NVM eburner-selection flag; the app-layer flow sets
+  the STBC mode, p9 `PKG_ready`, and p9 `bflag`/`upst` before `PLAT_SYS_Reset`.
+- Verify the USB mount path/label and `nvt_eburner_img=`.
+
 ## Cleanup and live state
 
 | Item | Value |
 | :--- | :--- |
 | p9 `misc` | `c32f354f0d4869a0c53b6f66eb1dc6b4dcc80293d6bbdbc32a740e917a857f39` |
+| p9 metadata | `UPST`/`BTFG` writes reverted with the pristine p9 restore |
 | p9 `0x3e00` | Zero / original `_ALL_EU_NT72690_…` block |
 | Vendor `/swdl/autorun.upg` | `74d2790adda5252d4761eafac33fa7c38017a6666a49a06f861e11cc35cce817`, 917,372,175 bytes |
 | `autorun_size.txt` | `917372175` |
 | `autorun_version.txt` | `940186113` |
+| USB image | `nvt_tv_firmware.img` removed after the test |
 | STBC mode | Off, ioctl `0xc0105310`, struct `00 00 00 00 c9 00 00 00 c9 00 00 00 00 00 00 00` |
 | Boot areas | `eee415…` on both |
 | `appmgr` | `com.nvt.appmgr` running |

@@ -28,7 +28,7 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Restore | Same-byte write to both boot areas, read-back hashes, and cold boots verified | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
 | App-layer update gate | USB package stages to `/swdl/autorun.upg`; the live file is `TIMGPKGVER40`; the verifier is RSA; no private key. The eburner entered twice via STBC + AC; the script did not leave a proof. A paused-appmgr retry kept the package but did not enter | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
-| NDAL V4L2 reset | `NDAL_VideoExt_STBC_ResetByHWWDT_*` uses control `0x0f170f1f`/`0x0f170f29` (class `0x0f170000`), ioctl `0xc0185647`, 20-byte controls, and `/dev/video24`. The full AC-on wrapper reset consumed the package but left no script proof | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
+| NDAL V4L2 reset | `NDAL_VideoExt_STBC_ResetByHWWDT_*` uses control `0x0f170f1f`/`0x0f170f29` (class `0x0f170000`), ioctl `0xc0185647`, 20-byte controls, and `/dev/video24`. The classic eburner initramfs uses a USB image (`/media/sda1/nvt_tv_firmware.img`), not `/swdl`; the p9 metadata layout (`PPCH`/`FWVR`/`UPST`/`BTFG`) is mapped. The entry trigger remains open | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
 | `/swdl` and p9 | Vendor `74d2790a…`, p9 `c32f354f…`, STBC off, boot areas `eee415…` | [NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
@@ -78,9 +78,12 @@ The public repo documents research and root. The live unit is further along:
   `NDAL_VideoExt_OpenDevice(0, 0xA)` and
   `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn`; the wrapper reset the TV and
   consumed `/swdl/autorun.upg` but the script still did not run.
-- [ ] Eburner loader/`sys_run` extraction: find why the consumed package does
-  not execute `sys_run/run.sh`; compare the p9 component layout with the vendor
-  package and the `nvt_eburner` flow strings.
+- [ ] Eburner entry with the USB image and p9 metadata: the classic initramfs
+  reads `/media/sda1/nvt_tv_firmware.img` (or `nvt_eburner_img=`), extracts
+  `sys_run`, and runs `/tmp/sys_run/run.sh`. The full classic package on the
+  USB and the p9 metadata (`UPST` `0x3600`, `BTFG` `0x3800`, `PKG_ready`
+  `0x3e00`) did not produce the script. The entry trigger/boot flag is the
+  blocker; the extraction path is mapped.
 - [x] `kerupm` package/live match: plain uImage, valid data CRC, exact bytes at
   `p21`. Update-mode selection is still open.
 - [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map. The `p9` `PPCH` slot map is
@@ -93,16 +96,14 @@ The public repo documents research and root. The live unit is further along:
 1. Keep a second copy of the 2026-11-14 backup off the TV.
 2. The same-byte restore passed. Before a modified boot image, prove the
    corrupted-image recovery path.
-3. Inspect the eburner loader and `sys_run` extraction. The full AC-on wrapper
-   consumed `/swdl/autorun.upg`; compare the p9 components (`pre_install`,
-   `part_tbl`, `eburner`, `sys_run`, `pptbl0/1`, `bflag`, `vinfo`, `upst`)
-   with the vendor layout and the `nvt_eburner` `## EBURN ## flow-1/flow-2`
-   strings. See [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md).
-4. Use the full `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` helper for the next
-   package test; the raw V4L2 `G_EXT_CTRLS` is not sufficient.
-5. Test with the p9 package; read p9 `0x3e00`/`0x4000` and
-   `/swdl/eburner-proof.txt`; restore the vendor `/swdl`, the p9 `misc`, and
-   the STBC mode.
+3. Capture the eburner serial console (`ttyS0` 115200; the TV TX is alive) or
+   analyze the bootloader/NVM eburner-selection flag. The classic eburner
+   reads the USB image; the entry trigger and boot flag remain open. See
+   [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md).
+4. Verify the USB mount path/label (`/media/sda1`) and the
+   `nvt_eburner_img=` cmdline. The full classic package and the p9 metadata
+   did not enter in the tested reset sequences.
+5. Do not write boot areas until the corrupted-image restore is proven.
 
 ## Stop conditions
 

@@ -142,7 +142,9 @@ the app-layer verifier.
   `0x0f170000`, ioctl `0xc0185647` on `/dev/video24`; build the helper in
   [research/32](32-ndal-v4l2-reset-2026-11-14.md). The full
   `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` wrapper consumed the package but
-  still left no script proof.
+  still left no script proof. The classic eburner initramfs uses the USB image
+  `/media/sda1/nvt_tv_firmware.img`; the entry trigger and boot flag remain
+  open.
 - Do not test on field units.
 
 ## Direct staging test (2026-11-14)
@@ -189,6 +191,14 @@ A local helper called `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` after
 V4L2 `G_EXT_CTRLS` alone reset the TV but left the package intact. The full
 wrapper is the stronger trigger; the eburner script/loader remains the blocker.
 The cleanup restored the vendor package, the p9 `misc`, and the STBC mode.
+
+The classic eburner initramfs (extracted from the `eburner` component) reads a
+USB image at `/media/sda1/nvt_tv_firmware.img`, not `/swdl/autorun.upg`; it
+extracts `sys_run` and runs `/tmp/sys_run/run.sh`. The app-layer `VER40` path
+and its `/swdl` flag are a separate flow. A full classic package on the USB,
+plus the p9 `UPST`/`BTFG` metadata, still did not enter in the tested reset
+sequences; the entry trigger remains open. See
+[research/32](32-ndal-v4l2-reset-2026-11-14.md).
 
 The TV is safe: p9 hash `c32f354f…` (pristine), boot areas `eee415…`, vendor
 `/swdl/autorun.upg` `74d2790a…`, STBC off, p9 flag original.

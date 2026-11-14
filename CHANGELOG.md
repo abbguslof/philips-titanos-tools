@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.4.11 - 2026-11-14
+
+### Added
+
+- Classic eburner initramfs map: the `eburner` uImage carries a gzip cpio at
+  component offset `0xfd8948` with `/etc/init.d/S21eburner.sh`,
+  `nvt_extract_sys_run`, and `nvt_eburner`. The script reads a USB image at
+  `/media/sda1/nvt_tv_firmware.img` (or `nvt_eburner_img=`), extracts
+  `sys_run`, and runs `/tmp/sys_run/run.sh`; it does not read
+  `/swdl/autorun.upg`.
+- p9 metadata layout: `PPCH` pptbl0/1 at `0x400`/`0xa00`, `FWVR` vinfo at
+  `0x1000`, `UPST` at `0x3600`, `BTFG` bflag (inferred) at `0x3800`, and
+  `PKG_ready` at `0x3e00`; mapped the `libfwup` bflag/pptbl functions.
+- Confirmed `DEV_UART_Set_SWEburnerOnOff` (`/dev/ntkstbc`, ioctl
+  `0xc0105310`, 16-byte struct) and the app reset wrappers.
+- Tested the full classic package on the USB plus the p9 metadata; the eburner
+  still produced no `update-proof.txt`, `PKG_SUCCESS`, or p9 markers.
+
+### Changed
+
+- The app-layer `/swdl` path and the classic USB eburner path are separate.
+- The eburner entry trigger/boot flag remains open.
+- Test coverage is 72 tests.
+
 ## 0.4.10 - 2026-11-14
 
 ### Added

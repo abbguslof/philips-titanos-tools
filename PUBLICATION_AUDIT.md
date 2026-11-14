@@ -399,4 +399,27 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (eburner initramfs and p9 metadata)
+
+New material: the classic eburner initramfs map and p9 metadata layout in
+`docs/research/32-ndal-v4l2-reset-2026-11-14.md` and
+`evidence/deep/2026-11-14-ndal-v4l2-reset.md`, the USB-path correction in
+`docs/research/31-app-update-gate-2026-11-14.md`, and the updated `STATE.md`.
+
+Checks:
+- The notes and evidence contain hashes, addresses, symbol names, and a short
+  logic excerpt of the initramfs script. They do not contain private keys, raw
+  vendor payloads, or device identifiers. The full package and USB image stay
+  local.
+- The p9 metadata test wrote `UPST` at `0x3600` and `BTFG` at `0x3800`; the
+  cleanup restored the pristine p9. The vendor `/swdl`, size/version files, and
+  STBC mode were restored; the boot areas were not written. The USB image was
+  removed.
+- The eburner entry trigger remains open; no boot-area or eMMC writes.
+- The changelog is cut to 0.4.11; `pyproject.toml` is 0.4.11.
+- Test coverage is 72 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

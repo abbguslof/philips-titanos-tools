@@ -41,8 +41,8 @@ The public repo documents research and root. The live unit is further along:
 - `/mtd_rwarea/apdat` holds `customer_env.sh` (3513 B), `root_boot.sh`,
   `busybox`, `policy.33.perm.bin`, `ndp_logo_boot.ko`,
   `ndp_logo_seloff_boot.ko`, `opt/`, and the freetitan scripts and logs.
-- `/swdl` holds `autorun.upg` (917,372,175 B), `boot0.bin`, `policy33.bin`, and
-  the freetitan directory.
+- `/swdl` holds `autorun.upg` (917,372,175 B), `autorun_size.txt`,
+  `autorun_version.txt`, and the freetitan directory.
 - The 2026-11-14 eburner retries restored the vendor `/swdl/autorun.upg`, the
   p9 `misc`, and the STBC mode; the boot areas are unchanged.
 - The freetitan custom rootfs is outside this repository's public scope. This

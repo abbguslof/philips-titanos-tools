@@ -1,9 +1,9 @@
 # App-layer update gate: `/swdl` trigger and RSA verification
 
-Status: **VERIFIED (static)** for the trigger and the verifier, and for the
-classic eburner USB-image initramfs and p9 metadata. **OPEN** for the eburner
-entry trigger/boot flag and the app-layer VER40 bypass. Static mapping only;
-the test results are labeled below.
+Status: **VERIFIED (hardware)** for the genuine VER40 USB update and A/B
+activation. **VERIFIED (static)** for the trigger, verifier, classic eburner
+USB-image initramfs, and p9 metadata. **OPEN** for the modified VER40
+package/RSA bypass and the classic eburner entry.
 
 Target: `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`.
 
@@ -135,17 +135,14 @@ because the package is staged directly, not through the app-layer verifier.
 
 ## Next
 
-- The eburner flag path is mapped: `PKG_ready` at `misc + 0x3e00`, the STBC
-  ioctl `0xc0105310`, and the no-op status function.
-- The classic eburner initramfs is mapped: it reads a USB image at
-  `/media/sda1/nvt_tv_firmware.img`, extracts `sys_run`, and runs
-  `/tmp/sys_run/run.sh`. The entry trigger/boot flag and the USB mount/cmdline
-  remain open; see [research/32](32-ndal-v4l2-reset-2026-11-14.md).
-- The NDAL V4L2 reset is mapped and the helper resets the TV, but no test run
-  produced `PKG_SUCCESS` or the script proof. The next diagnostic is the
-  eburner serial console or the bootloader/NVM selection flag.
-- The app-layer VER40 path is separate: the RSA gate is mapped; a patched
-  `libfwup` or a signed VER40 package remains open.
+- The vendor VER40 USB update is proven: genuine package, active slot 0,
+  AC-on activation, version `002.236.191`; root/persistence survived; recovery
+  pair slot 1/boot1.
+- Next: patch `libfwup` RSA (`nvtfw_sec_verify_whole_img_sign` `0xb889` or
+  `nvtfw_enable_secure_boot` `0x6d3d`) and the app-layer version check; build a
+  modified VER40 component; keep the old pair recovery.
+- The classic eburner USB-image path remains open; the serial console is the
+  diagnostic if that route continues.
 - Do not test on field units.
 
 ## Direct staging test (2026-11-14)
@@ -203,9 +200,34 @@ plus the p9 `UPST`/`BTFG` metadata, did not enter in the tested reset
 sequences; the entry trigger remains open. See
 [research/32](32-ndal-v4l2-reset-2026-11-14.md).
 
-The TV boots normally. p9 is `c32f354f…` (pristine), the boot areas are
-`eee415…`, the vendor `/swdl/autorun.upg` is `74d2790a…`, STBC is off, and
-the p9 flag is original.
+## Vendor VER40 USB update (2026-11-14)
+
+The app-layer USB update accepted the genuine `TIMGPKGVER40` package. The TV
+menu listed the package only after it was renamed to `autorun.upg`; the
+original `.pkg` name was ignored. It loaded, validated, and programmed active
+slot 0 (`p15`/`p17`/`p19`). The TV rebooted to the old slot. An AC-on cycle
+then activated slot 0: firmware `002.236.191`.
+
+| Partition | Active slot 0 | Recovery slot 1 |
+| :--- | :--- | :--- |
+| FDT | `p15` `9ac6c6de…` | `p16` `7d7535e9…` |
+| kernel | `p17` `85dd1e43…` | `p18` `c6be43cf…` |
+| rootfs | `p19` `4c267420…` | `p20` `2dbca39e…` |
+
+The eMMC boot area changed too: boot0 `1c74949e…` (new), boot1
+`eee415012095a8c51be032d1e713ac120211408aeebe029b8791526bbe4d30bd` (old).
+The active boot part is 1; the recovery boot1 is the other part. `p9` changed
+to `7e8fca3d…`; `p1`/`p2`, `p13`/`p14`, and `p21` are unchanged. The live
+`/swdl/autorun.upg` is the vendor `74d2790a…` package.
+
+The serial log showed `PowerOnEvt:AC ON(2)`, `switched:0`, `dual_all_same:0`,
+`addon_stats=2`, `boot_area:1`, and `lnikauth pass`. Root and persistence
+survived: `uid=0`, dropbear `:2222`, telnetd `:2323`, `customer_env.sh`, and
+freetitan.
+
+The app-layer RSA verifier is now the barrier for a modified package. The next
+step is a patched `libfwup` plus a modified VER40 component; the recovery pair
+is slot 1/boot1. The app-layer version check may also need a patch.
 
 ## Safety
 

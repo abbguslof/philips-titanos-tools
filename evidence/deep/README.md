@@ -11,7 +11,7 @@ kept under the gitignored `dist/` tree and are not published.
 | [2026-11-14 update path](2026-11-14-update-path.md) | The component map, MD5-only burner checks, live slot matches, and the prepared dump-only package. |
 | [2026-11-14 app-layer gate](2026-11-14-app-update-gate.md) | The USB trigger, `/swdl/autorun.upg` is `TIMGPKGVER40`, the RSA verifier, no private key, and the direct staging test results. |
 | [2026-11-14 eMMC backup](2026-11-14-emmc-backup.md) | Full eMMC and boot-area backup hashes, the second copy, and the same-byte restore and cold-boot proof. |
-| [2026-11-14 NDAL V4L2 reset](2026-11-14-ndal-v4l2-reset.md) | The paused-appmgr retry, the corrected NDAL V4L2 control and `/dev/video24` target, the classic eburner USB-image initramfs, the p9 metadata layout, the tested reset/entry attempts, and the vendor/p9 cleanup. |
+| [2026-11-14 NDAL V4L2 reset](2026-11-14-ndal-v4l2-reset.md) | The paused-appmgr retry, the corrected NDAL V4L2 control and `/dev/video24` target, the classic eburner USB-image initramfs, the p9 metadata layout, the tested reset/entry attempts, the vendor VER40 USB update/A-B activation (active slot 0/boot0; recovery slot 1/boot1), and the vendor/p9 cleanup. |
 
 Method and limits: [boot image map](../../docs/research/28-boot-image-map.md),
 [deep roadmap](../../docs/research/25-deep-jailbreak-roadmap.md), and

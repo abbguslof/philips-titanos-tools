@@ -3,8 +3,10 @@
 Status: **TESTED-NEGATIVE** for the paused-`appmgr` retry, the script after
 the full AC-on wrapper, and the p9-metadata entry attempts. **VERIFIED static**
 for the NDAL V4L2 functions, the control layout, the `/dev/video24` target, the
-classic eburner USB-image initramfs, and the p9 metadata layout. **OPEN** for
-the eburner entry trigger and the `sys_run` script.
+classic eburner USB-image initramfs, and the p9 metadata layout. **VERIFIED
+(hardware)** for the later vendor VER40 USB update and A/B activation; the
+active pair is new, slot 1/boot1 is the recovery. **OPEN** for the eburner
+entry trigger and the `sys_run` script.
 
 Target: Philips `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`.
 
@@ -202,13 +204,39 @@ and were reverted. The eburner entry trigger remains open.
 
 ## Next
 
+- The vendor VER40 USB update is proven. The next code-execution route is the
+  app-layer patched `libfwup` and a modified VER40 component; the recovery pair
+  is slot 1/boot1.
 - Capture the eburner serial console (`ttyS0`, 115200; the TV TX is alive) to
   see whether the eburner boots and why the USB image is not used.
 - Or analyze the bootloader/NVM eburner-selection flag; the app-layer flow sets
   the STBC mode, p9 `PKG_ready`, and p9 `bflag`/`upst` before `PLAT_SYS_Reset`.
 - Verify the USB mount path/label and `nvt_eburner_img=`.
 
+## Vendor VER40 USB update and A/B activation
+
+| Item | Value |
+| :--- | :--- |
+| Package | genuine `PH_2K25_ALL_EU_NT72690_TPN256E_V056.002.236.191_upgrade.pkg`, `74d2790a…`, 917,372,175 bytes; USB name `autorun.upg` |
+| App-layer result | loaded, validated, programmed active slot 0 (`p15`/`p17`/`p19`) |
+| Activation | AC-on: `PowerOnEvt:AC ON(2)`, `switched:0`, `dual_all_same:0`, `addon_stats=2`, `boot_area:1`, `lnikauth pass` |
+| Firmware | `002.236.191` |
+| Active slot 0 | FDT `p15` `9ac6c6de…`; kernel `p17` `85dd1e43…`; rootfs `p19` `4c267420…` |
+| Recovery slot 1 | FDT `p16` `7d7535e9…`; kernel `p18` `c6be43cf…`; rootfs `p20` `2dbca39e…` |
+| Boot areas | boot0 `1c74949e…` (new); boot1 `eee415…` (old recovery); both `force_ro=1`, `ro=1` |
+| p9 | `7e8fca3d…` (post-update); `p1`/`p2`, `p13`/`p14`, `p21` unchanged |
+| Root/persistence | `uid=0`, dropbear `:2222`, telnetd `:2323`, `customer_env.sh`, freetitan |
+| Vendor `/swdl/autorun.upg` | `74d2790a…`, 917,372,175 bytes; size/version `917372175`/`940186113` |
+
+The first reboot after programming used the old slot (`RESET(33)`); the AC-on
+boot activated slot 0. The active boot part is 1; boot1 is the recovery pair.
+The app-layer RSA verifier is the barrier for a modified package; the next
+step is the patched `libfwup` plus a modified VER40 component. The recovery
+pair is slot 1/boot1.
+
 ## Cleanup and live state
+
+This table records the NDAL-test cleanup, before the vendor update.
 
 | Item | Value |
 | :--- | :--- |

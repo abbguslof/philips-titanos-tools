@@ -291,4 +291,21 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (eburner flag)
+
+New material: the eburner flag mapping in
+`docs/research/31-app-update-gate-2026-11-14.md` and
+`evidence/deep/2026-11-14-app-update-gate.md`.
+
+Checks:
+- The note and evidence contain hashes, offsets, symbol names, and addresses.
+  They do not contain private keys, raw vendor payloads, or device identifiers.
+- No flag or partition was written. The `/swdl` header and libraries were read
+  only.
+- The changelog is cut to 0.4.5; `pyproject.toml` is 0.4.5.
+- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

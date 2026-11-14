@@ -55,10 +55,12 @@ The public repo documents research and root. The live unit is further along:
 - [x] App-layer USB update trigger: USB package -> `/swdl/autorun.upg` ->
   verify -> eburner flag -> reset. See
   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md).
-- [ ] Update environment check: map the eburner flag and the `eburner`
-  kernel/loader check for a classic `TIMG` package staged at `/swdl`.
-- [ ] Dump-only `sys_run` test: the classic package is prepared. The app layer
-  rejects classic; direct `/swdl` staging is the next test.
+- [x] Eburner flag path: `PKG_ready<path>` at `misc + 0x3e00`, STBC ioctl
+  `0xc0105310`, and a no-op status function. See
+  [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md).
+- [ ] Update environment check: map the `eburner` kernel/loader extraction and
+  check for a classic `TIMG` package staged at `/swdl`.
+- [ ] Direct `/swdl` staging test with the classic dump-only package.
 - [x] `kerupm` package/live match: plain uImage, valid data CRC, exact bytes at
   `p21`. Update-mode selection is still open.
 - [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map. The `p9` `PPCH` slot map is
@@ -73,10 +75,12 @@ The public repo documents research and root. The live unit is further along:
    corrupted-image recovery path.
 3. Read-only work that can proceed now: review the
    [update path](docs/research/30-update-path-2026-11-14.md) and the
-   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md), map the
-   eburner flag, and inspect the `sub_123ac` partition write order. The
-   dump-only classic package is prepared in `dist/`; the app layer rejects it,
-   so the next test is direct `/swdl` staging.
+   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md), and
+   inspect the `sub_123ac` partition write order. The eburner flag path is
+   mapped.
+4. Back up `/swdl/autorun.upg` and `p9`, then run the direct `/swdl` staging
+   test with the classic dump-only package. The `run.sh` does not write the
+   eMMC; keep the USB fallback ready.
 
 ## Stop conditions
 

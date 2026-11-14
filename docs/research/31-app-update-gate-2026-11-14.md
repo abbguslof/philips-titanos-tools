@@ -95,15 +95,48 @@ The live package is `TIMGPKGVER40`. The local classic package is not.
    The PEM markers are not a key. Signing a modified package from the app layer
    is not possible.
 
+## Direct staging flag path
+
+The root-only `/swdl` path needs a package and two flag writes:
+
+| Step | Function | Address | Effect |
+| :--- | :--- | ---: | :--- |
+| Package | `APP_MGR_SWUpdate_USB_StartSoftwareUpdate` | `0x27dd89` | Copies the package to `/swdl/autorun.upg`. |
+| Flag | `APP_MGR_SWUpdate_Cust_SetPKGFlag` | `0x789d5` | Writes `PKG_ready<path>` at `misc + 0x3e00` (0x90 bytes). |
+| Mode | `DEV_UART_Set_SWEburnerOnOff` | `0x49ded` | Opens the UART/STBC device and issues ioctl `0xc0105310` with arg 0. |
+| Status | `MID_SWUpdate_USB_SetEburnerStatus` | `0x98555` | No-op in this build. |
+
+`libdev.so` SHA-256 `32923fd8f605981ae77e78a297f3b58d6e319e5d546a1c6356b9edd3a66c83b9`.
+The `/dev` strings include `/dev/ntkstbc`, `/dev/ntgpio`, `/dev/ntkiic0`, and
+`/dev/ttyS2`. The STBC device is the likely target; the exact device is
+inferred. The eburner kernel carries `nvt_soc_stbc_in_eburn_mode` and the
+`## EBURN ## flow-1/flow-2` messages. It does not carry a package-signature
+string.
+
+The direct staging test, not yet run:
+
+1. Back up `/swdl/autorun.upg` and `p9` (`misc`).
+2. Copy the classic dump-only package to `/swdl/autorun.upg`.
+3. Write `PKG_ready/swdl/autorun.upg` at `misc + 0x3e00`, padded to 0x90 bytes.
+4. Set the STBC eburner mode with ioctl `0xc0105310`.
+5. Reset. The eburner should run `sys_run/run.sh`.
+6. The script writes `update-proof.txt` and the two boot-area images to the
+   USB, hashes `/dev/mmcblk0` read-only, and reboots.
+
+The update environment's extraction/check is the remaining unknown. The
+`nvt_eburner` verifier is MD5-only; the `run.sh` skips it. The package
+signature gate is bypassed because the package is staged directly, not through
+the app-layer verifier.
+
 ## Next
 
-- Map the eburner flag path: `DEV_UART_Set_SWEburnerOnOff`,
-  `APP_MGR_SWUpdate_USB_SetEburnerStatus`, and
-  `APP_MGR_SWUpdate_Cust_SetPKGFlag`.
-- Map the `eburner` kernel/loader check for a classic `TIMG` package staged at
-  `/swdl/autorun.upg`.
-- Then test the direct `/swdl` staging with the prepared classic dump-only
-  package, after the restore gate and with the USB fallback. The dump-only
+- The eburner flag path is mapped: `PKG_ready` at `misc + 0x3e00`, the STBC
+  ioctl `0xc0105310`, and the no-op status function.
+- Map the `eburner` kernel/loader extraction and check for a classic `TIMG`
+  package staged at `/swdl/autorun.upg`. The strings show no package-signature
+  check; the `nvt_eburner` verifier is MD5-only.
+- Then run the direct `/swdl` staging test with the prepared classic dump-only
+  package, with the USB fallback and the p9/`/swdl` backups. The dump-only
   `run.sh` does not write the eMMC.
 - Do not test on field units.
 

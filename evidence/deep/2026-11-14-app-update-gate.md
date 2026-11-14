@@ -16,6 +16,7 @@ The method and discussion are in
 | `libmid.so` | 1,961,288 | `7e23d1ef1ef76b0beab224dd47c3a8c348d208cbf428865d6ce6eab09fc5fd4e` |
 | `libfwup.so` | 152,220 | `2f260407609cc5b209b6c3890ea5acd2880721df7355725c391a928d68874989` |
 | `libmgr_cust.so` | 1,680,744 | `056a2a0589a2812e5d150e11c914e0a27c400745901c12cb141d8941e29c2acc` |
+| `libdev.so` | 704,204 | `32923fd8f605981ae77e78a297f3b58d6e319e5d546a1c6356b9edd3a66c83b9` |
 
 ## Trigger
 
@@ -66,11 +67,29 @@ version    940186113
 The local classic package is `TIMG` with 0x488 PIMG headers and is not accepted
 by the app-layer verifier, which requires `PKGVER40`.
 
+## Eburner flag path
+
+| Function | Address | Effect |
+| :--- | ---: | :--- |
+| `APP_MGR_SWUpdate_Cust_SetPKGFlag` | `0x789d5` | Writes `PKG_ready<path>` at `misc + 0x3e00` (0x90 bytes). |
+| `DEV_UART_Set_SWEburnerOnOff` | `0x49ded` | Opens a UART/STBC device and issues ioctl `0xc0105310` with arg 0. |
+| `MID_SWUpdate_USB_SetEburnerStatus` | `0x98555` | No-op in this build. |
+
+`libdev.so` SHA-256 `32923fd8…`. The `/dev` strings include `/dev/ntkstbc`,
+`/dev/ntgpio`, `/dev/ntkiic0`, and `/dev/ttyS2`; the STBC device is inferred.
+The eburner kernel carries `nvt_soc_stbc_in_eburn_mode` and `## EBURN ##
+flow-1/flow-2`; it has no package-signature string.
+
+Direct staging plan: back up `/swdl/autorun.upg` and `p9`; copy the classic
+dump-only package to `/swdl/autorun.upg`; write
+`PKG_ready/swdl/autorun.upg` at `misc + 0x3e00`; set the STBC eburner mode;
+reset. Not tested.
+
 ## Bypass options
 
 1. Direct `/swdl` staging with root: copy a classic package to
-   `/swdl/autorun.upg`, set the eburner flag, reset. The app-layer RSA check is
-   skipped; the update environment check is open.
+   `/swdl/autorun.upg`, set the eburner flag and STBC mode, reset. The
+   app-layer RSA check is skipped; the update environment check is open.
 2. Runtime patch `libfwup.so`: patch `nvtfw_sec_verify_whole_img_sign` or
    `nvtfw_enable_secure_boot`, bind-mount the patched library at boot. The
    update environment check is open.

@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.4.13 - 2026-11-15
+
+### Added
+
+- `43PUS7608/12` (`TPN236E`) field scan and static notes in
+  `docs/research/34`: eight open ports, the expired MQTT certificate, no
+  network entry vector, the contributor-local `236.006.135.001` static
+  findings, and the open package-artifact table.
+- The README model-support row and the research index link the new note.
+
+### Changed
+
+- Removed the unrelated custom-userspace project from public docs and raw
+  evidence. The private userspace is out of scope; raw captures omit it.
+- `docs/research/03` now states that partition targets are firmware-specific:
+  `TPN236E` uses `p16`, while `TPN256E` `fs0`/`fs1` use `p19`/`p20`. The
+  no-`quick_debug` and OverlayFS findings are marked `TPN236E`-specific.
+- `docs/research/33` links the second field report and records the port
+  differences (`8883`/`9080` open, `49152`, `:7788` closed).
+- Test coverage is 72 tests.
+
 ## 0.4.12 - 2026-11-14
 
 ### Added
@@ -11,7 +32,7 @@
 - The eMMC boot area changed: boot0 `1c74949e…` new; boot1 `eee415…` recovery.
   The old main slot 1 (`p16`/`p18`/`p20`) is the recovery pair.
 - Root and persistence survived the update: `uid=0`, dropbear `:2222`,
-  telnetd `:2323`, `customer_env.sh`, freetitan.
+  telnetd `:2323`, `customer_env.sh`, and the persistent root.
 - `p9` post-update `7e8fca3d…`; `p1`/`p2`, `p13`/`p14`, `p21` unchanged.
 
 ### Changed
@@ -278,7 +299,7 @@
 ### Added
 
 - Live inventory (`docs/research/18`): boot, SELinux, mounts, device nodes,
-  OP-TEE, dm-verity, and the freetitan overlay drift.
+  OP-TEE, dm-verity, and the live overlay drift.
 - Control-surface map (`docs/research/19`): the measured `ntkmem` ABI
   (`0x35`, `0x4d01`, `0x4d02`), V4L2 HDMI, and a GPIO line census, plus the
   static harnesses in `tools/probe/`.

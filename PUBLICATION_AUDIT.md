@@ -246,8 +246,8 @@ Checks:
   vendor payloads or keys. The dump-only package is local under `dist/` and is
   not committed.
 - The note names no serial, MAC, SSID, IP, or credential.
-- The live-drift section records the freetitan mounts without documenting their
-  internals.
+- The live-drift section records the persistent-root state without documenting
+  the private userspace.
 - The changelog is cut to 0.4.2; `pyproject.toml` is 0.4.2.
 - Test coverage remains 71 tests; the suite, compile step, and shell syntax
   checks pass.
@@ -440,6 +440,31 @@ Checks:
   host. No deliberately corrupted boot area was written.
 - Root and persistence survived; the TV runs `002.236.191`.
 - The changelog is cut to 0.4.12; `pyproject.toml` is 0.4.12.
+- Test coverage is 72 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
+## Addendum 2026-11-15 (TPN236E field note and scope cleanup)
+
+New material: `docs/research/34-tpn236e-43pus7608-2026-11-14.md`, the
+`docs/research/03` partition caveat, the `docs/research/33` link and port
+differences, `docs/README.md`, `README.md`, `STATE.md`,
+`evidence/REDACTION.md`, and the raw-evidence placeholders.
+
+Checks:
+- The field note records read-only, owner-authorized probes. It contains no
+  serial, MAC, SSID, IP, PIN, pairing credential, or vendor firmware. The
+  package artifact hash and table remain unpublished; the static findings are
+  marked `REPORTED`, not `VERIFIED`.
+- The unrelated custom-userspace project is not named in the public tree or
+  the raw evidence. The private userspace is out of scope; raw captures omit
+  it.
+- The `TPN236E` `p16` target and the `TPN256E` `p19`/`p20` targets are
+  recorded as firmware-specific. The no-`quick_debug` and OverlayFS findings
+  are marked `TPN236E`-specific. The `:8883` and `:7788` results remain
+  unit-specific.
+- The changelog is cut to 0.4.13; `pyproject.toml` is 0.4.13.
 - Test coverage is 72 tests; the suite, compile step, and shell syntax checks
   pass.
 

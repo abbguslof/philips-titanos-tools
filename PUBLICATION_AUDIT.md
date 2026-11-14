@@ -394,6 +394,8 @@ Checks:
   out of scope until an entry vector exists.
 - The issue forms and `ACCESSIBILITY.md` contain no device identifiers,
   credentials, or vendor data.
+- The field report is cut to 0.4.9; the correction, issue forms, and
+  accessibility work are cut to 0.4.10.
 - Docs, the issue forms, and the JointSpace client decoder changed. Test
   coverage is 72 tests; the suite, compile step, and shell syntax checks pass.
 

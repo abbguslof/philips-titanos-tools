@@ -16,7 +16,7 @@
 - Confirmed `DEV_UART_Set_SWEburnerOnOff` (`/dev/ntkstbc`, ioctl
   `0xc0105310`, 16-byte struct) and the app reset wrappers.
 - Tested the full classic package on the USB plus the p9 metadata; the eburner
-  still produced no `update-proof.txt`, `PKG_SUCCESS`, or p9 markers.
+  produced no `update-proof.txt`, `PKG_SUCCESS`, or p9 markers.
 
 ### Changed
 
@@ -48,6 +48,7 @@
 - `SECURITY.md`, `docs/research/08`, `12`, `33`, `evidence/README.md`, and the
   indexes record the unauthenticated `1926` control surface and the corrected
   `POST` result.
+- Test coverage is 72 tests.
 
 ## 0.4.9 - 2026-11-14
 
@@ -59,17 +60,21 @@
 - `docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md` and the
   index rows.
 
+### Changed
+
+- Test coverage is 71 tests.
+
 ## 0.4.8 - 2026-11-14
 
 ### Added
 
 - NDAL V4L2 reset helper test: `NDAL_VideoExt_OpenDevice(0, 0xA)` selects
   `/dev/video24`, then `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` resets the TV.
-  The full wrapper consumed `/swdl/autorun.upg`; p9 stayed `PKG_ready`,
-  `misc + 0x4000` was zero, `/swdl/eburner-proof.txt` was absent, and the boot
-  areas were unchanged.
-- The raw V4L2 `G_EXT_CTRLS` reset the TV but left the package intact; the
-  full wrapper is the stronger trigger.
+  One full-wrapper run left `/swdl/autorun.upg` removed; p9 stayed
+  `PKG_ready`, `misc + 0x4000` was zero, `/swdl/eburner-proof.txt` was absent,
+  and the boot areas were unchanged.
+- The raw V4L2 `G_EXT_CTRLS` reset the TV and left the package. The 0.4.11
+  entry records the USB/eburner correction.
 
 ### Changed
 
@@ -77,7 +82,7 @@
   (plain), class `0x0f170000`, ioctl `0xc0185647`, 20-byte controls with value
   pointers, target `/dev/video24`, provider `libv4l2.so.0`, and the ioctl fd at
   `0x50d90`.
-- The eburner script/loader is still the blocker.
+- The eburner entry is open; the 0.4.11 entry maps the classic USB initramfs.
 - Test coverage is 71 tests.
 
 ## 0.4.7 - 2026-11-14
@@ -86,11 +91,11 @@
 
 - `docs/research/32-ndal-v4l2-reset-2026-11-14.md` and
   `evidence/deep/2026-11-14-ndal-v4l2-reset.md`: the NDAL V4L2 STBC reset
-  functions, the exact control (`0xf17f1f`, class `0x0f170000`, ioctl
-  `0xc0185647`), and the next helper.
+  functions, the initial control reading (`0xf17f1f`, class `0x0f170000`,
+  ioctl `0xc0185647`; corrected in 0.4.8), and the next helper.
 - Paused-`appmgr` retry: the p9 package stayed staged across the AC cycle, but
-  the eburner still did not enter (`PKG_ready`, `0x4000` zero, no proof). The
-  STBC/AC entry is the unreliable step.
+  the eburner did not enter (`PKG_ready`, `0x4000` zero, no proof). The STBC/AC
+  entry was not repeatable.
 - Cleanup: vendor `/swdl/autorun.upg` `74d2790a…`, p9 `c32f354f…`, STBC off,
   boot areas `eee415…`.
 

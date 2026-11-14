@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.6 - 2026-11-14
+
+### Added
+
+- `ntkctl --data HEX` for an exact hex ioctl buffer.
+- Direct `/swdl` staging test results: the eburner was entered via the STBC
+  eburner mode and AC-on, consumed the classic package, but the `run.sh` proof
+  and `PKG_SUCCESS` did not appear. The app layer restored the vendor package.
+- The vendor AC-on reset (`PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` /
+  `NDAL`) path and the `gdbserver`/`idtv` failure.
+
+### Changed
+
+- Test coverage is 71 tests.
+
 ## 0.4.5 - 2026-11-14
 
 ### Added

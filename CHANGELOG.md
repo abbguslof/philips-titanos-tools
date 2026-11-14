@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.7 - 2026-11-14
+
+### Added
+
+- `docs/research/32-ndal-v4l2-reset-2026-11-14.md` and
+  `evidence/deep/2026-11-14-ndal-v4l2-reset.md`: the NDAL V4L2 STBC reset
+  functions, the exact control (`0xf17f1f`, class `0x0f170000`, ioctl
+  `0xc0185647`), and the next helper.
+- Paused-`appmgr` retry: the p9 package stayed staged across the AC cycle, but
+  the eburner still did not enter (`PKG_ready`, `0x4000` zero, no proof). The
+  STBC/AC entry is the unreliable step.
+- Cleanup: vendor `/swdl/autorun.upg` `74d2790a…`, p9 `c32f354f…`, STBC off,
+  boot areas `eee415…`.
+
+### Changed
+
+- Test coverage is 71.
+
 ## 0.4.6 - 2026-11-14
 
 ### Added

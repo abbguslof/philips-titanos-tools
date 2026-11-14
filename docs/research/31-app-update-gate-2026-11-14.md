@@ -138,9 +138,11 @@ the app-layer verifier.
 - Then run the direct `/swdl` staging test with the prepared classic dump-only
   package, with the USB fallback and the p9/`/swdl` backups. The dump-only
   `run.sh` does not write the eMMC.
-- The enabled entry path is the NDAL V4L2 reset: control `0xf17f1f`, class
-  `0x0f170000`, ioctl `0xc0185647`; build the helper in
-  [research/32](32-ndal-v4l2-reset-2026-11-14.md).
+- The enabled entry path is the NDAL V4L2 reset: control `0x0f170f1f`, class
+  `0x0f170000`, ioctl `0xc0185647` on `/dev/video24`; build the helper in
+  [research/32](32-ndal-v4l2-reset-2026-11-14.md). The full
+  `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` wrapper consumed the package but
+  still left no script proof.
 - Do not test on field units.
 
 ## Direct staging test (2026-11-14)
@@ -177,6 +179,16 @@ Keeping the package through the reset did not fix the STBC/AC entry.
 The cleanup restored the vendor `/swdl` package, the p9 `misc`, and the STBC
 mode. The NDAL V4L2 reset route is in
 [research/32](32-ndal-v4l2-reset-2026-11-14.md).
+
+### Full AC-on wrapper test (2026-11-14)
+
+A local helper called `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` after
+`NDAL_VideoExt_OpenDevice(0, 0xA)`. The wrapper reset the TV and consumed
+`/swdl/autorun.upg`; the p9 flag stayed `PKG_ready`, `misc + 0x4000` was zero,
+`/swdl/eburner-proof.txt` was absent, and the boot areas were unchanged. The raw
+V4L2 `G_EXT_CTRLS` alone reset the TV but left the package intact. The full
+wrapper is the stronger trigger; the eburner script/loader remains the blocker.
+The cleanup restored the vendor package, the p9 `misc`, and the STBC mode.
 
 The TV is safe: p9 hash `c32f354f…` (pristine), boot areas `eee415…`, vendor
 `/swdl/autorun.upg` `74d2790a…`, STBC off, p9 flag original.

@@ -28,7 +28,7 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Restore | Same-byte write to both boot areas, read-back hashes, and cold boots verified | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
 | App-layer update gate | USB package stages to `/swdl/autorun.upg`; the live file is `TIMGPKGVER40`; the verifier is RSA; no private key. The eburner entered twice via STBC + AC; the script did not leave a proof. A paused-appmgr retry kept the package but did not enter | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
-| NDAL V4L2 reset | `NDAL_VideoExt_STBC_ResetByHWWDT_*` builds control `0xf17f1f` (class `0x0f170000`) and ioctl `0xc0185647`; the helper is open | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
+| NDAL V4L2 reset | `NDAL_VideoExt_STBC_ResetByHWWDT_*` uses control `0x0f170f1f`/`0x0f170f29` (class `0x0f170000`), ioctl `0xc0185647`, 20-byte controls, and `/dev/video24`. The full AC-on wrapper reset consumed the package but left no script proof | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
 | `/swdl` and p9 | Vendor `74d2790a…`, p9 `c32f354f…`, STBC off, boot areas `eee415…` | [NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
@@ -67,13 +67,20 @@ The public repo documents research and root. The live unit is further along:
   `PKG_SUCCESS` or the proof. A paused-appmgr retry kept the package but did
   not enter.
 - [ ] Update environment script/loader: the p9 metadata package did not enter;
-  the `insmod`/`/swdl`/`$BB` and the loader checks remain candidates. The app
-  layer removes or restores the package.
-- [ ] Direct `/swdl` staging test: partial. The p9 metadata package and a
-  pre-`insmod` proof did not fix the STBC/AC entry.
-- [ ] NDAL V4L2 reset helper: decompile `NDAL_VideoExt_STBC_ResetByHWWDT`
-  (`0x137f0`) and `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` (`0xb6ad1`), resolve
-  the `v4l2_open` provider and the `/dev/video%i` index, and build the helper.
+  the `insmod`/`/swdl`/`$BB` and the loader checks remain candidates. The full
+  AC-on wrapper consumed the package, so the reset trigger is no longer the
+  blocker.
+- [ ] Direct `/swdl` staging test: partial. The p9 metadata package, the raw
+  V4L2 reset, and the full AC-on wrapper did not produce `PKG_SUCCESS` or the
+  proof.
+- [x] NDAL V4L2 reset helper: the control id/layout, `libv4l2` provider, and
+  `/dev/video24` are resolved. A local dynamic helper calls
+  `NDAL_VideoExt_OpenDevice(0, 0xA)` and
+  `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn`; the wrapper reset the TV and
+  consumed `/swdl/autorun.upg` but the script still did not run.
+- [ ] Eburner loader/`sys_run` extraction: find why the consumed package does
+  not execute `sys_run/run.sh`; compare the p9 component layout with the vendor
+  package and the `nvt_eburner` flow strings.
 - [x] `kerupm` package/live match: plain uImage, valid data CRC, exact bytes at
   `p21`. Update-mode selection is still open.
 - [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map. The `p9` `PPCH` slot map is
@@ -86,14 +93,13 @@ The public repo documents research and root. The live unit is further along:
 1. Keep a second copy of the 2026-11-14 backup off the TV.
 2. The same-byte restore passed. Before a modified boot image, prove the
    corrupted-image recovery path.
-3. Read-only: decompile `NDAL_VideoExt_STBC_ResetByHWWDT` (`0x137f0`) and
-   `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` (`0xb6ad1`), the four defined
-   `ndcommon_v4l2_*` bodies (`0x27534`/`0x27554`/`0x27574`), and dump
-   `.rodata` `0x2ca54` (`/dev/video%i`) and `0x2cbd0` (`gv4l2_dev_name`). Still
-   resolve the `v4l2_open`/`v4l2_ioctl` provider and the `/dev/video%i` index.
-   See [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md).
-4. Build the V4L2 reset helper (dynamic `libNDAL_EX.so` or direct
-   `VIDIOC_S_EXT_CTRLS` with id `0xf17f1f`, class `0x0f170000`, value 1).
+3. Inspect the eburner loader and `sys_run` extraction. The full AC-on wrapper
+   consumed `/swdl/autorun.upg`; compare the p9 components (`pre_install`,
+   `part_tbl`, `eburner`, `sys_run`, `pptbl0/1`, `bflag`, `vinfo`, `upst`)
+   with the vendor layout and the `nvt_eburner` `## EBURN ## flow-1/flow-2`
+   strings. See [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md).
+4. Use the full `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` helper for the next
+   package test; the raw V4L2 `G_EXT_CTRLS` is not sufficient.
 5. Test with the p9 package; read p9 `0x3e00`/`0x4000` and
    `/swdl/eburner-proof.txt`; restore the vendor `/swdl`, the p9 `misc`, and
    the STBC mode.

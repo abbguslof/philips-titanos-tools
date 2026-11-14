@@ -386,8 +386,9 @@ Checks:
   pairing credentials, private keys, or vendor firmware.
 - The note does not claim a USB entry vector or an exploit. Hardware tests are
   explicitly out of scope until an entry vector exists.
-- Docs-only; no version bump. Test coverage is 71 tests; the suite, compile
-  step, and shell syntax checks pass.
+- The changelog is cut to 0.4.9; `pyproject.toml` is 0.4.9.
+- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
+  pass.
 
 Verdict: GO.
 

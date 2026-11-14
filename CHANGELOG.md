@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.2 - 2026-11-14
 
 ### Added
 
@@ -9,6 +9,9 @@
   work.
 - `evidence/deep/2026-11-14-emmc-backup.md`: sizes and hashes for the
   recovery-gate backup. Raw images stay off the repo.
+- `docs/research/30-update-path-2026-11-14.md` and
+  `evidence/deep/2026-11-14-update-path.md`: component map, MD5-only burner
+  checks, live slot matches, and the prepared dump-only test package.
 
 ## 0.4.1 - 2026-11-14
 

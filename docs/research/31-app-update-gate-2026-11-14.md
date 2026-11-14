@@ -113,7 +113,7 @@ inferred. The eburner kernel carries `nvt_soc_stbc_in_eburn_mode` and the
 `## EBURN ## flow-1/flow-2` messages. It does not carry a package-signature
 string.
 
-The direct staging test, not yet run:
+The direct staging test:
 
 1. Back up `/swdl/autorun.upg` and `p9` (`misc`).
 2. Copy the classic dump-only package to `/swdl/autorun.upg`.
@@ -138,6 +138,9 @@ the app-layer verifier.
 - Then run the direct `/swdl` staging test with the prepared classic dump-only
   package, with the USB fallback and the p9/`/swdl` backups. The dump-only
   `run.sh` does not write the eMMC.
+- The enabled entry path is the NDAL V4L2 reset: control `0xf17f1f`, class
+  `0x0f170000`, ioctl `0xc0185647`; build the helper in
+  [research/32](32-ndal-v4l2-reset-2026-11-14.md).
 - Do not test on field units.
 
 ## Direct staging test (2026-11-14)
@@ -162,13 +165,28 @@ gdbserver gone; the gdbserver killed `idtv` and `appmgr` restarted. The UI
 needs a power cycle. The gdb path is not usable as-is; the next attempt is a
 small dynamic helper or a V4L2 control helper.
 
+### Paused-appmgr retry (2026-11-14)
+
+A third retry staged the p9 package (`b51cd228…`) and stopped `com.nvt.appmgr`
+(PID 636) with `kill -STOP` so the app layer could not remove the package. The
+package survived the AC cycle, but the eburner still did not enter:
+`misc + 0x3e00` stayed `PKG_ready/swdl/autorun.upg`, `misc + 0x4000` was zero,
+`/swdl/eburner-proof.txt` was absent, and the boot areas were unchanged.
+Keeping the package through the reset did not fix the STBC/AC entry.
+
+The cleanup restored the vendor `/swdl` package, the p9 `misc`, and the STBC
+mode. The NDAL V4L2 reset route is in
+[research/32](32-ndal-v4l2-reset-2026-11-14.md).
+
 The TV is safe: p9 hash `c32f354f…` (pristine), boot areas `eee415…`, vendor
 `/swdl/autorun.upg` `74d2790a…`, STBC off, p9 flag original.
 
 ## Safety
 
-- No boot-area or eMMC writes were made. The direct staging wrote `/swdl` and
-  the p9 flag, and set the STBC mode; the p9 flag was restored, the STBC was
-  turned off, and the boot areas are unchanged.
+- The probe made no boot-area or eMMC writes. The direct staging wrote `/swdl`
+  and the p9 flag, and set the STBC mode; the cleanup restored the p9 flag,
+  turned off the STBC, and restored the vendor `/swdl/autorun.upg`
+  (`74d2790a…`) and the p9 `misc` (`c32f354f…`) on 2026-11-14. The boot areas
+  are unchanged.
 - The local package, `/swdl` package, and libraries stay out of the repo.
-- No key material is published.
+- This note publishes no key material.

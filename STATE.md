@@ -27,7 +27,9 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Recovery backup | Full `mmcblk0` image and boot areas; `sha256sum -c` passes | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Restore | Same-byte write to both boot areas, read-back hashes, and cold boots verified | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
-| App-layer update gate | USB package stages to `/swdl/autorun.upg`; the live file is `TIMGPKGVER40`; the verifier is RSA; no private key. The eburner was entered via STBC + AC; the script did not leave a proof | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
+| App-layer update gate | USB package stages to `/swdl/autorun.upg`; the live file is `TIMGPKGVER40`; the verifier is RSA; no private key. The eburner entered twice via STBC + AC; the script did not leave a proof. A paused-appmgr retry kept the package but did not enter | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
+| NDAL V4L2 reset | `NDAL_VideoExt_STBC_ResetByHWWDT_*` builds control `0xf17f1f` (class `0x0f170000`) and ioctl `0xc0185647`; the helper is open | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
+| `/swdl` and p9 | Vendor `74d2790a…`, p9 `c32f354f…`, STBC off, boot areas `eee415…` | [NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
 ## Live drift
@@ -41,6 +43,8 @@ The public repo documents research and root. The live unit is further along:
   `ndp_logo_seloff_boot.ko`, `opt/`, and the freetitan scripts and logs.
 - `/swdl` holds `autorun.upg` (917,372,175 B), `boot0.bin`, `policy33.bin`, and
   the freetitan directory.
+- The 2026-11-14 eburner retries restored the vendor `/swdl/autorun.upg`, the
+  p9 `misc`, and the STBC mode; the boot areas are unchanged.
 - The freetitan custom rootfs is outside this repository's public scope. This
   page records its presence, not its internals.
 
@@ -60,12 +64,16 @@ The public repo documents research and root. The live unit is further along:
   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md).
 - [x] Eburner trigger: the STBC eburner mode + `PKG_ready` + AC-on entered the
   eburner twice and consumed the classic package. The script did not leave
-  `PKG_SUCCESS` or the proof.
-- [ ] Update environment script/loader: the trimmed package is likely missing
-  `vinfo`/`upst`/`bflag`/`pptbl`; the `insmod`/`/swdl`/`$BB` are candidates.
-  The app layer restores the vendor package.
-- [ ] Direct `/swdl` staging test: partial. Build a package with the p9
-  metadata and a pre-`insmod` proof.
+  `PKG_SUCCESS` or the proof. A paused-appmgr retry kept the package but did
+  not enter.
+- [ ] Update environment script/loader: the p9 metadata package did not enter;
+  the `insmod`/`/swdl`/`$BB` and the loader checks remain candidates. The app
+  layer removes or restores the package.
+- [ ] Direct `/swdl` staging test: partial. The p9 metadata package and a
+  pre-`insmod` proof did not fix the STBC/AC entry.
+- [ ] NDAL V4L2 reset helper: decompile `NDAL_VideoExt_STBC_ResetByHWWDT`
+  (`0x137f0`) and `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` (`0xb6ad1`), resolve
+  the `v4l2_open` provider and the `/dev/video%i` index, and build the helper.
 - [x] `kerupm` package/live match: plain uImage, valid data CRC, exact bytes at
   `p21`. Update-mode selection is still open.
 - [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map. The `p9` `PPCH` slot map is
@@ -76,18 +84,17 @@ The public repo documents research and root. The live unit is further along:
 ## Next action
 
 1. Keep a second copy of the 2026-11-14 backup off the TV.
-2. The same-byte restore is done. Before a modified boot image, prove the
+2. The same-byte restore passed. Before a modified boot image, prove the
    corrupted-image recovery path.
-3. Read-only work that can proceed now: review the
-   [update path](docs/research/30-update-path-2026-11-14.md) and the
-   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md), and
-   inspect the `sub_123ac` partition write order. The eburner flag path is
-   mapped.
-4. The direct staging test entered the eburner but did not prove the script.
-   Build a package with the p9 metadata (`vinfo`/`upst`/`bflag`/`pptbl`) and a
-   minimal pre-`insmod` proof, and use the vendor AC-on reset helper
-   (`PLAT_SYS_ResetByHWWDT_PowerOnEventACOn`/`NDAL`) to avoid the app-layer
-   restore race.
+3. Read-only: decompile `NDAL_VideoExt_STBC_ResetByHWWDT` (`0x137f0`) and
+   `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` (`0xb6ad1`), and resolve the
+   `v4l2_open`/`v4l2_ioctl` provider and the `/dev/video%i` index. See
+   [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md).
+4. Build the V4L2 reset helper (dynamic `libNDAL_EX.so` or direct
+   `VIDIOC_S_EXT_CTRLS` with id `0xf17f1f`, class `0x0f170000`, value 1).
+5. Test with the p9 package; read p9 `0x3e00`/`0x4000` and
+   `/swdl/eburner-proof.txt`; restore the vendor `/swdl`, the p9 `misc`, and
+   the STBC mode.
 
 ## Stop conditions
 
@@ -105,4 +112,6 @@ The public repo documents research and root. The live unit is further along:
 - [Update package map](docs/research/29-update-package-map.md)
 - [Update path](docs/research/30-update-path-2026-11-14.md)
 - [App-layer update gate](docs/research/31-app-update-gate-2026-11-14.md)
+- [NDAL V4L2 reset](docs/research/32-ndal-v4l2-reset-2026-11-14.md)
 - [2026-11-14 backup evidence](evidence/deep/2026-11-14-emmc-backup.md)
+- [2026-11-14 NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md)

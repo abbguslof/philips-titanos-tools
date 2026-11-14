@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `TIMGPKGVER40` container support (newer 2023+ Titan OS packages) in
+  `tools/firmware/parse_timg.py`, including a walk-validated component scan and
+  per-component MD5 verification. The format reference and extraction guide
+  document both revisions.
+- External `77OLED760/12` (TPN258E) report: USB autoroot, `/swdl` persistence,
+  and SSH after USB-less cold boots (`evidence/tpn258e-77oled760/`).
+
+### Fixed
+
+- `parse_timg.py --verify --extract` on a VER40 package now extracts after a
+  successful per-component check instead of returning early.
+
+### Changed
+
+- Test coverage is 71 tests.
+
 ## 0.4.0 - 2026-11-12
 
 ### Added

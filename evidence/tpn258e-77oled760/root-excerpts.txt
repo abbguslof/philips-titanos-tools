@@ -1,0 +1,20 @@
+Selected output; network addresses and timestamps omitted.
+
+[USB root session: id]
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+
+[Installer]
+Installing persistent root hook in /mtd_rwarea/apdat (swdl variant)
+
+[Telnet after USB-less cold boot: id]
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+
+[New boot log]
+telnetd pid 1675
+SUCCESS: telnetd listening on :2323
+
+[SSH after subsequent USB-less cold boot: id]
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t
+
+[grep ' /media/' /proc/mounts in the SSH session]
+[no output]

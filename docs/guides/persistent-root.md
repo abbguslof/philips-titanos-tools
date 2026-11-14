@@ -6,6 +6,10 @@ cold boot with the USB removed). The redacted capture is in
 `/swdl` fallback is **REPORTED**; see the
 [variant note](../research/24-swdl-telnet-persistence-2026-11-11.md).
 
+An external [77OLED760/12 report](../../evidence/tpn258e-77oled760/) also
+records a successful USB-less cold boot using the `/swdl` hook on TPN258E
+firmware `058.010.032.001`, with selected boot-log evidence. Status: **REPORTED**.
+
 The hook is firmware-specific. This guide was verified on `55PUS8000/12`.
 Other models may use a different hook, so check the live firmware first.
 Reports and PRs for other models are welcome.

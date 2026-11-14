@@ -38,7 +38,7 @@ It is built for owners, repair techs, and reverse engineers who want to inspect 
 | :--- | :--- |
 | Tested model | `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard `715GD542` |
 | Tested firmware | `TPA256E_V056.002.236.191` |
-| Other models | Untested. Other Titan OS / NT72690 models may share the same paths. Reports and PRs welcome. |
+| Other models | External reports: [55PUS8450/12](evidence/tpn256e-variant/) and [77OLED760/12 (TPN258E)](evidence/tpn258e-77oled760/). Scope and limits are recorded per model. |
 | Platform | Novatek NT72690, Linux 6.1.124, ARM64 kernel with `armv7l` userspace |
 | Root path | USB autoroot at boot, physical access required |
 | Persistence | `customer_env.sh` on the tested model; `/swdl/telnet/telnetd` on a reported later firmware. Check the live hook first. |

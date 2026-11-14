@@ -1,4 +1,4 @@
-# Firmware container: `TIMG`, `PIMG`, `NFSB`
+# Firmware container: `TIMG`, `TIMGPKGVER40`, `PIMG`, `NFSB`
 
 Status: **VERIFIED** by parsing the full `PH_2K25_ALL_EU_NT72690_TPN256E_V056.002.236.191_upgrade.pkg`
 (1.53 GB) and by reading the vendor update code.

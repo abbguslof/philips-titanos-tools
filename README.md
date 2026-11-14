@@ -9,7 +9,7 @@
 
   [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![Tests](https://img.shields.io/badge/tests-67-brightgreen.svg)](tests/)
+  [![Tests](https://img.shields.io/badge/tests-71-brightgreen.svg)](tests/)
   [![Tested on](https://img.shields.io/badge/tested%20on-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![Help wanted](https://img.shields.io/badge/help%20wanted-other%20models-blue.svg)](https://github.com/abbguslof/philips-titanos-tools/issues)
@@ -139,7 +139,7 @@ Status labels: **Verified** means reproduced on a tested TV or checked against t
 
 | Capability | Status | Evidence |
 | :--- | :--- | :--- |
-| Firmware container parsing (`TIMG` / `PIMG` / `NFSB` / SquashFS LZO) | **Verified statically** | [firmware guide](docs/guides/firmware-extraction.md) |
+| Firmware container parsing (`TIMG` / `TIMGPKGVER40` / `PIMG` / `NFSB` / SquashFS LZO) | **Verified statically** | [firmware guide](docs/guides/firmware-extraction.md) |
 | U-Boot-style NVM environment read/write with dual CRC32 | **Verified** | [NVM reference](docs/reference/file-formats.md#uboot-nvm-nvm_ubootdatdata) |
 | Runtime raw SquashFS mount inside an NFSB image (read-only) | **Verified** | [runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md), [evidence](evidence/runtime-nfsb/) |
 | JointSpace local control (keys, volume, input, Ambilight `expert` mode) | **Verified** | [JointSpace research](docs/research/08-jointspace-api.md) |
@@ -175,7 +175,7 @@ Once you have `uid=0`, you can inspect the live system, back up and verify NVM/E
 | `tools/jointspace_client.py` | Discover the TV, pair, send keys, switch inputs, and control Ambilight. |
 | `tools/ambilight_controller.py` | Drive per-LED colors and a local Ambilight web controller. |
 | `tools/firmware/fetch.py` | Find firmware links for your own model. |
-| `tools/firmware/parse_timg.py` | List, verify, and extract `TIMG`/`PIMG` components. |
+| `tools/firmware/parse_timg.py` | List, verify, and extract `TIMG`/`TIMGPKGVER40`/`PIMG` components. |
 | `tools/probe/` | Static control-surface probes for `ntkmem`, GPIO, and input. |
 | `tools/deep_probe.py` | Read-only deep inventory with redaction; safe for the 8000 lab and field units. |
 | `tools/bootchain_dump.py` | Read-only local pull of the 8000 boot areas and metadata partitions. |
@@ -226,7 +226,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests
 ```
 
-The suite covers the dual-CRC32 NVM format, CRC-16/MODBUS channel maps, EDID integrity, JointSpace helpers, USB staging, autoroot staging, the persistence installer, and the raw NFSB mount helper. Hardware-dependent steps are documented, not faked.
+The suite covers the dual-CRC32 NVM format, CRC-16/MODBUS channel maps, EDID integrity, firmware container parsing (`TIMG` and `TIMGPKGVER40`), JointSpace helpers, USB staging, autoroot staging, the persistence installer, and the raw NFSB mount helper. Hardware-dependent steps are documented, not faked.
 
 ## Contributing and security
 

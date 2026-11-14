@@ -18,7 +18,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | :-- | :--- | :--- | :--- |
 | 01 | [Boot chain: XBoot -> ATF -> Linux](research/01-boot-chain-xboot-atf.md) | VERIFIED | Why there is no interactive U-Boot and what the serial log shows. |
 | 02 | [Flash layout and partitions](research/02-flash-layout-and-partitions.md) | VERIFIED | The 40-partition map, p9/p11/p20/p31/p36, and the two different `boot0`s. |
-| 03 | [Firmware container: TIMG/PIMG/NFSB](research/03-firmware-container-timg-pimg-nfsb.md) | VERIFIED | Container layout, MD5 vs RSA/SHA-256, `enc=gzip`. |
+| 03 | [Firmware container: TIMG/TIMGPKGVER40/PIMG/NFSB](research/03-firmware-container-timg-pimg-nfsb.md) | VERIFIED | Classic `TIMG` and `TIMGPKGVER40` layouts, MD5 vs RSA/SHA-256, `enc=gzip`, VER40 vendor encryption. |
 | 04 | [U-Boot-style NVM format](research/04-uboot-nvm-format.md) | VERIFIED | `nvm_ubootdat.data`, dual CRC32, variables, `mds_mode`. |
 | 05 | [USB autorun hook](research/05-usb-autorun-hook.md) | VERIFIED | `S21idtv.sh` -> `run.sh` -> `quick_debug/menu auto` -> `eval`. |
 | 06 | [Persistence via `customer_env.sh`](research/06-persistence-customer-env.md) | VERIFIED | The writable boot hook and its ordering constraint. |

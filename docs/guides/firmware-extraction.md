@@ -1,6 +1,10 @@
 # Firmware extraction
 
-Status: **VERIFIED** against the research package. The package is not included.
+Status: **VERIFIED** for the classic research package. The contributor checked
+the `TIMGPKGVER40` layout against the TPN236E package; the maintainer did not
+reproduce that package. See the
+[container format](../research/03-firmware-container-timg-pimg-nfsb.md). The
+package is not included.
 
 Two container revisions exist:
 

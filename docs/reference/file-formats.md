@@ -1,9 +1,11 @@
 # File formats
 
 Status: formats below are verified against the research package and factory
-dumps. Keep vendor files out of the public tree.
+dumps. The contributor checked the `TIMGPKGVER40` rows against the TPN236E
+package; the maintainer did not reproduce that package. Keep vendor files out
+of the public tree.
 
-## `TIMG` / `PIMG` / `NFSB`
+## `TIMG` / `TIMGPKGVER40` / `PIMG` / `NFSB`
 
 | Structure | Size | Key fields |
 | :--- | :--- | :--- |

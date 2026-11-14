@@ -51,6 +51,13 @@ Dropbear binary. Build output stays in `dist/`, which is ignored.
 The Dropbear build used Zig 0.17.1 from <https://ziglang.org>. Zig is MIT
 licensed. The repository ships no Zig binary.
 
+## unixtract
+
+The firmware extraction guide points to the third-party `unixtract` project at
+<https://github.com/theubusu/unixtract> for the vendor decryption step. The
+repository does not include or redistribute it. Check the upstream license
+before use.
+
 ## Generated certificates
 
 `tools/intercept_server.py` can generate a local self-signed certificate for

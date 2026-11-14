@@ -22,9 +22,15 @@ the vendor `run.sh`. They are not the eMMC boot partitions.
 **`UMFG`** — the vendor signature string at offset `0x1A0200` in the vendor
 `boot0`/`boot1` partitions, followed by a 32-bit `DEBUG_FUNC_LEVEL`.
 
-**`TIMG`** — the outer Novatek firmware container (1.53 GB package).
+**`TIMG`** — the classic outer Novatek firmware container (for example the
+1.53 GB TPN256E package).
 
 **`PIMG`** — a component header/payload inside a `TIMG` container.
+
+**`TIMGPKGVER40`** — the revised 2023+ firmware container. It keeps the
+0x120-byte header, adds a `PPCH`/vertbl partition table, uses 0x460-byte
+`PIMG` headers, and runs components to EOF with no container-level MD5. The
+stored payloads are vendor-encrypted; each `PIMG` MD5 covers the stored bytes.
 
 **`NFSB`** — the secure-filesystem wrapper (4,096-byte header, SHA-256 +
 RSA-2048) around the SquashFS images. The verifier runs for the `nfsb` mount.

@@ -212,4 +212,24 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14
+
+New material: `TIMGPKGVER40` parser support in `tools/firmware/parse_timg.py`
+and its tests, the VER40 sections in `docs/research/03` and
+`docs/guides/firmware-extraction.md`, the VER40 rows in
+`docs/reference/file-formats.md`, and the external `77OLED760/12` (TPN258E)
+report under `evidence/tpn258e-77oled760/`.
+
+Checks:
+- The parser reads local packages only. It does not execute or decrypt them.
+- The TPN258E evidence contains no serials, MACs, SSIDs, IPs, or credentials.
+- The TPN236E status line records that the artifact was contributor-supplied
+  and that the maintainer reproduced the parser logic and classic-package
+  regression only.
+- The changelog is cut to 0.4.1; `pyproject.toml` is 0.4.1.
+- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

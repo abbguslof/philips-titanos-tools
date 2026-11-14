@@ -8,7 +8,9 @@ dumps. Keep vendor files out of the public tree.
 | Structure | Size | Key fields |
 | :--- | :--- | :--- |
 | `TIMG` header | `0x120` | magic `TIMG`, 64-bit payload length at `+0x08`, 16-byte MD5 at `+0x10` |
-| `PIMG` header | `0x488` | magic `PIMG`, 64-bit payload length at `+0x08`, 16-byte MD5 at `+0x10`, name at `+0x20`, target at `+0x30`, compression at `+0x70`, flags at `+0x84` |
+| `PIMG` header (classic `TIMG`) | `0x488` | magic `PIMG`, 64-bit payload length at `+0x08`, 16-byte MD5 at `+0x10`, name at `+0x20`, target at `+0x30`, compression at `+0x70`, flags at `+0x84` |
+| `TIMGPKGVER40` container | `0x120` + vertbl | magic `TIMGPKGVER40`; no container length/MD5; components back-to-back to EOF |
+| `PIMG` header (`TIMGPKGVER40`) | `0x460` | magic `PIMG`, 32-bit payload length at `+0x04`, 16-byte MD5 at `+0x08`, name at `+0x18`, target at `+0x28`, compression at `+0x48`; stored payload is vendor-encrypted |
 | `NFSB` header | `0x1000` | SHA-256 + RSA-2048 secure-filesystem wrapper; strip to reach SquashFS |
 
 `enc=gzip` is a normal gzip stream. The container/component MD5 is not an

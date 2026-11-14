@@ -325,4 +325,26 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (NDAL V4L2 reset)
+
+New material: `docs/research/32-ndal-v4l2-reset-2026-11-14.md`,
+`evidence/deep/2026-11-14-ndal-v4l2-reset.md`, the paused-`appmgr` retry
+result in `docs/research/31`, and the updated `STATE.md`.
+
+Checks:
+- The note and evidence contain hashes, symbol names, addresses, and offsets.
+  They do not contain private keys, raw vendor payloads, or device identifiers.
+- The retry staged `/swdl`, set the p9 flag, and set the STBC mode. Cleanup
+  restored the vendor `/swdl` package, the p9 `misc`, and the STBC mode; the
+  boot areas were not written.
+- The vendor package `74d2790a…`, p9 `c32f354f…`, and boot areas `eee415…` are
+  restored. The TV and `appmgr` run.
+- The `nm` symbol ownership note is a read-only observation of the pulled
+  libraries; no vendor bytes are published.
+- The changelog is cut to 0.4.7; `pyproject.toml` is 0.4.7.
+- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

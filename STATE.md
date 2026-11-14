@@ -87,9 +87,11 @@ The public repo documents research and root. The live unit is further along:
 2. The same-byte restore passed. Before a modified boot image, prove the
    corrupted-image recovery path.
 3. Read-only: decompile `NDAL_VideoExt_STBC_ResetByHWWDT` (`0x137f0`) and
-   `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` (`0xb6ad1`), and resolve the
-   `v4l2_open`/`v4l2_ioctl` provider and the `/dev/video%i` index. See
-   [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md).
+   `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` (`0xb6ad1`), the four defined
+   `ndcommon_v4l2_*` bodies (`0x27534`/`0x27554`/`0x27574`), and dump
+   `.rodata` `0x2ca54` (`/dev/video%i`) and `0x2cbd0` (`gv4l2_dev_name`). Still
+   resolve the `v4l2_open`/`v4l2_ioctl` provider and the `/dev/video%i` index.
+   See [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md).
 4. Build the V4L2 reset helper (dynamic `libNDAL_EX.so` or direct
    `VIDIOC_S_EXT_CTRLS` with id `0xf17f1f`, class `0x0f170000`, value 1).
 5. Test with the p9 package; read p9 `0x3e00`/`0x4000` and

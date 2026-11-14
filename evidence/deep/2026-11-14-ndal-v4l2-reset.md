@@ -54,6 +54,10 @@ V4L2 data: `/dev/video%i` at `0x2ca54`; `gv4l2_dev_name` at `0x2cbd0`;
 `libNDAL_EX.so`; `gv4l2_dev_index` at `0x38938`, `g_v4l2_fd` at `0x56608`, and
 `g_v4l2_fd_common` at `0x6c68c` in `libNDAL3.so`.
 
+`nm -D libNDAL_EX.so` confirms the four `ndcommon_v4l2_*` symbols are defined
+(`T`) in that library; the odd `0x27535`/`0x27555`/`0x27575`/`0x275d5` forms are
+the Thumb-bit addresses of the even REA entries in the table.
+
 ## Exact reset call
 
 ```text

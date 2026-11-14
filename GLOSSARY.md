@@ -111,6 +111,12 @@ engineering JointSpace routes. It is not an IP ACL and is not changed by NVM
 **Ambilight `expert` mode** — the JointSpace mode that disables the internal
 video override and allows direct per-LED RGB injection.
 
+## Recovery
+
+**Recovery gate** — a verified full eMMC and boot-area backup plus a proven
+restore. No boot-chain write happens before it. See
+[docs/guides/recovery-gate.md](docs/guides/recovery-gate.md).
+
 ## Evidence
 
 **VERIFIED** — reproduced on the target hardware or checked against the shipped

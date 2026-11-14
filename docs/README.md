@@ -8,6 +8,8 @@ Every page carries a status label:
 - **INFERRED** — follows from evidence but was not directly observed.
 - **OPEN** — not resolved.
 
+Current verified state and next gate: [STATE.md](../STATE.md).
+
 Hardware results were produced on the Philips `55PUS8000/12` unless a page names another unit.
 
 The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may differ; reports and PRs are welcome.
@@ -55,6 +57,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | [Firmware extraction](guides/firmware-extraction.md) | You have a `.pkg` and want the rootfs/application filesystems. |
 | [USB autoroot](guides/usb-autoroot.md) | You want an ephemeral root shell from a cold boot. |
 | [Persistent root](guides/persistent-root.md) | You have root and want it to survive a reboot without the stick. |
+| [Recovery gate](guides/recovery-gate.md) | You are about to write a boot area or the update environment. |
 | [Restore to stock](guides/restore-to-stock.md) | You want to remove the USB path, the persistence hook, or restore NVM. |
 | [SAM download from USB](guides/sam-download-from-usb.md) | You are flashing NVM/EDID/channel data through the service menu. |
 | [Testing](guides/testing.md) | You are changing the tools or payloads. |

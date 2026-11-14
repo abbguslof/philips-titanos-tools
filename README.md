@@ -26,6 +26,8 @@
 | Inspect or extract firmware | [Firmware extraction](docs/guides/firmware-extraction.md) |
 | Remove root and return to stock | [Restore to stock](docs/guides/restore-to-stock.md) |
 | See what is proven and what is dead | [Verified findings and dead ends](docs/research/12-verified-findings-and-dead-ends.md) |
+| See the current verified state and next gate | [STATE.md](STATE.md) |
+| Back up the eMMC before boot-chain work | [Recovery gate](docs/guides/recovery-gate.md) |
 | Plan the deepest jailbreak | [Deep jailbreak roadmap](docs/research/25-deep-jailbreak-roadmap.md) |
 
 ## What this is
@@ -134,6 +136,13 @@ Status labels: **Verified** means reproduced on a tested TV or checked against t
 | Root shell survives reboot on a later `TPN256E` firmware with the `/swdl/telnet/telnetd` seam | **Reported** | [variant note](docs/research/24-swdl-telnet-persistence-2026-11-11.md) |
 | Static tools on `/mtd_rwarea/apdat/opt` and key-only Dropbear SSH on `:2222` across a USB-less boot | **Verified** | [install prefix](docs/research/21-install-prefix-2026-11-10.md), [persistence](docs/research/22-opt-prefix-persistence-2026-11-10.md), [SSH](docs/research/23-dropbear-ssh-2026-11-10.md) |
 | USB autorun stick builder with MBR/FAT32, empty label, and SHA-256 verification | **Verified** | [`tools/autoroot_usb.py`](tools/autoroot_usb.py) |
+
+### Recovery
+
+| Capability | Status | Evidence |
+| :--- | :--- | :--- |
+| Read-only full eMMC and boot-area backup | **Verified** | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
+| Restore from backup | **Not tested** | [Recovery gate](docs/guides/recovery-gate.md) |
 
 ### Research and local control
 

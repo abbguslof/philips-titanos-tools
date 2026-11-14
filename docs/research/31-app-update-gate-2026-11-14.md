@@ -1,7 +1,9 @@
 # App-layer update gate: `/swdl` trigger and RSA verification
 
-Status: **VERIFIED (static)** for the trigger and the verifier. **OPEN** for
-the update environment's own check and the eburner flag mapping. No TV writes.
+Status: **VERIFIED (static)** for the trigger and the verifier, and for the
+classic eburner USB-image initramfs and p9 metadata. **OPEN** for the eburner
+entry trigger/boot flag and the app-layer VER40 bypass. Static mapping only;
+the test results are labeled below.
 
 Target: `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`.
 
@@ -81,16 +83,16 @@ The live package is `TIMGPKGVER40`. The local classic package is not.
 
 ## Bypass options
 
-1. **Direct `/swdl` staging with root.** Copy a local package to
-   `/swdl/autorun.upg`, set the eburner flag, and reset. This skips the
+1. **Direct `/swdl` staging with root (app-layer path).** Copy a local package
+   to `/swdl/autorun.upg`, set the eburner flag, and reset. This skips the
    app-layer `StartSoftwareUpdate` and its RSA check. The update environment's
-   own check is still open. The `nvt_eburner` whole-image verifier is MD5-only
+   own check is open. The `nvt_eburner` whole-image verifier is MD5-only
    and accepts `TIMG`; the `eburner` kernel and the loader may check more.
 2. **Runtime patch of `libfwup.so`.** Patch `nvtfw_sec_verify_whole_img_sign`
    to return 0, or `nvtfw_enable_secure_boot` to return 0, and bind-mount the
    patched library over `/mtd_apexe/board/lib/libfwup.so` at boot. This would
    let the app layer accept a modified VER40 package. The update environment's
-   check is still open.
+   check is open.
 3. **Vendor private key.** Not present in `libfwup.so` or the app partition.
    The PEM markers are not a key. Signing a modified package from the app layer
    is not possible.
@@ -108,8 +110,8 @@ The root-only `/swdl` path needs a package and two flag writes:
 
 `libdev.so` SHA-256 `32923fd8f605981ae77e78a297f3b58d6e319e5d546a1c6356b9edd3a66c83b9`.
 The `/dev` strings include `/dev/ntkstbc`, `/dev/ntgpio`, `/dev/ntkiic0`, and
-`/dev/ttyS2`. The STBC device is the likely target; the exact device is
-inferred. The eburner kernel carries `nvt_soc_stbc_in_eburn_mode` and the
+`/dev/ttyS2`. `research/32` confirms `/dev/ntkstbc`, the ioctl, and the
+struct. The eburner kernel carries `nvt_soc_stbc_in_eburn_mode` and the
 `## EBURN ## flow-1/flow-2` messages. It does not carry a package-signature
 string.
 
@@ -123,28 +125,27 @@ The direct staging test:
 6. The script writes `update-proof.txt` and the two boot-area images to the
    USB, hashes `/dev/mmcblk0` read-only, and reboots.
 
-The update environment's extraction/check is the remaining unknown. The
-`nvt_eburner` verifier is MD5-only; the `run.sh` skips it. The package
-signature gate is bypassed because the package is staged directly, not through
-the app-layer verifier.
+The classic eburner extraction path is mapped in
+[research/32](32-ndal-v4l2-reset-2026-11-14.md): its initramfs reads a USB
+image at `/media/sda1/nvt_tv_firmware.img`, extracts `sys_run`, and runs
+`/tmp/sys_run/run.sh`. The `/swdl` staging steps above exercise the app-layer
+path; they do not feed the classic eburner. The `nvt_eburner` verifier is
+MD5-only; the `run.sh` skips it. The package signature gate is bypassed
+because the package is staged directly, not through the app-layer verifier.
 
 ## Next
 
 - The eburner flag path is mapped: `PKG_ready` at `misc + 0x3e00`, the STBC
   ioctl `0xc0105310`, and the no-op status function.
-- Map the `eburner` kernel/loader extraction and check for a classic `TIMG`
-  package staged at `/swdl/autorun.upg`. The strings show no package-signature
-  check; the `nvt_eburner` verifier is MD5-only.
-- Then run the direct `/swdl` staging test with the prepared classic dump-only
-  package, with the USB fallback and the p9/`/swdl` backups. The dump-only
-  `run.sh` does not write the eMMC.
-- The enabled entry path is the NDAL V4L2 reset: control `0x0f170f1f`, class
-  `0x0f170000`, ioctl `0xc0185647` on `/dev/video24`; build the helper in
-  [research/32](32-ndal-v4l2-reset-2026-11-14.md). The full
-  `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` wrapper consumed the package but
-  still left no script proof. The classic eburner initramfs uses the USB image
-  `/media/sda1/nvt_tv_firmware.img`; the entry trigger and boot flag remain
-  open.
+- The classic eburner initramfs is mapped: it reads a USB image at
+  `/media/sda1/nvt_tv_firmware.img`, extracts `sys_run`, and runs
+  `/tmp/sys_run/run.sh`. The entry trigger/boot flag and the USB mount/cmdline
+  remain open; see [research/32](32-ndal-v4l2-reset-2026-11-14.md).
+- The NDAL V4L2 reset is mapped and the helper resets the TV, but no test run
+  produced `PKG_SUCCESS` or the script proof. The next diagnostic is the
+  eburner serial console or the bootloader/NVM selection flag.
+- The app-layer VER40 path is separate: the RSA gate is mapped; a patched
+  `libfwup` or a signed VER40 package remains open.
 - Do not test on field units.
 
 ## Direct staging test (2026-11-14)
@@ -156,24 +157,26 @@ dashboard. The `run.sh` left neither `PKG_SUCCESS` nor
 `/swdl/eburner-proof.txt`. The app layer restored the vendor
 `/swdl/autorun.upg` (917 MB) on the next boot.
 
-The trimmed package (`pre_install`, `part_tbl`, `eburner`, `sys_run`) is likely
-missing loader-required p9 metadata (`vinfo`, `upst`, `bflag`, `pptbl0/1`).
-The `insmod`, `/swdl` mount, and `$BB` path are the other candidates. A
-diagnostic package with `EBURN_START` at the top of `run.sh` did not enter on
-its AC cycles; the AC trigger was not reliable after the STBC off/on sequence.
+The trimmed package (`pre_install`, `part_tbl`, `eburner`, `sys_run`) was the
+first candidate; the p9 metadata (`vinfo`, `upst`, `bflag`, `pptbl0/1`) was
+mapped later in [research/32](32-ndal-v4l2-reset-2026-11-14.md). The classic
+eburner reads the USB image, so the `/swdl` package did not feed its `run.sh`.
+A diagnostic package with `EBURN_START` at the top of `run.sh` did not enter on
+its AC cycles; the AC trigger was not repeatable after the STBC off/on
+sequence.
 
 The vendor AC-on reset through `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` /
 `NDAL_VideoExt_STBC_ResetByHWWDT_WithPowerOnEventACON` was attempted through
 `gdbserver` on `idtv`. The LAN port is firewalled; the SSH tunnel found the
 gdbserver gone; the gdbserver killed `idtv` and `appmgr` restarted. The UI
-needs a power cycle. The gdb path is not usable as-is; the next attempt is a
-small dynamic helper or a V4L2 control helper.
+needs a power cycle. The gdb path is not usable as-is. A dynamic helper
+replaced it; see [research/32](32-ndal-v4l2-reset-2026-11-14.md).
 
 ### Paused-appmgr retry (2026-11-14)
 
 A third retry staged the p9 package (`b51cd228…`) and stopped `com.nvt.appmgr`
 (PID 636) with `kill -STOP` so the app layer could not remove the package. The
-package survived the AC cycle, but the eburner still did not enter:
+package survived the AC cycle, but the eburner did not enter:
 `misc + 0x3e00` stayed `PKG_ready/swdl/autorun.upg`, `misc + 0x4000` was zero,
 `/swdl/eburner-proof.txt` was absent, and the boot areas were unchanged.
 Keeping the package through the reset did not fix the STBC/AC entry.
@@ -185,23 +188,24 @@ mode. The NDAL V4L2 reset route is in
 ### Full AC-on wrapper test (2026-11-14)
 
 A local helper called `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` after
-`NDAL_VideoExt_OpenDevice(0, 0xA)`. The wrapper reset the TV and consumed
-`/swdl/autorun.upg`; the p9 flag stayed `PKG_ready`, `misc + 0x4000` was zero,
-`/swdl/eburner-proof.txt` was absent, and the boot areas were unchanged. The raw
-V4L2 `G_EXT_CTRLS` alone reset the TV but left the package intact. The full
-wrapper is the stronger trigger; the eburner script/loader remains the blocker.
-The cleanup restored the vendor package, the p9 `misc`, and the STBC mode.
+`NDAL_VideoExt_OpenDevice(0, 0xA)`. The wrapper reset the TV; one run left
+`/swdl/autorun.upg` removed and later runs left it in place. The p9 flag stayed
+`PKG_ready`, `misc + 0x4000` was zero, `/swdl/eburner-proof.txt` was absent,
+and the boot areas were unchanged. The raw V4L2 `G_EXT_CTRLS` alone reset the
+TV and left the package. The cleanup restored the vendor package, the p9
+`misc`, and the STBC mode.
 
 The classic eburner initramfs (extracted from the `eburner` component) reads a
 USB image at `/media/sda1/nvt_tv_firmware.img`, not `/swdl/autorun.upg`; it
 extracts `sys_run` and runs `/tmp/sys_run/run.sh`. The app-layer `VER40` path
 and its `/swdl` flag are a separate flow. A full classic package on the USB,
-plus the p9 `UPST`/`BTFG` metadata, still did not enter in the tested reset
+plus the p9 `UPST`/`BTFG` metadata, did not enter in the tested reset
 sequences; the entry trigger remains open. See
 [research/32](32-ndal-v4l2-reset-2026-11-14.md).
 
-The TV is safe: p9 hash `c32f354f…` (pristine), boot areas `eee415…`, vendor
-`/swdl/autorun.upg` `74d2790a…`, STBC off, p9 flag original.
+The TV boots normally. p9 is `c32f354f…` (pristine), the boot areas are
+`eee415…`, the vendor `/swdl/autorun.upg` is `74d2790a…`, STBC is off, and
+the p9 flag is original.
 
 ## Safety
 

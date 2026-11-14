@@ -120,11 +120,11 @@ Data stubs supplied for `bplatCECIsSemiOrStandby`, `g_b8MutexUnlockChecked`,
 | Raw `G_EXT_CTRLS` on `/dev/video24` | `b51cd228…` | TV reset | intact | `PKG_ready` | zero | absent |
 | Full `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` | `b51cd228…` | TV reset | **removed** | `PKG_ready` | zero | absent |
 
-The full wrapper is the stronger trigger: it consumed `/swdl/autorun.upg` and
-the app layer removed the remainder after reboot. It still did not produce
-`/swdl/eburner-proof.txt`, `PKG_SUCCESS`, or an `EBURN_START`/`EBURN_PROOF`
-marker. The boot areas were unchanged. The remaining blocker is the eburner
-loader/package extraction or the `sys_run` format, not the reset trigger.
+The full wrapper reset the TV. One run left `/swdl/autorun.upg` removed; later
+runs left it in place. No run produced `/swdl/eburner-proof.txt`,
+`PKG_SUCCESS`, or an `EBURN_START`/`EBURN_PROOF` marker. The boot areas were
+unchanged. The eburner entry trigger is the open blocker; the initramfs maps
+the USB image path and the extraction steps.
 
 Local helper log (no secrets):
 

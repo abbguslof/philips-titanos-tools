@@ -8,7 +8,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (71 tests):
+Current coverage (72 tests):
 
 | Test file | Covers |
 | :--- | :--- |
@@ -18,7 +18,7 @@ Current coverage (71 tests):
 | `test_edid_tool.py` | EDID CRC32 and tamper detection. |
 | `test_firmware_fetch.py` | Support-page link extraction and candidate filename generation. |
 | `test_firmware_parse.py` | Classic `TIMG` and `TIMGPKGVER40` parsing, component scanning, MD5 verification, and extraction. |
-| `test_jointspace_client.py` | HMAC signature, mocked network calls, key sequence. |
+| `test_jointspace_client.py` | HMAC signature, mocked network calls, key sequence, non-JSON 2xx bodies. |
 | `test_deep_probe.py` | Redaction and the read-only command allowlist. |
 | `test_bootchain_dump.py` | Read-only item selection, alignment, and dry-run behavior. |
 | `test_bootchain_inspect.py` | uImage header/data CRC parsing, embedded images, entropy, markers. |

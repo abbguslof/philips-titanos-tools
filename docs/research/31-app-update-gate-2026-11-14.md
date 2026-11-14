@@ -140,9 +140,35 @@ the app-layer verifier.
   `run.sh` does not write the eMMC.
 - Do not test on field units.
 
+## Direct staging test (2026-11-14)
+
+Two AC-on cycles entered the eburner with the STBC eburner mode, the
+`PKG_ready` flag, and a classic package. The eburner consumed
+`/swdl/autorun.upg`; the screen went black and the TV rebooted to the normal
+dashboard. The `run.sh` left neither `PKG_SUCCESS` nor
+`/swdl/eburner-proof.txt`. The app layer restored the vendor
+`/swdl/autorun.upg` (917 MB) on the next boot.
+
+The trimmed package (`pre_install`, `part_tbl`, `eburner`, `sys_run`) is likely
+missing loader-required p9 metadata (`vinfo`, `upst`, `bflag`, `pptbl0/1`).
+The `insmod`, `/swdl` mount, and `$BB` path are the other candidates. A
+diagnostic package with `EBURN_START` at the top of `run.sh` did not enter on
+its AC cycles; the AC trigger was not reliable after the STBC off/on sequence.
+
+The vendor AC-on reset through `PLAT_SYS_ResetByHWWDT_PowerOnEventACOn` /
+`NDAL_VideoExt_STBC_ResetByHWWDT_WithPowerOnEventACON` was attempted through
+`gdbserver` on `idtv`. The LAN port is firewalled; the SSH tunnel found the
+gdbserver gone; the gdbserver killed `idtv` and `appmgr` restarted. The UI
+needs a power cycle. The gdb path is not usable as-is; the next attempt is a
+small dynamic helper or a V4L2 control helper.
+
+The TV is safe: p9 hash `c32f354f…` (pristine), boot areas `eee415…`, vendor
+`/swdl/autorun.upg` `74d2790a…`, STBC off, p9 flag original.
+
 ## Safety
 
-- No TV writes were made. The analysis used local copies pulled read-only from
-  `/mtd_apexe/board/lib` and the `/swdl` header.
+- No boot-area or eMMC writes were made. The direct staging wrote `/swdl` and
+  the p9 flag, and set the STBC mode; the p9 flag was restored, the STBC was
+  turned off, and the boot areas are unchanged.
 - The local package, `/swdl` package, and libraries stay out of the repo.
 - No key material is published.

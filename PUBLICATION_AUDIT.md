@@ -308,4 +308,21 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (direct staging test)
+
+New material: the direct staging test result in
+`docs/research/31-app-update-gate-2026-11-14.md`,
+`evidence/deep/2026-11-14-app-update-gate.md`, and `ntkctl --data`.
+
+Checks:
+- The test wrote `/swdl`, the p9 flag, and the STBC mode. The p9 flag and STBC
+  were restored; the boot areas are unchanged.
+- No private keys, raw vendor payloads, or device identifiers are published.
+- The vendor package is restored; the p9 hash is the original.
+- The changelog is cut to 0.4.6; `pyproject.toml` is 0.4.6.
+- Test coverage is 71 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

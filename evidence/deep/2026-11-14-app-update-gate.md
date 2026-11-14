@@ -95,6 +95,29 @@ reset. Not tested.
    update environment check is open.
 3. Vendor private key: not present. The PEM markers are not a key.
 
+## Direct staging test (2026-11-14)
+
+| Artifact | Result |
+| :--- | :--- |
+| Classic trimmed package `ccba5334…` | Staged; two AC-on cycles entered the eburner; package consumed; no proof, no `PKG_SUCCESS`. |
+| Fast `/swdl` proof package `b45c1ecb…` | Staged; eburner consumed it; no `/swdl/eburner-proof.txt`, no `PKG_SUCCESS`. |
+| Diagnostic `EBURN_START` package `a2ee050b…` | Staged; AC cycles did not enter the eburner; p9 stayed `PKG_ready`; package later removed by the app layer. |
+| Vendor restore | `/swdl/autorun.upg` back to 917,372,175 B, SHA-256 `74d2790a…`, size/version `917372175` / `940186113`. |
+| p9 | Restored to the original SHA-256 `c32f354f…`; flag at `0x3e00` original (no `PKG_ready`). |
+| Boot areas | `eee415…` on both. |
+| STBC | `DEV_UART_Set_SWEburnerOnOff` off (`c9 00`); eburner mode cleared. |
+
+The eburner entered and consumed the classic packages, but the user-space
+`run.sh` did not leave the proof or `PKG_SUCCESS`. The app layer restored the
+vendor package. The trimmed package likely lacks loader-required p9 metadata
+(`vinfo`, `upst`, `bflag`, `pptbl0/1`); the `insmod`, `/swdl` mount, and `$BB`
+path are also candidates.
+
+The `gdbserver`/gdb vendor reset attempt failed: the LAN port is firewalled,
+the SSH tunnel found the gdbserver gone, and the gdbserver killed `idtv`.
+`appmgr` restarted; the UI needs a power cycle. No boot-area or eMMC writes
+were made; the p9 flag and STBC were restored.
+
 ## Redaction
 
 This page contains sizes, hashes, offsets, symbol names, and addresses only. It

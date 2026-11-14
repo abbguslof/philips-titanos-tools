@@ -27,7 +27,7 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Recovery backup | Full `mmcblk0` image and boot areas; `sha256sum -c` passes | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Restore | Same-byte write to both boot areas, read-back hashes, and cold boots verified | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
-| App-layer update gate | USB package stages to `/swdl/autorun.upg`; the live file is `TIMGPKGVER40`; the verifier is RSA; no private key | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
+| App-layer update gate | USB package stages to `/swdl/autorun.upg`; the live file is `TIMGPKGVER40`; the verifier is RSA; no private key. The eburner was entered via STBC + AC; the script did not leave a proof | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
 ## Live drift
@@ -58,9 +58,14 @@ The public repo documents research and root. The live unit is further along:
 - [x] Eburner flag path: `PKG_ready<path>` at `misc + 0x3e00`, STBC ioctl
   `0xc0105310`, and a no-op status function. See
   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md).
-- [ ] Update environment check: map the `eburner` kernel/loader extraction and
-  check for a classic `TIMG` package staged at `/swdl`.
-- [ ] Direct `/swdl` staging test with the classic dump-only package.
+- [x] Eburner trigger: the STBC eburner mode + `PKG_ready` + AC-on entered the
+  eburner twice and consumed the classic package. The script did not leave
+  `PKG_SUCCESS` or the proof.
+- [ ] Update environment script/loader: the trimmed package is likely missing
+  `vinfo`/`upst`/`bflag`/`pptbl`; the `insmod`/`/swdl`/`$BB` are candidates.
+  The app layer restores the vendor package.
+- [ ] Direct `/swdl` staging test: partial. Build a package with the p9
+  metadata and a pre-`insmod` proof.
 - [x] `kerupm` package/live match: plain uImage, valid data CRC, exact bytes at
   `p21`. Update-mode selection is still open.
 - [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map. The `p9` `PPCH` slot map is
@@ -78,9 +83,11 @@ The public repo documents research and root. The live unit is further along:
    [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md), and
    inspect the `sub_123ac` partition write order. The eburner flag path is
    mapped.
-4. Back up `/swdl/autorun.upg` and `p9`, then run the direct `/swdl` staging
-   test with the classic dump-only package. The `run.sh` does not write the
-   eMMC; keep the USB fallback ready.
+4. The direct staging test entered the eburner but did not prove the script.
+   Build a package with the p9 metadata (`vinfo`/`upst`/`bflag`/`pptbl`) and a
+   minimal pre-`insmod` proof, and use the vendor AC-on reset helper
+   (`PLAT_SYS_ResetByHWWDT_PowerOnEventACOn`/`NDAL`) to avoid the app-layer
+   restore race.
 
 ## Stop conditions
 

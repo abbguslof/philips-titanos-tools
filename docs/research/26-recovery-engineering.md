@@ -74,6 +74,11 @@ sh /media/sda1/emmc_backup.sh /media/sda1
 file. It refuses an internal target, a non-USB target, a FAT32 target (4 GiB
 limit), and insufficient free space. It does not write the eMMC.
 
+If the TV cannot mount the target filesystem, for example an exFAT media drive,
+pull the same images over SSH to a workstation filesystem. The 2026-11-14
+backup used that path; see the
+[recovery gate guide](../guides/recovery-gate.md).
+
 Keep the USB copy and a second independent copy off the TV. This backup is the
 recovery gate for the update-environment and boot-chain work.
 

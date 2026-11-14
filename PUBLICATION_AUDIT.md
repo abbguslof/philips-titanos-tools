@@ -232,4 +232,21 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-14 (recovery backup)
+
+New material: `STATE.md`, `docs/guides/recovery-gate.md`, and
+`evidence/deep/2026-11-14-emmc-backup.md`.
+
+Checks:
+- The backup evidence contains sizes and hashes only. Raw images and the
+  bootchain dump stay off the repository.
+- The note names no serial, MAC, SSID, IP, or credential.
+- The live-drift section records the freetitan mounts without documenting their
+  internals.
+- The changelog has an Unreleased section for the post-0.4.1 docs.
+- Test coverage remains 71 tests; the suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

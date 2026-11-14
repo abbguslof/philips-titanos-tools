@@ -40,6 +40,7 @@ excerpt shows the session, not the auth method). Status: **REPORTED**
 | Set | What it proves |
 | :--- | :--- |
 | [deep/2026-11-12](deep/2026-11-12-8000-bootchain.md) | Read-only 8000 boot map: protected A/B secure slots; plain `p21` `kerupm` upgrade kernel; `p1/p2` UMFG slots; `p9` slot map; package-to-live matches and update environment. |
+| [deep/2026-11-14](deep/2026-11-14-emmc-backup.md) | Full eMMC user-area and boot-area backup. Sizes and hashes only; the restore test is not performed. |
 
 Raw partitions and NVM remain under `dist/` and are not published. See
 [boot image map](../docs/research/28-boot-image-map.md) and [update package map](../docs/research/29-update-package-map.md).

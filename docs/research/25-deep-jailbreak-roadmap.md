@@ -188,7 +188,9 @@ writes until Phase R.
 - [x] First boot-image map (protected slots + plain `p21`).
 - [x] `p9` `PPCH`/`STBC`/`VTBL` parsing and package-to-live mapping.
 - [x] Update environment mapped (`eburner`/`sys_run`/`nvt_eburner`).
-- [ ] Full eMMC/boot-area backup (recovery gate).
+- [x] Full eMMC/boot-area backup (recovery gate). See
+  [2026-11-14 backup](../../evidence/deep/2026-11-14-emmc-backup.md). Restore
+  not tested.
 - [ ] Update trigger and package-loader mapping.
 - [ ] Dump-only `sys_run` package test.
 - [ ] `kerupm` update-mode verification and boot selection.

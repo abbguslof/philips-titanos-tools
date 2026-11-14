@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `STATE.md`: current verified state, live drift, and the next gate.
+- `docs/guides/recovery-gate.md`: backup and restore runbook for boot-chain
+  work.
+- `evidence/deep/2026-11-14-emmc-backup.md`: sizes and hashes for the
+  recovery-gate backup. Raw images stay off the repo.
+
 ## 0.4.1 - 2026-11-14
 
 ### Added

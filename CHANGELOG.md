@@ -101,7 +101,7 @@
 
 ### Changed
 
-- Test coverage is 71.
+- Test coverage is 71 tests.
 
 ## 0.4.6 - 2026-11-14
 

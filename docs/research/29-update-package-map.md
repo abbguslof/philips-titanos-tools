@@ -5,7 +5,9 @@ Status: **VERIFIED (local package comparison)** on `55PUS8000/12`, firmware
 is not published.
 
 > The 2026-11-14 analysis in [research/30](30-update-path-2026-11-14.md) maps
-> the burner checks and the prepared dump-only test package.
+> the burner checks and the prepared dump-only test package. The app-layer
+> USB trigger and RSA gate are in
+> [research/31](31-app-update-gate-2026-11-14.md).
 
 Phase B also mapped the firmware package to the live partitions. The package
 exposes one **plain, unsigned-at-component-level** kernel.

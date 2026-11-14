@@ -42,6 +42,7 @@ excerpt shows the session, not the auth method). Status: **REPORTED**
 | [deep/2026-11-12](deep/2026-11-12-8000-bootchain.md) | Read-only 8000 boot map: protected A/B secure slots; plain `p21` `kerupm` upgrade kernel; `p1/p2` UMFG slots; `p9` slot map; package-to-live matches and update environment. |
 | [deep/2026-11-14](deep/2026-11-14-emmc-backup.md) | Full eMMC user-area and boot-area backup, plus a same-byte restore test on both boot areas. Sizes and hashes only. |
 | [deep/2026-11-14 update path](deep/2026-11-14-update-path.md) | Component offsets and hashes, `nvt_eburner` function addresses and MD5-only checks, live slot matches, and the prepared dump-only package hashes. |
+| [deep/2026-11-14 app-layer gate](deep/2026-11-14-app-update-gate.md) | USB trigger, `/swdl/autorun.upg` VER40 header, `libapp`/`libmid`/`libfwup` hashes and symbol addresses, RSA public-key verifier, and no private key. |
 
 Raw partitions and NVM remain under `dist/` and are not published. See
 [boot image map](../docs/research/28-boot-image-map.md) and [update package map](../docs/research/29-update-package-map.md).

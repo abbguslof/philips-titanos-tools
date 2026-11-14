@@ -27,6 +27,7 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Recovery backup | Full `mmcblk0` image and boot areas; `sha256sum -c` passes | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Restore | Same-byte write to both boot areas, read-back hashes, and cold boots verified | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
+| App-layer update gate | USB package stages to `/swdl/autorun.upg`; the live file is `TIMGPKGVER40`; the verifier is RSA; no private key | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
 ## Live drift
@@ -51,11 +52,13 @@ The public repo documents research and root. The live unit is further along:
   both times. See [backup evidence](evidence/deep/2026-11-14-emmc-backup.md).
 - [ ] Corrupted-image restore: prove recovery from a deliberately corrupted
   boot area. This needs the eMMC boot-area selection or ISP/JTAG path.
-- [ ] Update trigger and loader map. Component map and burner checks are done;
-  the trigger and the app-layer RSA gate are open. See
-  [update path](docs/research/30-update-path-2026-11-14.md).
-- [ ] Dump-only `sys_run` package test. The package is prepared; it is blocked
-  on the restore test.
+- [x] App-layer USB update trigger: USB package -> `/swdl/autorun.upg` ->
+  verify -> eburner flag -> reset. See
+  [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md).
+- [ ] Update environment check: map the eburner flag and the `eburner`
+  kernel/loader check for a classic `TIMG` package staged at `/swdl`.
+- [ ] Dump-only `sys_run` test: the classic package is prepared. The app layer
+  rejects classic; direct `/swdl` staging is the next test.
 - [x] `kerupm` package/live match: plain uImage, valid data CRC, exact bytes at
   `p21`. Update-mode selection is still open.
 - [ ] `p1`/`p2` FIT and `VTBL`/`NVHC` verifier map. The `p9` `PPCH` slot map is
@@ -69,10 +72,11 @@ The public repo documents research and root. The live unit is further along:
 2. The same-byte restore is done. Before a modified boot image, prove the
    corrupted-image recovery path.
 3. Read-only work that can proceed now: review the
-   [update path](docs/research/30-update-path-2026-11-14.md), map the update
-   trigger and the `libfwup.so` gate, and inspect the `sub_123ac` partition
-   write order. The dump-only `sys_run` package is prepared in `dist/` and is
-   blocked on the restore test.
+   [update path](docs/research/30-update-path-2026-11-14.md) and the
+   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md), map the
+   eburner flag, and inspect the `sub_123ac` partition write order. The
+   dump-only classic package is prepared in `dist/`; the app layer rejects it,
+   so the next test is direct `/swdl` staging.
 
 ## Stop conditions
 
@@ -89,4 +93,5 @@ The public repo documents research and root. The live unit is further along:
 - [Boot image map](docs/research/28-boot-image-map.md)
 - [Update package map](docs/research/29-update-package-map.md)
 - [Update path](docs/research/30-update-path-2026-11-14.md)
+- [App-layer update gate](docs/research/31-app-update-gate-2026-11-14.md)
 - [2026-11-14 backup evidence](evidence/deep/2026-11-14-emmc-backup.md)

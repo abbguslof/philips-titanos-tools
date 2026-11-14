@@ -353,6 +353,7 @@ def main() -> int:
             f"{comp.length:>12}  {comp.target:<28} {comp.flags}"
         )
 
+    verify_rc = 0
     if args.verify:
         if meta["payload_md5"] is not None:
             actual = stream_md5(args.package, TIMG_HEADER_SIZE, meta["payload_length"])
@@ -362,7 +363,9 @@ def main() -> int:
                 return 1
         else:
             print("\ncomponent MD5s (VER40: verification is per component):")
-            return _verify_components(args.package, components)
+            verify_rc = _verify_components(args.package, components)
+            if verify_rc:
+                return verify_rc
 
     if args.extract:
         selected: Optional[Pimg] = None
@@ -377,7 +380,7 @@ def main() -> int:
             args.package, selected, args.output, ver40=meta.get("format") == "VER40"
         )
         print(f"\nextracted: {out}")
-    return 0
+    return verify_rc
 
 
 if __name__ == "__main__":

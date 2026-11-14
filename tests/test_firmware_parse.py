@@ -3,6 +3,7 @@ from __future__ import annotations
 import gzip
 import hashlib
 import struct
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,6 +13,7 @@ from tools.firmware.parse_timg import (
     TIMG_HEADER_SIZE,
     VER40_PIMG_HEADER_SIZE,
     extract_component,
+    main,
     parse_pimg_header,
     parse_timg,
 )
@@ -133,6 +135,29 @@ class TestVer40Parser(unittest.TestCase):
             meta, components = parse_timg(pkg)
             self.assertEqual(meta["component_count"], 1)
             self.assertEqual(components[0].name, "fs")
+
+    def test_verify_then_extract_in_one_invocation(self):
+        stored = b"stored-encrypted-bytes"
+        blob = build_ver40_timg([build_ver40_pimg("fs", stored, "gzip")])
+        with tempfile.TemporaryDirectory() as tmp:
+            pkg = Path(tmp) / "test.upg"
+            pkg.write_bytes(blob)
+            out = Path(tmp) / "out"
+            argv = sys.argv
+            try:
+                sys.argv = [
+                    "parse_timg.py",
+                    str(pkg),
+                    "--verify",
+                    "--extract",
+                    "fs",
+                    "-o",
+                    str(out),
+                ]
+                self.assertEqual(main(), 0)
+            finally:
+                sys.argv = argv
+            self.assertEqual((out / "00-fs.img").read_bytes(), stored)
 
 
 if __name__ == "__main__":

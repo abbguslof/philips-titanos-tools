@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.4.10 - 2026-11-14
+
+### Added
+
+- `70PUS8108/60` (`TPN236E`) correction: the `POST` `503` was a
+  `curl --digest` bodyless-probe artifact, not a TV-side refusal. A body-bearing
+  `POST /6/input/key` returned `200` and changed the volume. The same unit
+  accepted `1926` control requests without enforcing pairing. This correction
+  withdraws the first pairing claim.
+- Independent external confirmation of the `TPN236E_236.006.135.001` VER40
+  package: `parse_timg.py --verify` reported 19/19 component MD5s OK on a fresh
+  public download. Added the reference component list to `docs/research/03`.
+- GitHub issue forms for field reports and for tooling, docs, or accessibility
+  problems.
+- `ACCESSIBILITY.md` with the docs and Ambilight studio scope, known gaps, and
+  reporting path.
+
+### Changed
+
+- `tools/jointspace_client.py` accepts a non-JSON 2xx body instead of raising
+  on the HTML `Ok` response. Added a regression test.
+- `SECURITY.md`, `docs/research/08`, `12`, `33`, `evidence/README.md`, and the
+  indexes record the unauthenticated `1926` control surface and the corrected
+  `POST` result.
+
 ## 0.4.9 - 2026-11-14
 
 ### Added

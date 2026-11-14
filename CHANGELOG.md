@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.3 - 2026-11-14
+
+### Added
+
+- Same-byte restore test on `mmcblk0boot0` and `mmcblk0boot1`: the stock bytes
+  were written back, read-back hashes verified, `force_ro` restored, and both
+  cold boots returned root. No modified image was written.
+- Evidence and recovery docs now record the restore result.
+
+### Changed
+
+- The recovery gate now separates the verified same-byte restore from the still
+  open corrupted-image recovery path.
+- Test coverage is 71 tests.
+
 ## 0.4.2 - 2026-11-14
 
 ### Added

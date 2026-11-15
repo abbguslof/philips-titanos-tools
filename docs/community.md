@@ -15,7 +15,7 @@ for reproducible bugs and formal field reports.
 | A tool bug or parsing failure | [Issue](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose) |
 | A correction to a research note | Pull request or issue |
 | A question about a procedure | [Discussions](https://github.com/abbguslof/philips-titanos-tools/discussions) |
-| A security concern | [SECURITY.md](https://github.com/abbguslof/philips-titanos-tools/blob/main/SECURITY.md), not a public issue |
+| A security concern | [Private vulnerability report](https://github.com/abbguslof/philips-titanos-tools/security/advisories/new), not a public issue or Discussion |
 
 ## Before posting
 

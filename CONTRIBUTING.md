@@ -18,6 +18,10 @@ only runtime dependency is `requests` (used by the JointSpace client).
 
 Use [GitHub Discussions](https://github.com/abbguslof/philips-titanos-tools/discussions) for questions, model reports, ideas, and show-and-tell. Use [issues](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose) for reproducible bugs and formal field reports.
 
+## Security
+
+Use the [private vulnerability report](https://github.com/abbguslof/philips-titanos-tools/security/advisories/new) for security issues. Do not open a public issue or Discussion. GitHub requires a CWE; pick the closest match and explain any uncertainty in the report.
+
 ## Issues
 
 Use the **Field report (other model)** form for a new TV and the **Tooling, docs, or accessibility** form for a repo problem. The forms ask for the redaction checks; do not bypass them.

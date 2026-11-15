@@ -71,7 +71,12 @@ and the boot firewall allows 7788. That is a local debugging surface. Do not
 expose it to the internet; if you do not need it, block it at the router or in
 the TV firewall. It is not a remote root path by itself.
 
-## Reporting a problem in this repository
+## Reporting a vulnerability
+
+Private vulnerability reporting is enabled for this repository. Use the
+[private report form](https://github.com/abbguslof/philips-titanos-tools/security/advisories/new).
+Do not open a public issue or Discussion for a security report. For setup or
+model questions, use Q&A instead.
 
 Please report:
 
@@ -81,10 +86,28 @@ Please report:
 - a security issue in the tooling itself (for example, a USB builder path
   traversal or an unsafe format target).
 
-Open a private security advisory on GitHub, or contact the maintainer through
-the profile linked on the repository. Do not paste real serial numbers, MAC
-addresses, SSIDs, pairing credentials, or private IP addresses into a public
-issue.
+Include:
+
+- the repository version or commit;
+- the affected file, tool, or path;
+- reproduction steps and impact;
+- the closest [CWE](https://cwe.mitre.org/). GitHub requires a CWE on the
+  private report. Pick the nearest match; if none fits, choose the closest
+  general class and explain why in the description. Do not delay the report
+  over the classification.
+- the model, chassis, and firmware if the issue is device-specific. Redact
+  serials, MACs, SSIDs, pairing credentials, and private IPs unless they are
+  necessary for the private report.
+
+This is a volunteer project. Triage happens through the private advisory.
+Security fixes target the current `main` branch and the latest release; older
+tags are not backported by default.
+
+GitHub may rate-limit report submissions (currently 10 per day for this
+repository). If the form is unavailable or rate-limited, contact the
+maintainer through the profile linked on the repository. Do not put real
+serial numbers, MAC addresses, SSIDs, pairing credentials, or private IP
+addresses in a public issue.
 
 ## Secrets and redaction
 

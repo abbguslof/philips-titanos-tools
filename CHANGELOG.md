@@ -19,6 +19,9 @@
   The generated `site/` directory is not committed.
 - The documentation index moved to `docs/research/index.md`; the root README
   and the site link to it.
+- Aligned `SECURITY.md` with GitHub private vulnerability reporting: direct
+  report link, CWE guidance, and the 10-per-day fallback. The issue chooser,
+  CONTRIBUTING, and community page link to the private form.
 - Test coverage is 72 tests.
 
 ## 0.4.14 - 2026-11-15

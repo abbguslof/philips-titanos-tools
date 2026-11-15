@@ -505,7 +505,9 @@ Verdict: GO.
 
 New material: `mkdocs.yml`, `requirements-docs.txt`,
 `.github/workflows/docs.yml`, `docs/index.md`, `docs/models.md`,
-`docs/community.md`, `docs/project.md`, and the docs link updates.
+`docs/community.md`, `docs/project.md`, the docs link updates, and the
+private-reporting updates in `SECURITY.md`, `CONTRIBUTING.md`, and the issue
+chooser.
 
 Checks:
 - The Pages workflow builds from `docs/` with `mkdocs build --strict` and
@@ -518,6 +520,9 @@ Checks:
   repository. No new device data is added.
 - The documentation index moved to `docs/research/index.md`; the root README,
   docs index, and site links were updated.
+- The security policy points to the private report form, explains the required
+  CWE, records the 10-per-day fallback, and keeps security reports out of
+  public issues and Discussions.
 - The changelog is cut to 0.4.15; `pyproject.toml` is 0.4.15.
 - Test coverage is 72 tests; the site build, test suite, compile step, and
   shell syntax checks pass.

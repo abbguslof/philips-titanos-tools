@@ -1,8 +1,8 @@
 # 70PUS8108/60 (TPN236E): network surface and JointSpace 6.1
 
-Status: **REPORTED** on hardware by an external owner on 2026-11-14, including
-a same-day correction. The maintainer has not reproduced it. Read-only probes,
-plus owner-approved `VolumeUp` executions.
+Status: **REPORTED** on hardware by an external owner on 2026-11-14, with
+follow-ups through 2026-11-15. The maintainer has not reproduced it. Read-only
+probes, plus owner-approved volume executions.
 
 This note records a field report for a 2023 Titan OS unit that is not the lab.
 It tests the rest of the family against the `55PUS8000/12` reference. It is not
@@ -15,6 +15,9 @@ a root path and does not claim a remote exploit.
 > `401` challenge and answers a bodyless POST with `503`, so curl aborts before
 > sending the body. With a body, `POST /6/input/key` returns `200` and executes.
 > Pairing was not demonstrated, and this build does not enforce it on `1926`.
+> A second follow-up verified `POST /6/audio/volume` with a body
+> (`12 -> 15 -> 12`) and showed that the `403` GETs are hard-blocked with or
+> without credentials.
 
 ## Target
 
@@ -35,7 +38,8 @@ This note uses `<TV_IP>`.
 - GET/HEAD requests, TCP connect scans, and owner-approved `VolumeUp` POSTs from
   a Windows 11 LAN client.
 - No firmware was flashed, no USB stick was used, no settings were changed.
-- The owner approved the `VolumeUp` executions used to prove POST behavior.
+- The owner approved the `VolumeUp` and audio-volume POSTs used to prove
+  POST behavior.
 - The original PIN pairing was not confirmed to complete. The follow-up treats
   pairing as not required on this build; see [Pairing](#pairing).
 
@@ -49,9 +53,9 @@ The report's targeted TCP connect scan:
 | `1926` | open | open | JointSpace HTTPS |
 | `49153` | open | `49152` open | UPnP/DMR; the port differs by build |
 | `56789`, `56790` | open | open | DIAL |
-| `58012` | open | not reported | No HTTP response to `GET`; unidentified |
-| `7788` | **closed** | open | Chromium/Opera DevTools |
-| `8883` | **closed** | open | The `mqttv` listener on the lab unit |
+| `58012` | open | not reported | Silent to HTTP; waits for client data. Protocol unknown |
+| `7788` | **closed** | open | Chromium/Opera DevTools; closed even with the browser running |
+| `8883` | **closed** | open | The `mqttv` listener on the lab unit; still closed after a cold boot |
 | `8008`, `8009` | closed | open | |
 | `9013`, `10108`-`10120` | closed | not reported | No DTS Play-Fi listener observed |
 | `5555`, `55000` | closed | not reported | No ADB or service listener |
@@ -63,14 +67,20 @@ Caveats:
   listeners are not a stock baseline.
 - A closed port on the tested address is not proof that a service is absent on
   every interface. The report lists a targeted scan, not a full inventory.
-- Port `58012` answered the TCP connect but not HTTP; its protocol is unknown.
-  Do not treat it as an entry vector.
+- Port `58012` answered the TCP connect but stayed silent to HTTP, including a
+  3-second `GET /` timeout. It waits for client data. The protocol is unknown;
+  cheap fingerprinting is exhausted. Do not treat it as an entry vector.
+- `:7788` stayed closed while the browser was actively running. A 34-port scan
+  added no new listener. The same was true on the `43PUS7608/12` TPN236E unit.
+  The lab's always-open `:7788` is model-specific.
 
 ## JointSpace 6.1 behavior
 
 ### Working GETs
 
 - `/6/system` (also unauthenticated on plain-HTTP `1925`).
+- `/1/system` on `1925` returns the same JSON as `/6/system`; `/5/system` is
+  `404`, and `/` and `/6/` are `403`.
 - `/6/powerstate` -> `{"powerstate": "On"}`.
 - `/6/context` -> `{"level1": "WatchTv", ...}`.
 - `/6/ambilight/topology` ->
@@ -83,21 +93,24 @@ Caveats:
 `/6/audio/volume`, which is also the path this repo documents.
 
 The follow-up re-tested these GETs on `1926` with **no credentials**; all
-worked. On `1925`, only `/6/system` worked unauthenticated; other GETs returned
-`403`.
+worked. On `1925`, `/6/system` and `/1/system` worked unauthenticated; other
+GETs returned `403`.
 
 ### Blocked and missing
 
 | Endpoint | Result |
 | :--- | :--- |
-| `/6/applications`, `/6/sources`, `/6/volume`, `/6/notify` | `403` (first pass) |
+| `/6/applications`, `/6/sources`, `/6/volume`, `/6/notify` | `403`, hard-blocked |
+| `/6/debug`, `/6/devtools`, `/6/timer` | `403` |
+| `GET /6/pair`, `GET /6/activities` | `404` |
 | `/6/audiodata` | `404` |
 | `/6/ambilight/lampsettings`, `/6/ambilight/processedlayerinformation`, `/6/ambilight/measuredlayerconfiguration`, `/6/ambilight/speed`, `/6/ambilight/brightness` | `404` |
 | `GET /6/menuitems/settings/current` | `404` |
 
-The `403` row is from the first pass. The follow-up re-tested only the working
-GETs above on `1926`; it did not re-test `/6/sources`, `/6/volume`,
-`/6/applications`, or `/6/notify`, so their `403` status stands as reported.
+The follow-up re-tested `/6/sources`, `/6/volume`, `/6/applications`, and
+`/6/notify` on `1926` with no credentials and with valid preemptive Basic
+credentials. All four returned `403` in both cases, with no `401` and no
+`WWW-Authenticate` challenge. These routes are hard-blocked, not auth-gated.
 `/6/applications` is an engineering route behind the same `tvtype: consumer`
 gate as the lab unit. Do not assume the lab client's source switching works
 there.
@@ -136,8 +149,12 @@ Content-Length: 58
 ```
 
 `GET /6/audio/volume` returned `current: 1` before the POST and `current: 2`
-after. No `Server` header and no `WWW-Authenticate` were observed on any
-response. The `charset=utf=8` value is reproduced as reported, not corrected.
+after. A second follow-up verified the same body rule on the volume endpoint:
+`GET` returned `current: 12`; `POST /6/audio/volume` with
+`{"muted": false, "current": 15}` returned `200` "Ok"; the value read back as
+`15`; a restore POST set it back to `12`. No `Server` header and no
+`WWW-Authenticate` were observed on any response. The `charset=utf=8` value is
+reproduced as reported, not corrected.
 
 The failing probe, for contrast:
 
@@ -158,8 +175,9 @@ Content-Length: 92
 
 The same empty-body `503` appeared for `POST /6/audio/volume`,
 `POST /6/pair/grant`, and `POST /6/menuitems/settings/current` in the first
-pass. Those paths were not re-tested with a body. `POST /6/input/key` is the
-verified execution.
+pass. `POST /6/audio/volume` and `POST /6/input/key` are now verified with a
+body. `POST /6/pair/grant` and `POST /6/menuitems/settings/current` remain
+untested with a body.
 
 An invalid key (`{"key":"Invalid"}`) also returns `200` "Ok"; the TV ignores
 the key.
@@ -181,7 +199,17 @@ The follow-up compared a harmless no-op POST (`{"key":"Invalid"}`):
 | `Authorization: ZZZZ garbage-token` | `200` "Ok" |
 
 No `401` and no `WWW-Authenticate` were observed. On `1925`, GETs other than
-`/6/system` and POSTs with a body return `403`, with or without credentials.
+`/6/system` and `/1/system`, and POSTs with a body, return `403`, with or
+without credentials.
+On `1926`, the surface splits cleanly:
+
+| Class | Endpoints | No auth | Valid Basic |
+| :--- | :--- | :--- | :--- |
+| Open | `/6/system`, `/6/powerstate`, `/6/context`, `/6/audio/volume`, `/6/ambilight/topology`, `power`, `currentconfiguration`, body-bearing POSTs | `200` | `200` |
+| Hard-blocked | `/6/sources`, `/6/volume`, `/6/applications`, `/6/notify` | `403` | `403` |
+
+The hard-blocked set is feature removal, not an auth gate. The first report's
+`403` rows stand; the `--digest` caveat only affected the POST verdicts.
 
 So the advertised `pairing_type: digest_auth_pairing` and
 `secured_transport: true` are not enforced on the tested build. The `1926`
@@ -210,6 +238,20 @@ pairing.
 `Netflix` returns `403` without the correct `Origin`, and unregistered names
 such as `Disney` and `Max` return `404`.
 
+### SSDP and the 49153 DMR
+
+SSDP discovery is non-functional on this unit. A multicast M-SEARCH for
+`ssdp:all` and `upnp:rootdevice` with an explicit multicast join returned zero
+responses from the TV; other LAN devices answered general probes. A unicast
+M-SEARCH to `<TV_IP>:1900` also returned nothing. The open DMR port `49153`
+served none of the usual description paths (`/dd.xml`, `/DeviceDescription.xml`,
+`/desc/device.xml`, `/dms/dd.xml`, `/MediaServerDevDesc.xml`,
+`/MediaRendererDevDesc.xml`, `/devicedescription.xml`, `/AVTransport/desc.xml`,
+`/RenderingControl/desc.xml`, `/ConnectionManager/desc.xml`); all returned 404.
+The only device description reachable is the DIAL one on `:56790/dd.xml`. The
+DMR listener appears orphaned. A RU-build SSDP suppression is possible but
+unproven.
+
 ## Entry-vector assessment
 
 - No **root** entry vector was found in the tested set. The open `1926` API can
@@ -224,7 +266,13 @@ such as `Disney` and `Max` return `404`.
 - The closed `8883` removes the MQTT mobile-control listener as an alternative
   control surface on this unit. If it holds across the family, it narrows the
   options; it does not create an entry vector.
-- The closed `7788` removes the browser CDP debug surface on this unit.
+- The closed `7788` removes the browser CDP debug surface on this unit, even
+  when the browser is running. The same launch-independent closure was seen on
+  the `43PUS7608/12` TPN236E unit.
+- The silent SSDP responder and the orphaned `49153` DMR remove discovery as a
+  practical route on this build. This is unit-specific, not a family claim.
+- Port `58012` remains unidentified. It is silent to HTTP and waits for client
+  data; do not treat it as an entry vector.
 - The engineering routes tested (for example `/6/applications`) still returned
   `403`. The open `1926` surface is the consumer control API, not engineering.
 - The owner keeps the unit on its current build. Boot-chain or USB tests need a
@@ -246,11 +294,14 @@ unverified and is not a repo claim.
 - The report supplied no raw capture; the observations above are its summary.
   Only the maintainer can move a row to VERIFIED, and only on the same unit and
   firmware.
-- Re-test `POST /6/audio/volume` with a body and `POST /6/pair/grant` with a
-  body. The first shows whether the body rule is general; the second shows
-  whether a completed pairing is possible at all.
-- Confirm the unauthenticated `1926` surface and `8883`/`:7788` on another
-  `TPN236E`/`TPN237E`/`TPN238E` unit before treating either as a family fact.
+- `POST /6/audio/volume` with a body is confirmed. Re-test
+  `POST /6/pair/grant` with a body to see whether a completed pairing is
+  possible at all.
+- Confirm the unauthenticated `1926` surface, the hard-blocked routes, and the
+  closed `8883`/`:7788` on another `TPN236E`/`TPN237E`/`TPN238E` unit before
+  treating them as family facts.
+- Identify `58012` and re-test SSDP on another build. Neither is a root path
+  today.
 - The second TPN236E field report in
   [research/34](34-tpn236e-43pus7608-2026-11-14.md) has `:8883` and `:9080`
   open, uses `:49152`, and has `:7788` closed. The port surface varies within
@@ -278,6 +329,6 @@ unverified and is not a repo claim.
 
 ## Credit
 
-Reported by an external owner on 2026-11-14; the report redacted the unit's
-identifiers. Thanks for the read-only probes, the correction, and the precise
-failure modes.
+Reported by an external owner on 2026-11-14, with follow-ups through
+2026-11-15. The report redacted the unit's identifiers. Thanks for the
+read-only probes, the corrections, and the precise failure modes.

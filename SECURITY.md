@@ -66,10 +66,15 @@ to the vendor first. This repository is about physical-access research.
 
 ## Vendor debug ports
 
-This build runs the Opera/Chromium browser with `--remote-debugging-port=7788`
-and the boot firewall allows 7788. That is a local debugging surface. Do not
-expose it to the internet; if you do not need it, block it at the router or in
-the TV firewall. It is not a remote root path by itself.
+The tested lab runs the Opera/Chromium browser with
+`--remote-debugging-port=7788` and the boot firewall allows 7788. That is a
+local debugging surface. Do not expose it to the internet; if you do not need
+it, block it at the router or in the TV firewall. It is not a remote root path
+by itself.
+
+The `70PUS8108/60` and `43PUS7608/12` TPN236E field units had `:7788` closed,
+including while the browser was running. Do not assume the lab's debug port is
+present on another build.
 
 ## Reporting a vulnerability
 

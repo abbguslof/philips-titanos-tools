@@ -507,7 +507,8 @@ New material: `mkdocs.yml`, `requirements-docs.txt`,
 `.github/workflows/docs.yml`, `docs/index.md`, `docs/models.md`,
 `docs/community.md`, `docs/project.md`, the docs link updates, and the
 private-reporting updates in `SECURITY.md`, `CONTRIBUTING.md`, and the issue
-chooser.
+chooser, the `70PUS8108/60` follow-up in `docs/research/33`,
+`docs/research/08`, `docs/research/12`, `docs/research/13`, and `SECURITY.md`.
 
 Checks:
 - The Pages workflow builds from `docs/` with `mkdocs build --strict` and
@@ -523,6 +524,10 @@ Checks:
 - The security policy points to the private report form, explains the required
   CWE, records the 10-per-day fallback, and keeps security reports out of
   public issues and Discussions.
+- The 70PUS8108 follow-up records only read-only GETs and owner-approved volume
+  POSTs. It adds no MAC, serial, SSID, IP, PIN, pairing credential, raw capture,
+  or vendor firmware. It changes no entry-vector conclusion and does not reopen
+  issue #5.
 - The changelog is cut to 0.4.15; `pyproject.toml` is 0.4.15.
 - Test coverage is 72 tests; the site build, test suite, compile step, and
   shell syntax checks pass.

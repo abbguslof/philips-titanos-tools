@@ -22,6 +22,9 @@
 - Aligned `SECURITY.md` with GitHub private vulnerability reporting: direct
   report link, CWE guidance, and the 10-per-day fallback. The issue chooser,
   CONTRIBUTING, and community page link to the private form.
+- Updated the `70PUS8108/60` field note with the volume-body confirmation,
+  hard-blocked `1926` routes, launch-independent `:7788`, and the `58012`/SSDP
+  results. Issue #5 remains closed; conclusions are unchanged.
 - Test coverage is 72 tests.
 
 ## 0.4.14 - 2026-11-15

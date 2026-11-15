@@ -84,22 +84,31 @@ another build.
 A `70PUS8108/60` (`TPN236E`, `TPN236E_V236.004.269.01`) field report recorded:
 
 - `GET /6/audio/volume` works; `GET /6/audiodata` is 404.
-- `GET /6/sources` and `/6/volume` returned 403 in the first pass, as did
-  `/6/applications` and `/6/notify`. The follow-up re-tested only the working
-  GETs on `1926`.
+- `GET /1/system` on `1925` returns the same JSON as `/6/system`;
+  `/5/system` is 404, and `/` and `/6/` are 403.
+- `GET /6/sources`, `/6/volume`, `/6/applications`, and `/6/notify` are
+  hard-blocked on `1926`: `403` with no credentials and with valid Basic
+  credentials. No `401` or `WWW-Authenticate` is issued. This is feature
+  removal, not an auth gate.
+- `GET /6/debug`, `/6/devtools`, and `/6/timer` return 403; `GET /6/pair` and
+  `GET /6/activities` return 404 on `1926`.
 - On `1926`, the tested GETs and `POST /6/input/key` worked with **no
   credentials**, and no `401`/`WWW-Authenticate` challenge was ever issued.
   Basic auth with valid, wrong, or garbage credentials all returned `200`. The
   advertised digest pairing is not enforced on this build.
 - `POST /6/input/key` with a JSON body returned `200` (`text/html` "Ok") and
-  executed: volume changed 1 -> 2. A bodyless POST returned `503`. The first
-  report's `503` was a `curl --digest` bodyless-probe artifact, not a TV-side
-  refusal.
+  executed: volume changed 1 -> 2. `POST /6/audio/volume` with a body also
+  executed: 12 -> 15 -> 12. A bodyless POST returned `503`. The first report's
+  `503` was a `curl --digest` bodyless-probe artifact, not a TV-side refusal.
 - The client now accepts a non-JSON 2xx body and returns
   `{"status_code": ..., "body": ...}`. Pairing is not required for control on
   this build.
 - `8883` and DevTools `:7788` were closed on that unit; both are open on the lab
-  unit.
+  unit. `:7788` stayed closed while the browser was running, and the same was
+  seen on the `43PUS7608/12` TPN236E unit. The lab's `:7788` is model-specific.
+- `58012` is silent to HTTP and waits for client data. SSDP discovery returned
+  no response from the TV; the `49153` DMR description paths returned 404. See
+  [the field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md).
 - A completed pairing was not demonstrated. After an unconfirmed grant,
   `/6/pair/request` returned `CONCURRENT_PAIRING` for about 20-30 s before a
   retry succeeded.

@@ -42,7 +42,7 @@ One page to keep the claims honest. Tested unit: `55PUS8000/12`, chassis
 | Finding | Evidence |
 | :--- | :--- |
 | On `55PUS8450/12`, firmware `TPN256E_V056.010.032.001`, `run.sh` does not source `customer_env.sh`; the vendor `/swdl/telnet/telnetd` seam restores USB-less persistence. **REPORTED**, not independently reproduced. | [variant note](24-swdl-telnet-persistence-2026-11-11.md) |
-| On `70PUS8108/60` (`TPN236E`, `TPN236E_V236.004.269.01`), read-only probes found no **root** entry vector, but the `1926` JointSpace surface did not enforce authentication: tested GETs and `POST /6/input/key` worked with no credentials. The first report's POST `503`s were a `curl --digest` bodyless-probe artifact; a plain POST with a body returned `200` (`text/html` "Ok") and changed the volume. A completed pairing was not demonstrated. `8883` and `:7788` were closed. **REPORTED**, not independently reproduced. | [field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md) |
+| On `70PUS8108/60` (`TPN236E`, `TPN236E_V236.004.269.01`), read-only probes found no **root** entry vector, but the `1926` JointSpace surface did not enforce authentication: tested GETs and `POST /6/input/key` worked with no credentials. The first report's POST `503`s were a `curl --digest` bodyless-probe artifact; a plain POST with a body returned `200` (`text/html` "Ok") and changed the volume; `POST /6/audio/volume` with a body executed and was restored (12 -> 15 -> 12). The 1926 GETs `/6/sources`, `/6/volume`, `/6/applications`, and `/6/notify` are hard-blocked (403) with no credentials or valid Basic, not auth-gated. A completed pairing was not demonstrated. `8883` and `:7788` were closed, and `:7788` stayed closed with the browser running. **REPORTED**, not independently reproduced. | [field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md) |
 | On `43PUS7608/12` (`TPN236E`, `236.006.169.001`), the `169.001` package is externally verified (SHA-256, 19/19 stored MD5s, offsets). Read-only probes found no CDP endpoint on the eight open ports and `:7788` was closed. `msg_server` is a local root `system()` queue that needs `idtv` execution; it is not an initial entry. `135.001` remains layout-matched, not byte-verified. **REPORTED**, not independently reproduced. | [169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md) |
 
 ## Dead ends
@@ -58,7 +58,7 @@ One page to keep the claims honest. Tested unit: `55PUS8000/12`, chassis
 | JointSpace engineering routes from loopback | **DEAD** | Same userspace gate. |
 | `POST /6/activities/browser` | **Stub** | Returns 200 `{}`; no standalone browser. |
 | Chromium DevTools `:7788` | **OPEN / exposed** | Browser runs with `--remote-debugging-port=7788`; LAN reachability and CDP actions are a debug surface, not a root path. |
-| CDP -> `idtv` on 2023 `TPN236E` | **DEAD** | The 169.001 field unit had no CDP endpoint on any of the eight open ports; `:7788` was closed. The field report remains unit-specific. |
+| CDP -> `idtv` on 2023 `TPN236E` | **DEAD** | The 169.001 field unit had no CDP endpoint on any of the eight open ports; `:7788` was closed. The 70PUS8108 field unit kept `:7788` closed even with the browser running. The field reports remain unit-specific. |
 | TLS hijack of `eu.app.titanos.tv` with a private CA | **DEAD** | `DP_203`; private CA/pinning rejection. Breaking the origin also prevents the launcher/input field from rendering; the keyboard assets themselves are local. |
 | `TPVisionDebug.cookie` / `enable_log2usb` | **Inert** | No daemon references them on Titan OS. |
 | `BrowserIpcPluginClass` from a plain HTTP origin | **Inert** | Exposes 0 native methods outside the authorized origin. |
@@ -78,8 +78,7 @@ One page to keep the claims honest. Tested unit: `55PUS8000/12`, chassis
   XBoot still reports mode 0 with the observed slices.
 - Whether a future firmware build keeps the same `quick_debug/menu auto` hook.
 - Whether the unauthenticated `1926` JointSpace surface on the `TPN236E` field
-  unit is build-specific, and whether `POST /6/audio/volume` and
-  `/6/pair/grant` accept a body.
+  unit is build-specific, and whether `POST /6/pair/grant` accepts a body.
 - Whether `msg_server` is reachable from a sandboxed app domain, or only after
   `idtv` execution. The queue is local and is not an initial entry.
 - Whether the user trust store can be extended from USB to defeat `DP_203`.

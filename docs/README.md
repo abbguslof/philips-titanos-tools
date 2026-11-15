@@ -51,7 +51,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 31 | [App-layer update gate: `/swdl` trigger and RSA verification](research/31-app-update-gate-2026-11-14.md) | VERIFIED (hardware) / OPEN | Genuine VER40 USB update programmed active slot 0 and activated on AC-on (`002.236.191`); RSA remains the modified-package barrier; recovery slot 1/boot1. |
 | 32 | [NDAL V4L2 reset path and the eburner retries](research/32-ndal-v4l2-reset-2026-11-14.md) | VERIFIED (static) / TESTED-NEGATIVE / OPEN | The exact control (`0x0f170f1f`), `/dev/video24`, the classic eburner USB-image initramfs, the p9 metadata layout, and the open eburner entry trigger. |
 | 33 | [70PUS8108/60 (TPN236E) network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md) | REPORTED | Read-only port and JointSpace 6.1 probes on a 2023 TPN236E unit: no root entry vector, an unauthenticated `1926` control surface, the corrected POST `503`, and `8883`/`:7788` closed. |
-| 34 | [43PUS7608/12 (TPN236E) field scan and static notes](research/34-tpn236e-43pus7608-2026-11-14.md) | REPORTED / INFERRED / OPEN | Second TPN236E field scan (`236.006.169.001`): eight open ports, expired MQTT cert, no network entry; contributor-local `236.006.135.001` static notes; package artifact table still open. |
+| 34 | [43PUS7608/12 (TPN236E) field scan and static notes](research/34-tpn236e-43pus7608-2026-11-14.md) | REPORTED / INFERRED / OPEN | Second TPN236E field scan (`236.006.169.001`): eight open ports, expired MQTT cert, `:7788` closed, no network entry; contributor-local `236.006.135.001` static notes; derived 19-row offset table; SHA-256 and stored MD5s still open. |
 
 ## Guides
 

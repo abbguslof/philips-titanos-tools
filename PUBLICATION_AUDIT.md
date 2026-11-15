@@ -464,6 +464,9 @@ Checks:
   recorded as firmware-specific. The no-`quick_debug` and OverlayFS findings
   are marked `TPN236E`-specific. The `:8883` and `:7788` results remain
   unit-specific.
+- The derived VER40 offset table is marked derived, not binary-verified. Its
+  size closes at `0x250524e4` (`621,094,116` bytes); rows 16-18 correct the
+  earlier derivation. SHA-256 and stored-MD5 values are unpublished.
 - The changelog is cut to 0.4.13; `pyproject.toml` is 0.4.13.
 - Test coverage is 72 tests; the suite, compile step, and shell syntax checks
   pass.

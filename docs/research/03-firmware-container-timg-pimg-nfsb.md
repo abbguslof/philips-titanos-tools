@@ -171,6 +171,37 @@ run (19 components, back-to-back `PIMG` entries; no container-level MD5):
 `tools/firmware/parse_timg.py` detects the container magic and supports both
 layouts; it carves and MD5-verifies components but does not decrypt.
 
+### Derived VER40 offsets
+
+The table below is derived, not read from the binary. It applies the
+0x460-byte header rule (`next = header + 0x460 + length`) from the first
+`PIMG` header at `0x720`. The end of row 18 is `0x250524e4`
+(621,094,116 bytes), which matches the fresh public copy reported in issue
+#5. The SHA-256 and stored-MD5 values are not published. Rows 16-18 correct
+an earlier derived table that used each payload offset as the next header.
+
+| # | name | PIMG header | payload | end |
+| ---: | :--- | ---: | ---: | ---: |
+| 0 | `vertbl` | `0x720` | `0xb80` | `0xda4` |
+| 1 | `xboot` | `0xda4` | `0x1204` | `0x5b58c` |
+| 2 | `ddrcfg` | `0x5b58c` | `0x5b9ec` | `0x10f9ec` |
+| 3 | `xbootdat` | `0x10f9ec` | `0x10fe4c` | `0x115a4c` |
+| 4 | `stbc_emmc` | `0x115a4c` | `0x115eac` | `0x125fb0` |
+| 5 | `uboot` | `0x125fb0` | `0x126410` | `0x196265` |
+| 6 | `secos` | `0x196265` | `0x1966c5` | `0x5a5b01` |
+| 7 | `fdt` | `0x5a5b01` | `0x5a5f61` | `0x645f61` |
+| 8 | `kernel` | `0x645f61` | `0x6463c1` | `0x18a0d15` |
+| 9 | `fs` | `0x18a0d15` | `0x18a1175` | `0x1ffc5d2` |
+| 10 | `ap` | `0x1ffc5d2` | `0x1ffca32` | `0x13a52023` |
+| 11 | `apext` | `0x13a52023` | `0x13a52483` | `0x249057f9` |
+| 12 | `aqtbl` | `0x249057f9` | `0x24905c59` | `0x249088e3` |
+| 13 | `pqtbl` | `0x249088e3` | `0x24908d43` | `0x2493ba8d` |
+| 14 | `tconfw` | `0x2493ba8d` | `0x2493beed` | `0x24943eed` |
+| 15 | `tconcfg` | `0x24943eed` | `0x2494434d` | `0x2498635d` |
+| 16 | `frcfw` | `0x2498635d` | `0x249867bd` | `0x24e867bd` |
+| 17 | `bootlogo` | `0x24e867bd` | `0x24e86c1d` | `0x25051e84` |
+| 18 | `version_info` | `0x25051e84` | `0x250522e4` | `0x250524e4` |
+
 The contributor also reported no `quick_debug` and an OverlayFS RW area on
 this TPN236E package. Those findings are TPN236E-specific, not platform-wide.
 See [the 43PUS7608/12 note](34-tpn236e-43pus7608-2026-11-14.md).

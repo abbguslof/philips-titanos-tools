@@ -19,6 +19,11 @@
   no-`quick_debug` and OverlayFS findings are marked `TPN236E`-specific.
 - `docs/research/33` links the second field report and records the port
   differences (`8883`/`9080` open, `49152`, `:7788` closed).
+- Added a derived VER40 offset table to `docs/research/03`. The package size
+  `621,094,116` closes at `0x250524e4`. Rows 16-18 correct the earlier
+  derivation; SHA-256 and stored-MD5 values remain open.
+- Recorded `:7788` as closed on the `43PUS7608/12` field unit and updated the
+  issue #3 line references.
 - Test coverage is 72 tests.
 
 ## 0.4.12 - 2026-11-14

@@ -178,7 +178,7 @@ The table below is derived, not read from the binary. It applies the
 `PIMG` header at `0x720`. The end of row 18 is `0x250524e4`
 (621,094,116 bytes), which matches the fresh public copy reported in issue
 #5. The SHA-256 and stored-MD5 values are not published. Rows 16-18 correct
-an earlier derived table that used each payload offset as the next header.
+an earlier derived table that used each payload offset as its header.
 
 | # | name | PIMG header | payload | end |
 | ---: | :--- | ---: | ---: | ---: |

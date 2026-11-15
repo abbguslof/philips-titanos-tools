@@ -41,6 +41,12 @@ the FDT/ATF path, not in NVM. The NFSB filesystem layer uses SHA-256 + RSA-2048
 and dm-verity; the kernel/ATF images are encrypted and covered by `NVHC` and
 `UMFG`/`lnikauth` checks.
 
+The 2023 `TPN236E` `169.001` package adds its own barriers: signed 8051
+`stbc_emmc`, an 8051 loader in `xboot`, and a second boot-ROM/OTP-encrypted
+`xboot` bulk. It also has no `eburner`/`sys_run`/`kerupm`. See
+[the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md). This does not
+change the 8000 block.
+
 A bootable modified NFSB or custom kernel therefore needs one of:
 
 1. a recovery slot (second eMMC boot area, external programmer, JTAG/ISP);

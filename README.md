@@ -40,7 +40,7 @@ It is built for owners, repair techs, and reverse engineers who want to inspect 
 | :--- | :--- |
 | Tested model | `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard `715GD542` |
 | Tested firmware | `TPA256E_V056.002.236.191` |
-| Other models | External reports: [55PUS8450/12](evidence/tpn256e-variant/), [77OLED760/12 (TPN258E)](evidence/tpn258e-77oled760/), [70PUS8108/60 (TPN236E)](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md), and [43PUS7608/12 (TPN236E)](docs/research/34-tpn236e-43pus7608-2026-11-14.md) (read-only probes). Scope and limits are recorded per model. |
+| Other models | External reports: [55PUS8450/12](evidence/tpn256e-variant/), [77OLED760/12 (TPN258E)](evidence/tpn258e-77oled760/), [70PUS8108/60 (TPN236E)](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md), [43PUS7608/12 (TPN236E)](docs/research/34-tpn236e-43pus7608-2026-11-14.md), and the [169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md) (read-only probes). Scope and limits are recorded per model. |
 | Platform | Novatek NT72690, Linux 6.1.124, ARM64 kernel with `armv7l` userspace |
 | Root path | USB autoroot at boot, physical access required |
 | Persistence | `customer_env.sh` on the tested model; `/swdl/telnet/telnetd` on a reported later firmware. Check the live hook first. |

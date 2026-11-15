@@ -131,5 +131,6 @@ The public repo documents research and root. The live unit is further along:
 - [App-layer update gate](docs/research/31-app-update-gate-2026-11-14.md)
 - [NDAL V4L2 reset](docs/research/32-ndal-v4l2-reset-2026-11-14.md)
 - [43PUS7608/12 field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md)
+- [43PUS7608/12 169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md)
 - [2026-11-14 backup evidence](evidence/deep/2026-11-14-emmc-backup.md)
 - [2026-11-14 NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md)

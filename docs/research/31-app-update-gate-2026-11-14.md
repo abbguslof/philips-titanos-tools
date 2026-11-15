@@ -229,6 +229,10 @@ The app-layer RSA verifier is now the barrier for a modified package. The next
 step is a patched `libfwup` plus a modified VER40 component; the recovery pair
 is slot 1/boot1. The app-layer version check may also need a patch.
 
+The 2023 `TPN236E` `169.001` package has no `eburner`, `sys_run`, or `kerupm`
+components. Do not apply this 8000 update path to that family; see
+[the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
+
 ## Safety
 
 - The probe made no boot-area or eMMC writes. The direct staging wrote `/swdl`

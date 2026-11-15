@@ -171,14 +171,16 @@ run (19 components, back-to-back `PIMG` entries; no container-level MD5):
 `tools/firmware/parse_timg.py` detects the container magic and supports both
 layouts; it carves and MD5-verifies components but does not decrypt.
 
-### Derived VER40 offsets
+### VER40 offsets (169.001)
 
-The table below is derived, not read from the binary. It applies the
-0x460-byte header rule (`next = header + 0x460 + length`) from the first
-`PIMG` header at `0x720`. The end of row 18 is `0x250524e4`
-(621,094,116 bytes), which matches the fresh public copy reported in issue
-#5. The SHA-256 and stored-MD5 values are not published. Rows 16-18 correct
-an earlier derived table that used each payload offset as its header.
+The table below is verified against the `TPN236E_236.006.169.001` binary: all
+19 `PIMG` headers carry the magic at these offsets, and the last component ends
+at `0x250524e4` (621,094,116 bytes). See
+[the 169.001 artifact note](35-tpn236e-169001-static-2026-11-15.md) for the
+hashes and 19/19 stored MD5s. The reference component list above is
+`TPN236E_236.006.135.001`; the two packages share the layout but are not the
+same file. The 135.001 exact artifact hash is still not available. Rows 16-18
+correct an earlier derivation; the values below are the verified ones.
 
 | # | name | PIMG header | payload | end |
 | ---: | :--- | ---: | ---: | ---: |

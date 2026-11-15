@@ -270,6 +270,7 @@ unverified and is not a repo claim.
 
 - [Firmware container](03-firmware-container-timg-pimg-nfsb.md)
 - [43PUS7608/12 field scan and static notes](34-tpn236e-43pus7608-2026-11-14.md)
+- [43PUS7608/12 169.001 artifact and static follow-up](35-tpn236e-169001-static-2026-11-15.md)
 - [JointSpace API](08-jointspace-api.md)
 - [Verified findings and dead ends](12-verified-findings-and-dead-ends.md)
 - [Deep jailbreak roadmap](25-deep-jailbreak-roadmap.md)

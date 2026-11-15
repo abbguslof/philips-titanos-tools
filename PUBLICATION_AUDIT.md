@@ -493,6 +493,11 @@ Checks:
   the verified `169.001` file.
 - The model-support table and FAQ label external reports as REPORTED and keep
   the verified lab separate. They add no universal-support claim.
+- The Pages workflow builds from `docs/` and publishes only the generated
+  site. `site/` is ignored. It uses no repository secrets and grants only
+  `contents: read`, `pages: write`, and `id-token: write`.
+- The Discussions welcome and community page contain no serials, credentials,
+  pairing data, or vendor firmware. They keep the owner-authorized scope.
 - The no-CDP result and the `:1925`/`:1926` behavior are field-unit findings;
   they do not establish a remote entry vector.
 - The changelog is cut to 0.4.14; `pyproject.toml` is 0.4.14.

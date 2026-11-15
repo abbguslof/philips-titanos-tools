@@ -110,7 +110,7 @@ Common causes:
   apply. Check `iptables -S INPUT` in the diag file.
 - **Nothing until ~36 s** — the 30-second menu sleep is normal.
 
-The [v6 evidence](../../evidence/usb-autoroot/v6-regression/) is a real example
+The [v6 evidence](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/usb-autoroot/v6-regression) is a real example
 of a stick missing the busybox: the script ran, but `telnetd` never started.
 
 ## Restore

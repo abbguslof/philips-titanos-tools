@@ -28,7 +28,7 @@ Customer Service Mode (read-only diagnostics):
 
 The SAM stick is **FAT32 with the label `PHILIPS`**, MBR partition table. This
 is the opposite of the autorun stick, which must have an **empty label**. See
-[the two USB workflows](../../GLOSSARY.md#usb-workflows).
+[the two USB workflows](../reference/glossary.md).
 
 Writing an NVM file is verified: the TV checks the dual CRC32, writes p9, shows
 "Done", and reboots cleanly. `canary_test=1` and `bootdelay=5` survived a

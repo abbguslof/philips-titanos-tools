@@ -8,6 +8,7 @@
   <p>A practical jailbreak, reverse-engineering, and local-control toolkit for Philips TVs running Titan OS on the Novatek NT72690 platform.</p>
 
   [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
+  [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://abbguslof.github.io/philips-titanos-tools/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   [![Tests](https://img.shields.io/badge/tests-72-brightgreen.svg)](tests/)
   [![Tested on](https://img.shields.io/badge/tested%20on-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
@@ -31,6 +32,8 @@
 | Plan the deepest jailbreak | [Deep jailbreak roadmap](docs/research/25-deep-jailbreak-roadmap.md) |
 | Check whether my model is supported | [Model support](#model-support) |
 | Read common questions | [FAQ](docs/guides/faq.md) |
+| Browse the searchable docs | [GitHub Pages](https://abbguslof.github.io/philips-titanos-tools/) |
+| Ask a question or share a model | [Discussions](https://github.com/abbguslof/philips-titanos-tools/discussions) |
 | See release notes | [CHANGELOG.md](CHANGELOG.md) |
 
 ## What this is
@@ -212,7 +215,7 @@ Once you have `uid=0`, you can inspect the live system, back up and verify NVM/E
 
 | Read this | Why |
 | :--- | :--- |
-| [Documentation index](docs/README.md) | Full index with status labels |
+| [Documentation index](docs/research/index.md) | Full index with status labels |
 | [USB autorun hook](docs/research/05-usb-autorun-hook.md) | The exact boot-time eval chain |
 | [Persistent root](docs/guides/persistent-root.md) | Vendor boot hook to `root_boot.sh`, including the `/swdl` variant |
 | [Restore to stock](docs/guides/restore-to-stock.md) | Remove the USB path, the persistence hook, or restore NVM |
@@ -257,6 +260,7 @@ The suite covers the dual-CRC32 NVM format, CRC-16/MODBUS channel maps, EDID int
 ## Contributing and security
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) for dev setup, tests, redaction rules, and the PR checklist.
+- [Discussions](https://github.com/abbguslof/philips-titanos-tools/discussions) for questions, model reports, and ideas.
 - [SECURITY.md](SECURITY.md) for the threat model, disclosure, and what not to report publicly.
 - [ACCESSIBILITY.md](ACCESSIBILITY.md) for the docs and Ambilight studio scope, known gaps, and reporting.
 - [docs/adr](docs/adr/) for the architecture decisions behind the repo.

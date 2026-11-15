@@ -61,7 +61,7 @@ The Pi held TX low before AC power-on, released at 1.5 s, and spammed `\r`,
 
 ## Boot log
 
-See [`evidence/hardware/xboot-serial.log`](../../evidence/hardware/xboot-serial.log)
+See [`evidence/hardware/xboot-serial.log`](../evidence/hardware/xboot-serial.log)
 for the sanitized capture. The chain and the `uart mode:0` line are explained in
 [boot chain](01-boot-chain-xboot-atf.md).
 

@@ -61,7 +61,7 @@ sha256sum -c SHA256SUMS
 
 The 2026-11-14 backup used this path because the available media drive is
 exFAT and the TV has no exFAT driver. See
-[the backup evidence](../../evidence/deep/2026-11-14-emmc-backup.md).
+[the backup evidence](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/deep/2026-11-14-emmc-backup.md).
 
 For the boot and metadata partitions, use the repo tool:
 

@@ -32,7 +32,7 @@ That means:
   local (see below).
 
 The sanitized capture summary is
-[`samples/webview/webview-telemetry-summary.json`](../../samples/webview/webview-telemetry-summary.json).
+[`samples/webview/webview-telemetry-summary.json`](../samples/webview/webview-telemetry-summary.json).
 
 ## OIPF / HbbTV objects
 
@@ -81,7 +81,7 @@ plugin bindings are restricted to authorized origins; a plain HTTP page is not
 one.
 
 The sanitized reflection summary is
-[`samples/webview/ipc-telemetry-summary.json`](../../samples/webview/ipc-telemetry-summary.json).
+[`samples/webview/ipc-telemetry-summary.json`](../samples/webview/ipc-telemetry-summary.json).
 
 Do not assume the plugin is a shell bridge from an arbitrary origin. It is not,
 on this build.

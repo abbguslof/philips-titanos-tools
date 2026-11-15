@@ -18,7 +18,7 @@ XBoot rev: 2a4184c
   -> init / Titan OS userspace
 ```
 
-The serial capture in [`evidence/hardware/xboot-serial.log`](../../evidence/hardware/xboot-serial.log)
+The serial capture in [`evidence/hardware/xboot-serial.log`](../evidence/hardware/xboot-serial.log)
 shows the early hardware init, panel power, DDR training, the `UMFG` signature
 check, and the handoff. A representative excerpt:
 

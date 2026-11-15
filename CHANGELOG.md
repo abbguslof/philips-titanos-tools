@@ -25,7 +25,8 @@
   closed CDP candidate.
 - Refreshed the deep-jailbreak roadmap and external-report summary.
 - Improved discoverability with a model-support table, FAQ, release-notes
-  link, and expanded search keywords.
+  link, expanded search keywords, and a searchable MkDocs Material GitHub
+  Pages site. Enabled Discussions with a welcome thread.
 - Test coverage is 72 tests.
 
 ## 0.4.13 - 2026-11-15

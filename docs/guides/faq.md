@@ -9,7 +9,7 @@ No. The tested `55PUS8000/12` path needs a USB stick and a cold boot. The 2023
 
 ## Does it work on my Philips TV?
 
-Check the [model table](../../README.md#model-support). The `55PUS8000/12` is
+Check the [model table](../models.md). The `55PUS8000/12` is
 the verified lab. `55PUS8450/12`, `77OLED760/12`, `70PUS8108/60`, and
 `43PUS7608/12` are external reports with different limits. Do not copy the 8000
 bootchain or kernel carrier to a field unit.
@@ -56,6 +56,6 @@ one-shot seloff payload. A reusable no-op carrier is the next step. See the
 
 ## Where do I start?
 
-Read [SECURITY.md](../../SECURITY.md) first. Then use [USB autoroot](usb-autoroot.md),
+Read [SECURITY.md](https://github.com/abbguslof/philips-titanos-tools/blob/main/SECURITY.md) first. Then use [USB autoroot](usb-autoroot.md),
 [persistent root](persistent-root.md), and [restore to stock](restore-to-stock.md).
 For a new model, open a [field report](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose).

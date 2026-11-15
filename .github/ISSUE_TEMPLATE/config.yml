@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Questions and model discussion
+    url: https://github.com/abbguslof/philips-titanos-tools/discussions
+    about: Ask a question, compare a model, or share a read-only field report in Discussions.
   - name: Security policy
     url: https://github.com/abbguslof/philips-titanos-tools/security/policy
     about: Use the private security channel to report vulnerabilities. Do not post device identifiers or pairing credentials.

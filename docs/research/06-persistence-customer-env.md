@@ -2,7 +2,7 @@
 
 Status: **VERIFIED on hardware** on the tested `55PUS8000/12` (root survived a
 cold boot with the USB stick removed). The redacted capture is in
-[evidence/persistence/output.txt](../../evidence/persistence/output.txt).
+[evidence/persistence/output.txt](../evidence/persistence/output.txt).
 
 > **Firmware variants.** On at least one later `TPN256E` build
 > (`TPN256E_V056.010.032.001`), `run.sh` does not reference

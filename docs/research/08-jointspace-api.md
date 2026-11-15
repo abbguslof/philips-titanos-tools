@@ -121,4 +121,4 @@ studio is a convenience UI; it is not required for the root path.
 
 The public repo uses placeholders for the TV IP, serial, MAC, and PIN. The
 pairing credentials file, real device identifiers, and the vendor app secret are
-not included. See [SECURITY.md](../../SECURITY.md).
+not included. See [SECURITY.md](https://github.com/abbguslof/philips-titanos-tools/blob/main/SECURITY.md).

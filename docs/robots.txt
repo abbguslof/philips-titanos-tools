@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://abbguslof.github.io/philips-titanos-tools/sitemap.xml

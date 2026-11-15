@@ -2,11 +2,11 @@
 
 Status: **VERIFIED on hardware** on the tested `55PUS8000/12` (root after a
 cold boot with the USB removed). The redacted capture is in
-[evidence/persistence/output.txt](../../evidence/persistence/output.txt). The
+[evidence/persistence/output.txt](../evidence/persistence/output.txt). The
 `/swdl` fallback is **REPORTED**; see the
 [variant note](../research/24-swdl-telnet-persistence-2026-11-11.md).
 
-An external [77OLED760/12 report](../../evidence/tpn258e-77oled760/) also
+An external [77OLED760/12 report](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/tpn258e-77oled760) also
 records a successful USB-less cold boot using the `/swdl` hook on TPN258E
 firmware `058.010.032.001`, with selected boot-log evidence. Status: **REPORTED**.
 
@@ -53,7 +53,7 @@ In the TV root shell:
 
 ## Option B: paste the installer
 
-Open [`payloads/persist_root.sh`](../../payloads/persist_root.sh), copy the whole
+Open [`payloads/persist_root.sh`](../payloads/persist_root.sh), copy the whole
 file, and paste it into the root shell. It is POSIX `sh` and writes its own
 `root_boot.sh` with a here-document.
 

@@ -8,17 +8,17 @@ One page to keep the claims honest. Tested unit: `55PUS8000/12`, chassis
 
 | Finding | Evidence |
 | :--- | :--- |
-| XBoot `2a4184c` -> ATF `a64m` -> Linux EL1 at `0x2800000` in ~90 ms. No interactive U-Boot. | [boot chain](01-boot-chain-xboot-atf.md), [serial log](../../evidence/hardware/xboot-serial.log) |
-| Kernel command line uses `console=ttynull` and `root=/dev/mmcblk0p20`. | [v7 log](../../evidence/usb-autoroot/v7-autoroot-success/autoroot.log) |
+| XBoot `2a4184c` -> ATF `a64m` -> Linux EL1 at `0x2800000` in ~90 ms. No interactive U-Boot. | [boot chain](01-boot-chain-xboot-atf.md), [serial log](../evidence/hardware/xboot-serial.log) |
+| Kernel command line uses `console=ttynull` and `root=/dev/mmcblk0p20`. | [v7 log](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/usb-autoroot/v7-autoroot-successautoroot.log) |
 | 40 user partitions; root p20, pstore p36, `misc` p9, `nvm_dat` p11, `apdat` p31. | [flash layout](02-flash-layout-and-partitions.md), [partition map](../reference/partition-map.md) |
-| `mmcblk0boot0`/`boot1` are 4 MiB eMMC boot partitions holding XBoot. Vendor `boot0` is `mmcblk0p1`; `p1` `UMFG` value 0, `p2` value 1. | [UMFG slices](../../evidence/usb-autoroot/v5-umfg-partitions/) |
+| `mmcblk0boot0`/`boot1` are 4 MiB eMMC boot partitions holding XBoot. Vendor `boot0` is `mmcblk0p1`; `p1` `UMFG` value 0, `p2` value 1. | [UMFG slices](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/usb-autoroot/v5-umfg-partitions) |
 | `TIMG` container + `PIMG` components are MD5-only; inner `NFSB` uses SHA-256 + RSA-2048; `enc=gzip` decompresses to SquashFS LZO. | [firmware format](03-firmware-container-timg-pimg-nfsb.md) |
 | `nvm_ubootdat.data` is an 8,036-byte wrapper with outer/inner IEEE CRC32 and partition ID 9; the live raw NVM variables are in `nvm_dat` (p11); SAM writes the NVM area p9 successfully. | [NVM format](04-uboot-nvm-format.md) |
-| The inner SquashFS at offset `0x1000` mounts directly with `mount -t squashfs`; the NFSB verifier runs only for the `nfsb` mount. | [runtime NFSB](17-runtime-nfsb-squashfs.md), [evidence](../../evidence/runtime-nfsb/) |
-| A modified NFSB copy still mounts through `nfsb` with a valid header, but dm-verity rejects the changed block on read. | [runtime NFSB](17-runtime-nfsb-squashfs.md), [evidence](../../evidence/runtime-nfsb/) |
+| The inner SquashFS at offset `0x1000` mounts directly with `mount -t squashfs`; the NFSB verifier runs only for the `nfsb` mount. | [runtime NFSB](17-runtime-nfsb-squashfs.md), [evidence](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/runtime-nfsb) |
+| A modified NFSB copy still mounts through `nfsb` with a valid header, but dm-verity rejects the changed block on read. | [runtime NFSB](17-runtime-nfsb-squashfs.md), [evidence](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/runtime-nfsb) |
 | USB autorun: `S21idtv.sh` -> `run.sh` -> `quick_debug/menu auto` -> `eval` at ~36 s; empty label mounts at `/media/sda1`. | [USB hook](05-usb-autorun-hook.md) |
-| Interactive `uid=0` over TCP `:2323` from a USB cold boot. | [v4](../../evidence/usb-autoroot/v4-shell-uid0/), [v7](../../evidence/usb-autoroot/v7-autoroot-success/) |
-| Persistence via `/mtd_rwarea/apdat/customer_env.sh` survives a cold boot without the stick. | [persistence](06-persistence-customer-env.md), [pending capture](../../evidence/persistence/README.md) |
+| Interactive `uid=0` over TCP `:2323` from a USB cold boot. | [v4](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/usb-autoroot/v4-shell-uid0), [v7](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/usb-autoroot/v7-autoroot-success) |
+| Persistence via `/mtd_rwarea/apdat/customer_env.sh` survives a cold boot without the stick. | [persistence](06-persistence-customer-env.md), [pending capture](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/persistence/README.md) |
 | JointSpace discovery, pairing, keys, volume, Ambilight, and `expert` LED injection work locally. | [JointSpace](08-jointspace-api.md) |
 | `tvtype: consumer` blocks `/6/debug`/`/6/devtools` from LAN and loopback, regardless of pairing scope. `mds_mode=1` does not change it. | [JointSpace](08-jointspace-api.md) |
 | Serial `SERV.U` TX works; RX never received a byte across a 25 s typed window. Serial break does not interrupt XBoot. | [hardware](07-hardware-serv-u.md) |

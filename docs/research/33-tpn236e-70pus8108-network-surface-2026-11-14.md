@@ -257,7 +257,7 @@ unverified and is not a repo claim.
   the family.
 - Do not expose this unit to an untrusted LAN while `1926` accepts control
   requests without authentication. If the gap matters to the vendor, use the
-  private-disclosure path in [SECURITY.md](../../SECURITY.md), not this note.
+  private-disclosure path in [SECURITY.md](https://github.com/abbguslof/philips-titanos-tools/blob/main/SECURITY.md), not this note.
 - Test the USB hook only with the owner's agreement and the autoroot stick;
   record whether `quick_debug/menu auto` runs and stop before any boot-area
   write.

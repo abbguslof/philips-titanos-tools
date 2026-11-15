@@ -80,7 +80,7 @@ The report records these steps on the affected unit:
 Pedram supplied two USB autoroot logs from the same unit. They confirm
 `uid=0(root)` with the `initrc_t` context, a USB stick mounted at
 `/media/sda1`, and `telnetd` on `:2323` across two boots. The redacted excerpt
-is in [evidence/tpn256e-variant](../../evidence/tpn256e-variant/).
+is in [evidence/tpn256e-variant](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/tpn256e-variant).
 
 The logs also show `root=/dev/mmcblk0p19`; the tested model uses
 `mmcblk0p20`. Treat partition numbers as firmware-specific.

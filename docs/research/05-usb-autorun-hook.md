@@ -45,7 +45,7 @@ The `menu` script also accepts `auto skip`, which skips the delay, but
 This is why the root stick must be **unlabelled**. SAM `Download from USB`, on
 the other hand, expects a FAT32 volume labelled `PHILIPS`. These are two
 different USB workflows; do not reuse one stick for both without reformatting.
-See the [glossary](../../GLOSSARY.md#usb-workflows).
+See the [glossary](../reference/glossary.md).
 
 ## BusyBox argv[0] rule
 

@@ -14,6 +14,10 @@ python3 -m unittest discover tests
 Python 3.8+ is supported. The tests use the standard library `unittest`; the
 only runtime dependency is `requests` (used by the JointSpace client).
 
+## Community
+
+Use [GitHub Discussions](https://github.com/abbguslof/philips-titanos-tools/discussions) for questions, model reports, ideas, and show-and-tell. Use [issues](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose) for reproducible bugs and formal field reports.
+
 ## Issues
 
 Use the **Field report (other model)** form for a new TV and the **Tooling, docs, or accessibility** form for a repo problem. The forms ask for the redaction checks; do not bypass them.

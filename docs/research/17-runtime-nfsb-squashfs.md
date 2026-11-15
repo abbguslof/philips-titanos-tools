@@ -98,7 +98,7 @@ unbrick path.
 
 ## Evidence
 
-- [Runtime NFSB evidence](../../evidence/runtime-nfsb/README.md)
+- [Runtime NFSB evidence](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/runtime-nfsb/README.md)
 - [Firmware container](03-firmware-container-timg-pimg-nfsb.md)
 - [Verified findings and dead ends](12-verified-findings-and-dead-ends.md)
 

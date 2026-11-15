@@ -186,7 +186,7 @@ field unit.
   dump-only `sys_run/run.sh` that skips the burner.
 - Details: [boot image map](28-boot-image-map.md),
   [update package map](29-update-package-map.md), evidence
-  [deep/2026-11-12](../../evidence/deep/2026-11-12-8000-bootchain.md).
+  [deep/2026-11-12](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/deep/2026-11-12-8000-bootchain.md).
 
 The first probes were the `p9` table parser, the `p1/p2` U-Boot/FIT metadata,
 and whether `p21` can be selected as the `kerupm` update kernel. The `p9`
@@ -220,7 +220,7 @@ writes until Phase R.
 - [x] `p9` `PPCH`/`STBC`/`VTBL` parsing and package-to-live mapping.
 - [x] Update environment mapped (`eburner`/`sys_run`/`nvt_eburner`).
 - [x] Full eMMC/boot-area backup (recovery gate). See
-  [2026-11-14 backup](../../evidence/deep/2026-11-14-emmc-backup.md).
+  [2026-11-14 backup](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/deep/2026-11-14-emmc-backup.md).
 - [x] Same-byte restore test: both boot areas written, read-back verified, both
   cold boots returned root. A deliberately corrupted boot area is still
   untested.

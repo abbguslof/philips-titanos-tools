@@ -53,3 +53,6 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# MkDocs build
+site/

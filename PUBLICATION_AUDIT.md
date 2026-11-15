@@ -493,16 +493,34 @@ Checks:
   the verified `169.001` file.
 - The model-support table and FAQ label external reports as REPORTED and keep
   the verified lab separate. They add no universal-support claim.
-- The Pages workflow builds from `docs/` and publishes only the generated
-  site. `site/` is ignored. It uses no repository secrets and grants only
-  `contents: read`, `pages: write`, and `id-token: write`.
-- The Discussions welcome and community page contain no serials, credentials,
-  pairing data, or vendor firmware. They keep the owner-authorized scope.
 - The no-CDP result and the `:1925`/`:1926` behavior are field-unit findings;
   they do not establish a remote entry vector.
 - The changelog is cut to 0.4.14; `pyproject.toml` is 0.4.14.
 - Test coverage is 72 tests; the suite, compile step, and shell syntax checks
   pass.
+
+Verdict: GO.
+
+## Addendum 2026-11-15 (GitHub Pages and Discussions)
+
+New material: `mkdocs.yml`, `requirements-docs.txt`,
+`.github/workflows/docs.yml`, `docs/index.md`, `docs/models.md`,
+`docs/community.md`, `docs/project.md`, and the docs link updates.
+
+Checks:
+- The Pages workflow builds from `docs/` with `mkdocs build --strict` and
+  publishes only the generated site. `site/` is ignored. It uses no
+  repository secrets and grants only `contents: read`, `pages: write`, and
+  `id-token: write`. Pull requests build the site but do not deploy.
+- The Discussions welcome and community page contain no serials, credentials,
+  pairing data, or vendor firmware. They keep the owner-authorized scope.
+- The site contains the public docs and redacted evidence already in the
+  repository. No new device data is added.
+- The documentation index moved to `docs/research/index.md`; the root README,
+  docs index, and site links were updated.
+- The changelog is cut to 0.4.15; `pyproject.toml` is 0.4.15.
+- Test coverage is 72 tests; the site build, test suite, compile step, and
+  shell syntax checks pass.
 
 Verdict: GO.
 

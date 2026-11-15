@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.4.15 - 2026-11-15
+
+### Added
+
+- Searchable MkDocs Material documentation site on GitHub Pages:
+  `https://abbguslof.github.io/philips-titanos-tools/`.
+- The site adds clean URLs, full-text search, model pages, task paths, and a
+  sitemap while keeping the deep research notes in Markdown.
+- GitHub Discussions with a welcome thread and a community page. The issue
+  chooser and CONTRIBUTING now link to Discussions.
+- The site and community links are in README, the docs index, and the project
+  page.
+
+### Changed
+
+- Documentation now builds from `docs/` with `mkdocs build --strict` in CI.
+  The generated `site/` directory is not committed.
+- The documentation index moved to `docs/research/index.md`; the root README
+  and the site link to it.
+- Test coverage is 72 tests.
+
 ## 0.4.14 - 2026-11-15
 
 ### Added
@@ -25,8 +46,7 @@
   closed CDP candidate.
 - Refreshed the deep-jailbreak roadmap and external-report summary.
 - Improved discoverability with a model-support table, FAQ, release-notes
-  link, expanded search keywords, and a searchable MkDocs Material GitHub
-  Pages site. Enabled Discussions with a welcome thread.
+  link, and expanded search keywords.
 - Test coverage is 72 tests.
 
 ## 0.4.13 - 2026-11-15

@@ -8,7 +8,8 @@ Every page carries a status label:
 - **INFERRED** — follows from evidence but was not directly observed.
 - **OPEN** — not resolved.
 
-Current verified state and next gate: [STATE.md](../STATE.md).
+Current verified state and next gate: [STATE.md](../STATE.md). New here? Start
+with the [FAQ](guides/faq.md) and the [model table](../README.md#model-support).
 
 Hardware results were produced on the Philips `55PUS8000/12` unless a page names another unit.
 
@@ -58,6 +59,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 
 | Guide | Use it when |
 | :--- | :--- |
+| [FAQ](guides/faq.md) | You want a short answer before reading the deep pages. |
 | [What root unlocks](guides/what-root-unlocks.md) | You want the concrete capabilities after the `uid=0` shell. |
 | [Firmware acquisition](guides/firmware-acquisition.md) | You need the package for your own model, including the historical curl example. |
 | [Firmware extraction](guides/firmware-extraction.md) | You have a `.pkg` and want the rootfs/application filesystems. |

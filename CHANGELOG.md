@@ -24,6 +24,8 @@
 - `docs/research/34` records the external `169.001` verification and the
   closed CDP candidate.
 - Refreshed the deep-jailbreak roadmap and external-report summary.
+- Improved discoverability with a model-support table, FAQ, release-notes
+  link, and expanded search keywords.
 - Test coverage is 72 tests.
 
 ## 0.4.13 - 2026-11-15

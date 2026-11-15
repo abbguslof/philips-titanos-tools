@@ -9,7 +9,7 @@
 
   [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![Tests](https://img.shields.io/badge/tests-71-brightgreen.svg)](tests/)
+  [![Tests](https://img.shields.io/badge/tests-72-brightgreen.svg)](tests/)
   [![Tested on](https://img.shields.io/badge/tested%20on-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![Help wanted](https://img.shields.io/badge/help%20wanted-other%20models-blue.svg)](https://github.com/abbguslof/philips-titanos-tools/issues)
@@ -29,6 +29,9 @@
 | See the current verified state and next gate | [STATE.md](STATE.md) |
 | Back up the eMMC before boot-chain work | [Recovery gate](docs/guides/recovery-gate.md) |
 | Plan the deepest jailbreak | [Deep jailbreak roadmap](docs/research/25-deep-jailbreak-roadmap.md) |
+| Check whether my model is supported | [Model support](#model-support) |
+| Read common questions | [FAQ](docs/guides/faq.md) |
+| See release notes | [CHANGELOG.md](CHANGELOG.md) |
 
 ## What this is
 
@@ -40,7 +43,7 @@ It is built for owners, repair techs, and reverse engineers who want to inspect 
 | :--- | :--- |
 | Tested model | `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard `715GD542` |
 | Tested firmware | `TPA256E_V056.002.236.191` |
-| Other models | External reports: [55PUS8450/12](evidence/tpn256e-variant/), [77OLED760/12 (TPN258E)](evidence/tpn258e-77oled760/), [70PUS8108/60 (TPN236E)](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md), [43PUS7608/12 (TPN236E)](docs/research/34-tpn236e-43pus7608-2026-11-14.md), and the [169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md) (read-only probes). Scope and limits are recorded per model. |
+| Other models | See [Model support](#model-support). External reports have different limits. |
 | Platform | Novatek NT72690, Linux 6.1.124, ARM64 kernel with `armv7l` userspace |
 | Root path | USB autoroot at boot, physical access required |
 | Persistence | `customer_env.sh` on the tested model; `/swdl/telnet/telnetd` on a reported later firmware. Check the live hook first. |
@@ -54,9 +57,19 @@ It is built for owners, repair techs, and reverse engineers who want to inspect 
 
 ## Model support
 
-I own and test on the Philips **55PUS8000/12** (`TPA256E` / `TPN256E`). The toolkit targets Titan OS on the Novatek NT72690 platform, so other Philips models may share the same boot hooks, partitions, and userspace.
+I own and test on the Philips **55PUS8000/12** (`TPA256E` / `TPN256E`). The toolkit targets Titan OS on the Novatek NT72690 platform. Other models share some hooks and partitions, but firmware details and status differ.
 
-I cannot test them. If you have another model, open an issue with the model, chassis, firmware, and what worked or failed. Other models are welcome.
+External reports are read-only and not maintainer-reproduced. Do not copy the 8000 bootchain or kernel carrier to a field unit.
+
+| Model | Chassis | Firmware | Status | Report |
+| :--- | :--- | :--- | :--- | :--- |
+| **55PUS8000/12** | `TPA256E` / `TPN256E` | `TPA256E_V056.002.236.191` | **VERIFIED (lab)** | [USB root](docs/guides/usb-autoroot.md), [persistence](docs/guides/persistent-root.md), [kernel carrier](docs/research/16-kernel-and-hardware-control.md) |
+| 55PUS8450/12 | `TPN256E` | `TPN256E_V056.010.032.001` | **REPORTED** | [USB root evidence](evidence/tpn256e-variant/), [portability](docs/research/27-8450-portability.md); `/swdl` persistence is reported, not reproduced |
+| 77OLED760/12 | `TPN258E` | `058.010.032.001` | **REPORTED** | [compatibility report](evidence/tpn258e-77oled760/); USB root, `/swdl`, SSH; recovery and update untested |
+| 70PUS8108/60 | `TPN236E` | `TPN236E_V236.004.269.01` | **REPORTED** | [network surface](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md); no root; `1926` auth gap; `:7788` closed |
+| 43PUS7608/12 | `TPN236E` | `236.006.169.001` | **REPORTED / OPEN** | [field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md), [169.001 artifact](docs/research/35-tpn236e-169001-static-2026-11-15.md); no CDP, no network entry; initial entry open |
+
+If your model is missing, open a [field report](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose) with the model, chassis, firmware, and what worked or failed.
 
 ## How it works
 
@@ -250,4 +263,4 @@ The suite covers the dual-CRC32 NVM format, CRC-16/MODBUS channel maps, EDID int
 
 ## Keywords
 
-Philips Titan OS jailbreak, Titan OS root, Philips TV root, Philips TV SSH, Philips TV models, Titan OS models, 55PUS8000/12, TPA256E, TPN256E, Novatek NT72690, USB autoroot, persistent root, XBoot, ATF, firmware extraction, TIMG, PIMG, NFSB, SquashFS, raw SquashFS mount, runtime NFSB bypass, U-Boot NVM, dual CRC32, SAM, Service Alignment Mode, channel maps, CRC-16/MODBUS, JointSpace, Ambilight, local control, right-to-repair, smart TV reverse engineering, telemetry audit, debloat.
+Philips Titan OS jailbreak, Titan OS root, Philips TV root, Philips TV SSH, Philips TV hacking, Titan OS hacking, TV jailbreak, TV root, Philips TV models, Titan OS models, 55PUS8000/12, 55PUS8450/12, 77OLED760/12, 70PUS8108/60, 43PUS7608/12, TPA256E, TPN256E, TPN236E, TPN258E, Novatek NT72690, USB autoroot, persistent root, XBoot, ATF, firmware extraction, TIMG, PIMG, NFSB, SquashFS, raw SquashFS mount, runtime NFSB bypass, U-Boot NVM, dual CRC32, SAM, Service Alignment Mode, channel maps, CRC-16/MODBUS, JointSpace, Ambilight, local control, right-to-repair, smart TV reverse engineering, owner-authorized hacking, firmware reverse engineering, telemetry audit, debloat.

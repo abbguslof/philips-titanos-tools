@@ -478,7 +478,8 @@ Verdict: GO.
 New material: `docs/research/35-tpn236e-169001-static-2026-11-15.md`, the
 `docs/research/03` verified-offset note, the `docs/research/12` external-report
 summary, the `docs/research/25` roadmap refresh, the `docs/research/34`
-follow-up links, `docs/README.md`, `README.md`, and `STATE.md`.
+follow-up links, `docs/guides/faq.md`, `docs/README.md`, `README.md`, and
+`STATE.md`.
 
 Checks:
 - The note contains public file digests, component MD5s, offsets, symbol names,
@@ -490,6 +491,8 @@ Checks:
 - The `169.001` artifact is externally verified; the exact `135.001` artifact
   hash remains unreproduced. The `135.001` reference list is not relabeled as
   the verified `169.001` file.
+- The model-support table and FAQ label external reports as REPORTED and keep
+  the verified lab separate. They add no universal-support claim.
 - The no-CDP result and the `:1925`/`:1926` behavior are field-unit findings;
   they do not establish a remote entry vector.
 - The changelog is cut to 0.4.14; `pyproject.toml` is 0.4.14.

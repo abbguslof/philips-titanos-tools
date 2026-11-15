@@ -1,7 +1,7 @@
 # Deep jailbreak roadmap: the 8000 lab and field units
 
-Status: **PLAN / STARTED 2026-11-12**. Read-only inventory and boot-chain
-collection are the first steps. No boot-chain writes.
+Status: **PLAN / STARTED 2026-11-12; updated 2026-11-15**. Level 3 is verified
+on the lab; Level 3.5 is the next target. No boot-chain writes.
 
 This page changes the unit model:
 
@@ -103,7 +103,8 @@ non-identifying observations.
 ## Phase K: Reusable kernel carrier
 
 The `ndp_logo` carrier proved unsigned kernel code execution and arbitrary
-kernel read/write. Turn it into a framework:
+kernel read/write. The current carrier is a one-shot hardcoded seloff payload,
+not a reusable interface. Turn it into a framework:
 
 - no hardcoded module base or offsets;
 - runtime `kallsyms` resolution;
@@ -145,6 +146,10 @@ Read-only only:
 - persistence verification with the owner's agreement;
 - comparison of kernel, modules, SELinux, partitions, NFSB headers, and device
   nodes.
+- 2023 `TPN236E` field units: read-only network probes only. No CDP endpoint
+  was found and no network entry exists. Do not apply the 8000
+  eburner/carrier paths. See
+  [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
 
 No boot-chain writes, no 8000 carrier modules, no `insmod` experiments on a
 field unit.
@@ -183,9 +188,27 @@ field unit.
   [update package map](29-update-package-map.md), evidence
   [deep/2026-11-12](../../evidence/deep/2026-11-12-8000-bootchain.md).
 
-The immediate next probes are the `p9` table parser, the `p1/p2` U-Boot/FIT
-metadata, and whether `p21` can be selected as the `kerupm` update kernel. No
+The first probes were the `p9` table parser, the `p1/p2` U-Boot/FIT metadata,
+and whether `p21` can be selected as the `kerupm` update kernel. The `p9`
+parser is complete; the `p1/p2` metadata and `p21` selection remain open. No
 writes until Phase R.
+
+## Later results (2026-11-14/15)
+
+- The genuine vendor VER40 USB update loaded, validated, and programmed active
+  slot 0 (`p15`/`p17`/`p19`); AC-on activated it. Root and persistence
+  survived. The old slot 1/boot1 is the recovery pair. The app-layer RSA
+  verifier remains the barrier for a modified package. See
+  [the app-layer update gate](31-app-update-gate-2026-11-14.md).
+- The 2023 `TPN236E` `169.001` package was verified externally: hashes, 19/19
+  stored MD5s, and PIMG offsets. It has no `eburner`/`sys_run`/`kerupm`; its
+  `stbc_emmc` is 8051 firmware and its `xboot` bulk is a second
+  boot-ROM/OTP-encrypted layer. See
+  [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
+- The 2023 field unit has no CDP endpoint; the `CDP -> idtv` candidate is
+  closed. `msg_server` is a local root `system()` queue that needs `idtv`
+  execution; it is not an initial entry.
+- Level 3.5 is still the next lab step. The reusable carrier is not built.
 
 ## Current status
 
@@ -201,13 +224,22 @@ writes until Phase R.
 - [x] Same-byte restore test: both boot areas written, read-back verified, both
   cold boots returned root. A deliberately corrupted boot area is still
   untested.
-- [ ] Update trigger and package-loader mapping.
+- [x] App-layer update trigger, package-loader mapping, and genuine vendor
+  VER40 update: active slot 0 and boot0 programmed, AC-on activation,
+  recovery slot 1/boot1. See
+  [the app-layer update gate](31-app-update-gate-2026-11-14.md).
+- [x] 2023 `TPN236E` `169.001` external artifact and live follow-up; no CDP or
+  network entry. See
+  [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
 - [ ] Dump-only `sys_run` package test.
 - [ ] `kerupm` update-mode verification and boot selection.
 - [ ] `p1/p2` U-Boot/FIT metadata and secure-chain verifier.
-- [ ] 8450 read-only inventory and `/swdl` persistence proof.
-- [ ] Recovery engineering (Phase R).
-- [ ] Boot-chain verifier and key map (Phase B).
-- [ ] Reusable kernel carrier (Phase K).
+- [ ] 8450 read-only inventory and `/swdl` persistence proof. The read-only
+  comparison is still PLAN; `/swdl` persistence is REPORTED.
+- [ ] Recovery engineering (Phase R). Backup and same-byte restore are done;
+  corrupted-image restore, ISP/JTAG, and UART RX remain open.
+- [ ] Boot-chain verifier and key map (Phase B). Partial maps exist in docs
+  28, 29, 31, and 32.
+- [ ] Reusable kernel carrier (Phase K). This is the next Level 3.5 milestone.
 - [ ] Dual-boot recovery slot (Phase D).
 - [ ] Boot-chain write, only after R (Phase 4).

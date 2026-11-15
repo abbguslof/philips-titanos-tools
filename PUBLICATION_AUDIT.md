@@ -476,8 +476,9 @@ Verdict: GO.
 ## Addendum 2026-11-15 (169.001 artifact verification and static follow-up)
 
 New material: `docs/research/35-tpn236e-169001-static-2026-11-15.md`, the
-`docs/research/03` verified-offset note, the `docs/research/34` follow-up
-links, `docs/README.md`, `README.md`, and `STATE.md`.
+`docs/research/03` verified-offset note, the `docs/research/12` external-report
+summary, the `docs/research/25` roadmap refresh, the `docs/research/34`
+follow-up links, `docs/README.md`, `README.md`, and `STATE.md`.
 
 Checks:
 - The note contains public file digests, component MD5s, offsets, symbol names,

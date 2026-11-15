@@ -5,10 +5,13 @@
 ### Added
 
 - `43PUS7608/12` (`TPN236E`) field scan and static notes in
-  `docs/research/34`: eight open ports, the expired MQTT certificate, no
-  network entry vector, the contributor-local `236.006.135.001` static
-  findings, and the open package-artifact table.
+  `docs/research/34`: eight open ports, the expired MQTT certificate,
+  `:7788` closed, no network entry vector, and the contributor-local
+  `236.006.135.001` static findings.
 - The README model-support row and the research index link the new note.
+- A derived VER40 offset table in `docs/research/03`; the package size
+  `621,094,116` closes at `0x250524e4`. Rows 16-18 correct the earlier
+  derivation; SHA-256 and stored-MD5 values remain open.
 
 ### Changed
 
@@ -19,9 +22,6 @@
   no-`quick_debug` and OverlayFS findings are marked `TPN236E`-specific.
 - `docs/research/33` links the second field report and records the port
   differences (`8883`/`9080` open, `49152`, `:7788` closed).
-- Added a derived VER40 offset table to `docs/research/03`. The package size
-  `621,094,116` closes at `0x250524e4`. Rows 16-18 correct the earlier
-  derivation; SHA-256 and stored-MD5 values remain open.
 - Recorded `:7788` as closed on the `43PUS7608/12` field unit and updated the
   issue #3 line references.
 - Test coverage is 72 tests.

@@ -473,4 +473,28 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-15 (169.001 artifact verification and static follow-up)
+
+New material: `docs/research/35-tpn236e-169001-static-2026-11-15.md`, the
+`docs/research/03` verified-offset note, the `docs/research/34` follow-up
+links, `docs/README.md`, `README.md`, and `STATE.md`.
+
+Checks:
+- The note contains public file digests, component MD5s, offsets, symbol names,
+  and function offsets. It does not contain vendor firmware, vendor keys,
+  serials, MACs, SSIDs, IPs, PINs, pairing credentials, or private keys.
+- The `msg_server` finding is a local static pattern with call offsets. It is
+  not a remote entry, not an exploit payload, and not a root path without
+  `idtv` execution.
+- The `169.001` artifact is externally verified; the exact `135.001` artifact
+  hash remains unreproduced. The `135.001` reference list is not relabeled as
+  the verified `169.001` file.
+- The no-CDP result and the `:1925`/`:1926` behavior are field-unit findings;
+  they do not establish a remote entry vector.
+- The changelog is cut to 0.4.14; `pyproject.toml` is 0.4.14.
+- Test coverage is 72 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

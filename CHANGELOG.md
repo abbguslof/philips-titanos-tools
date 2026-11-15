@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.4.14 - 2026-11-15
+
+### Added
+
+- Verified `TPN236E_236.006.169.001` artifact identity in
+  `docs/research/35`: ZIP and `Autorun.upg` SHA-256, 621,094,116-byte
+  `Autorun.upg`, 19/19 stored/actual MD5s, and the verified PIMG offsets.
+- `169.001` static follow-up: `stbc_emmc` 8051 firmware, the `xboot` 8051
+  loader and second boot-ROM/OTP layer, no `eburner`/`sys_run`/`kerupm`, and
+  the `libfwup.so` FW40 key locations.
+- Live follow-up: no CDP endpoint on any of the eight open ports; the
+  `CDP -> idtv` candidate is closed. `msg_server` is a local root `system()`
+  queue that needs `idtv` execution and is not an initial entry.
+- README, research index, and `STATE` link the `169.001` follow-up.
+
+### Changed
+
+- `docs/research/03` marks the offset table verified on `169.001`; the
+  `135.001` reference list remains version-specific and its exact artifact hash
+  is still open.
+- `docs/research/34` records the external `169.001` verification and the
+  closed CDP candidate.
+- Test coverage is 72 tests.
+
 ## 0.4.13 - 2026-11-15
 
 ### Added

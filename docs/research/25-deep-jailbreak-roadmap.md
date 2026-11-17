@@ -1,6 +1,6 @@
 # Deep jailbreak roadmap: the 8000 lab and field units
 
-Status: **PLAN / STARTED 2026-11-12; updated 2026-11-15**. Level 3 is verified
+Status: **PLAN / STARTED 2026-11-12; updated 2026-11-16**. Level 3 is verified
 on the lab; Level 3.5 is the next target. No boot-chain writes.
 
 This page changes the unit model:
@@ -9,10 +9,10 @@ This page changes the unit model:
   accessible, and already has the deepest verified results: USB root,
   persistence, permissive SELinux, unsigned vendor-module kernel code execution,
   and the runtime raw NFSB mount.
-- The `55PUS8450/12` is a **field unit** owned by another person. It is useful
-  for read-only fingerprinting and portability validation. Do not run
-  boot-chain writes or risky kernel payloads on it.
-- Other models are field units too.
+- The `55PUS8450/12`, `77OLED760/12`, `70PUS8108/60`, and `43PUS7608/12` are
+  **field units** owned by other people. They are useful for read-only
+  fingerprinting and portability validation. Do not run boot-chain writes or
+  risky kernel payloads on them. Other models are field units too.
 
 The goal is not DRM or Widevine bypass. The goal is full control of owned
 hardware: boot chain, kernel, rootfs, and hardware surfaces, while preserving
@@ -206,13 +206,16 @@ writes until Phase R.
   `stbc_emmc` is 8051 firmware and its `xboot` bulk is a second
   boot-ROM/OTP-encrypted layer. See
   [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
-- The 2023 field unit has no CDP endpoint on the default boot; the
+- The 2023 field units have no CDP endpoint on the default boot; the
   `CDP -> idtv` candidate is closed by default. A physical USB
   `nbrowser_log_to_file` flag can enable `:7788` on the next browser launch;
   that is local/physical, not remote. `msg_server` and the active `cmd_daemon`
   are local root `system()` queues; `msg_server` runs as `initrc_t`; they need
   a local sender and are not initial entries. See
   [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
+- Issue #8 corrected the doc 35 `msg_server`/`cmd_daemon` labels and recorded
+  the physical serial, USB-gated CDP, and factory-console paths. The default
+  network surface and Level 3.5 status are unchanged.
 - Level 3.5 is still the next lab step. The reusable carrier is not built.
 
 ## Current status

@@ -551,6 +551,8 @@ Checks:
   private disclosure, not a public exploit.
 - Issue #8 remains open until this note and the doc 35 correction are recorded;
   no entry-vector conclusion is upgraded.
+- The roadmap keeps one lab (`55PUS8000/12`) and groups the named and other
+  models as read-only field units.
 - The changelog is cut to 0.4.16; `pyproject.toml` is 0.4.16.
 - Test coverage is 72 tests; the site build, test suite, compile step, and
   shell syntax checks pass.

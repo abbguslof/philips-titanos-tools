@@ -17,6 +17,8 @@
   `msg_server` runs as `initrc_t`; `cmd_daemon` is active via `nvt.app.ini`.
 - Clarified that CDP `:7788` is closed on default boot, and that a physical USB
   flag can enable it on the next browser launch. This is not a remote path.
+- Consolidated the roadmap unit model: `55PUS8000/12` is the lab; the named
+  models and other models are read-only field units.
 - Test coverage is 72 tests.
 
 ## 0.4.15 - 2026-11-15

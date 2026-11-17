@@ -68,6 +68,7 @@ nav:
   - Research:
       - All research: research/index.md
       - 169.001 verification: research/35-tpn236e-169001-static-2026-11-15.md
+      - 169.001 corrections: research/36-tpn236e-169001-corrections-2026-11-16.md
       - 43PUS7608/12 field scan: research/34-tpn236e-43pus7608-2026-11-14.md
       - 70PUS8108/60 network surface: research/33-tpn236e-70pus8108-network-surface-2026-11-14.md
       - Deep jailbreak roadmap: research/25-deep-jailbreak-roadmap.md

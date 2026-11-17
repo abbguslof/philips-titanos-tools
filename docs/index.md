@@ -9,7 +9,7 @@ Novatek NT72690.**
 [Check your model](models.md){ .md-button }
 [Read the deep roadmap](research/25-deep-jailbreak-roadmap.md){ .md-button }
 
-**Verified on `55PUS8000/12` · 72 tests · release `0.4.15`**
+**Verified on `55PUS8000/12` · 72 tests · release `0.4.16`**
 
 !!! warning "Scope"
     This is an owner-authorized repository for TVs you own. The tested root
@@ -50,7 +50,9 @@ If your model is missing, open a
 - [169.001 artifact verification and static follow-up](research/35-tpn236e-169001-static-2026-11-15.md):
   package hashes, 19/19 stored MD5s, verified offsets, and the 2023 boot chain.
 - [43PUS7608/12 field scan](research/34-tpn236e-43pus7608-2026-11-14.md):
-  port surface, no CDP, no network entry.
+  port surface, no default CDP, no network entry.
+- [169.001 corrections](research/36-tpn236e-169001-corrections-2026-11-16.md):
+  `cmd_daemon` active, `msg_server` runtime domain, serial/USB-gated physical paths.
 - [70PUS8108/60 network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md):
   JointSpace 6.1 and the unauthenticated `1926` surface.
 - [Deep jailbreak roadmap](research/25-deep-jailbreak-roadmap.md):

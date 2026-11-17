@@ -150,9 +150,13 @@ browser page over CDP. The `/json/new` and `/json/activate` navigation experimen
 is **OPEN**. Treat it as a security-relevant debug port and do not expose it
 beyond your LAN.
 
-The `70PUS8108/60` and `43PUS7608/12` TPN236E field units had `:7788` closed,
-including while the browser was running. The lab's always-open `:7788` is
-model-specific; see [the field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md).
+The `70PUS8108/60` and `43PUS7608/12` TPN236E field units had `:7788` closed
+on the default boot, including while the browser was running. The lab's
+always-open `:7788` is model-specific; see
+[the field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md). On the
+169.001 image a physical USB `nbrowser_log_to_file` flag can enable the port on
+the next browser launch; that is local/physical, not remote. See
+[the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
 
 The `browser_home/config.json` also contains a `DeviceToken` and
 `ProductInstanceId`; these are device/account identifiers and must be redacted

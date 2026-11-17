@@ -1,6 +1,6 @@
 # Current state
 
-Updated: 2026-11-15.
+Updated: 2026-11-16.
 
 Target: Philips `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard
 `715GD542`, firmware `TPA256E_V056.002.236.191`.
@@ -132,5 +132,6 @@ The public repo documents research and root. The live unit is further along:
 - [NDAL V4L2 reset](docs/research/32-ndal-v4l2-reset-2026-11-14.md)
 - [43PUS7608/12 field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md)
 - [43PUS7608/12 169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md)
+- [43PUS7608/12 169.001 corrections](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)
 - [2026-11-14 backup evidence](evidence/deep/2026-11-14-emmc-backup.md)
 - [2026-11-14 NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md)

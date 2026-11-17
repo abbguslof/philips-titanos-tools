@@ -71,3 +71,12 @@ for the sanitized capture. The chain and the `uart mode:0` line are explained in
 - Never inject 5 V or RS-232 levels into `SERV.U`.
 - Do not attempt `init=` injection or bootloader experiments without a proven
   recovery path. Serial cannot rescue this build.
+
+## Static serial-console candidate on 169.001
+
+The 169.001 `fs-root` has a `ttyS0` getty, an empty root password field in
+`/etc/shadow`, no `securetty`, and an empty PAM directory. If UART RX is usable
+on that build, the getty could present a root shell without a password. This is
+static and **unverified**; the hardware RX result above remains the tested
+result on the 8000. See [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
+Do not claim a working serial root path until RX and login are tested.

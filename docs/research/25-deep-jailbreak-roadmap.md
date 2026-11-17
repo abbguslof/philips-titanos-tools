@@ -147,9 +147,10 @@ Read-only only:
 - comparison of kernel, modules, SELinux, partitions, NFSB headers, and device
   nodes.
 - 2023 `TPN236E` field units: read-only network probes only. No CDP endpoint
-  was found and no network entry exists. Do not apply the 8000
-  eburner/carrier paths. See
-  [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
+  was found on the default boot and no network entry exists. A physical USB
+  `nbrowser_log_to_file` flag can enable `:7788` on the next browser launch;
+  see [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
+  Do not apply the 8000 eburner/carrier paths.
 
 No boot-chain writes, no 8000 carrier modules, no `insmod` experiments on a
 field unit.
@@ -205,9 +206,13 @@ writes until Phase R.
   `stbc_emmc` is 8051 firmware and its `xboot` bulk is a second
   boot-ROM/OTP-encrypted layer. See
   [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
-- The 2023 field unit has no CDP endpoint; the `CDP -> idtv` candidate is
-  closed. `msg_server` is a local root `system()` queue that needs `idtv`
-  execution; it is not an initial entry.
+- The 2023 field unit has no CDP endpoint on the default boot; the
+  `CDP -> idtv` candidate is closed by default. A physical USB
+  `nbrowser_log_to_file` flag can enable `:7788` on the next browser launch;
+  that is local/physical, not remote. `msg_server` and the active `cmd_daemon`
+  are local root `system()` queues; `msg_server` runs as `initrc_t`; they need
+  a local sender and are not initial entries. See
+  [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
 - Level 3.5 is still the next lab step. The reusable carrier is not built.
 
 ## Current status
@@ -228,8 +233,8 @@ writes until Phase R.
   VER40 update: active slot 0 and boot0 programmed, AC-on activation,
   recovery slot 1/boot1. See
   [the app-layer update gate](31-app-update-gate-2026-11-14.md).
-- [x] 2023 `TPN236E` `169.001` external artifact and live follow-up; no CDP or
-  network entry. See
+- [x] 2023 `TPN236E` `169.001` external artifact and live follow-up; no CDP on
+  the default boot and no network entry. A physical USB flag path is in doc 36. See
   [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
 - [ ] Dump-only `sys_run` package test.
 - [ ] `kerupm` update-mode verification and boot selection.

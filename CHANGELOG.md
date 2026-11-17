@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.4.16 - 2026-11-16
+
+### Added
+
+- Issue #8 static follow-up for `TPN236E_236.006.169.001`: serial-console root
+  login candidate, browser CDP runtime flags and the physical USB
+  `nbrowser_log_to_file` path, active `cmd_daemon`/`msg_server` root queues,
+  the factory-console finding, the `idtv` SELinux group map, the refuted
+  `core_helper` path, and the `apexe_ext` service layer.
+- The new findings are physical/local only. No remote entry was found.
+
+### Changed
+
+- Corrected doc 35: `msg_server` and `cmd_daemon` both have `idtv_exec_t`;
+  `msg_server` runs as `initrc_t`; `cmd_daemon` is active via `nvt.app.ini`.
+- Clarified that CDP `:7788` is closed on default boot, and that a physical USB
+  flag can enable it on the next browser launch. This is not a remote path.
+- Test coverage is 72 tests.
+
 ## 0.4.15 - 2026-11-15
 
 ### Added

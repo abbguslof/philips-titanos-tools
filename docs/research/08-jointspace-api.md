@@ -103,9 +103,13 @@ A `70PUS8108/60` (`TPN236E`, `TPN236E_V236.004.269.01`) field report recorded:
 - The client now accepts a non-JSON 2xx body and returns
   `{"status_code": ..., "body": ...}`. Pairing is not required for control on
   this build.
-- `8883` and DevTools `:7788` were closed on that unit; both are open on the lab
-  unit. `:7788` stayed closed while the browser was running, and the same was
-  seen on the `43PUS7608/12` TPN236E unit. The lab's `:7788` is model-specific.
+- `8883` and DevTools `:7788` were closed on that unit on the default boot; both
+  are open on the lab unit. `:7788` stayed closed while the browser was
+  running, and the same was seen on the `43PUS7608/12` TPN236E unit. The lab's
+  `:7788` is model-specific. On the 169.001 image a physical USB
+  `nbrowser_log_to_file` flag can enable `:7788` on the next browser launch;
+  that is local/physical, not remote. See
+  [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
 - `58012` is silent to HTTP and waits for client data. SSDP discovery returned
   no response from the TV; the `49153` DMR description paths returned 404. See
   [the field report](33-tpn236e-70pus8108-network-surface-2026-11-14.md).

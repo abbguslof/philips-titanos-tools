@@ -72,9 +72,12 @@ local debugging surface. Do not expose it to the internet; if you do not need
 it, block it at the router or in the TV firewall. It is not a remote root path
 by itself.
 
-The `70PUS8108/60` and `43PUS7608/12` TPN236E field units had `:7788` closed,
-including while the browser was running. Do not assume the lab's debug port is
-present on another build.
+The `70PUS8108/60` and `43PUS7608/12` TPN236E field units had `:7788` closed
+on the default boot, including while the browser was running. On the 169.001
+image a physical USB `nbrowser_log_to_file` flag can enable it on the next
+browser launch; that is local/physical, not remote. See
+[the corrections note](docs/research/36-tpn236e-169001-corrections-2026-11-16.md).
+Do not assume the lab's debug port is present on another build.
 
 ## Reporting a vulnerability
 

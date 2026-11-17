@@ -534,4 +534,27 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-16 (169.001 corrections and local findings)
+
+New material: `docs/research/36-tpn236e-169001-corrections-2026-11-16.md`,
+the corrections in `docs/research/35`, the CDP caveats in docs 08/12/13/25/33/34,
+`SECURITY.md`, and the serial-console note in `docs/research/07`.
+
+Checks:
+- The note records static findings only: offsets, symbol names, file:line
+  references, and SELinux rules. No serial, MAC, SSID, IP, PIN, pairing
+  credential, raw capture, vendor firmware, or exploit payload is included.
+- The serial-console and USB CDP paths are marked physical/local and
+  unverified on hardware. They are not presented as remote entries.
+- The `cmd_daemon`/`msg_server` corrections and the factory-console finding are
+  local privilege-escalation material. The factory console is routed toward
+  private disclosure, not a public exploit.
+- Issue #8 remains open until this note and the doc 35 correction are recorded;
+  no entry-vector conclusion is upgraded.
+- The changelog is cut to 0.4.16; `pyproject.toml` is 0.4.16.
+- Test coverage is 72 tests; the site build, test suite, compile step, and
+  shell syntax checks pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

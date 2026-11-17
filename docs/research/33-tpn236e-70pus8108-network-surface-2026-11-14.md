@@ -54,7 +54,7 @@ The report's targeted TCP connect scan:
 | `49153` | open | `49152` open | UPnP/DMR; the port differs by build |
 | `56789`, `56790` | open | open | DIAL |
 | `58012` | open | not reported | Silent to HTTP; waits for client data. Protocol unknown |
-| `7788` | **closed** | open | Chromium/Opera DevTools; closed even with the browser running |
+| `7788` | **closed** | open | Chromium/Opera DevTools; closed on default boot, even with the browser running |
 | `8883` | **closed** | open | The `mqttv` listener on the lab unit; still closed after a cold boot |
 | `8008`, `8009` | closed | open | |
 | `9013`, `10108`-`10120` | closed | not reported | No DTS Play-Fi listener observed |
@@ -266,9 +266,12 @@ unproven.
 - The closed `8883` removes the MQTT mobile-control listener as an alternative
   control surface on this unit. If it holds across the family, it narrows the
   options; it does not create an entry vector.
-- The closed `7788` removes the browser CDP debug surface on this unit, even
-  when the browser is running. The same launch-independent closure was seen on
-  the `43PUS7608/12` TPN236E unit.
+- The closed `7788` removes the browser CDP debug surface on this unit on the
+  default boot, even when the browser is running. The same default-boot closure
+  was seen on the `43PUS7608/12` TPN236E unit. A physical USB
+  `nbrowser_log_to_file` flag can enable `:7788` on the next browser launch;
+  that is local/physical, not remote. See
+  [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
 - The silent SSDP responder and the orphaned `49153` DMR remove discovery as a
   practical route on this build. This is unit-specific, not a family claim.
 - Port `58012` remains unidentified. It is silent to HTTP and waits for client
@@ -322,6 +325,7 @@ unverified and is not a repo claim.
 - [Firmware container](03-firmware-container-timg-pimg-nfsb.md)
 - [43PUS7608/12 field scan and static notes](34-tpn236e-43pus7608-2026-11-14.md)
 - [43PUS7608/12 169.001 artifact and static follow-up](35-tpn236e-169001-static-2026-11-15.md)
+- [169.001 corrections and local access findings](36-tpn236e-169001-corrections-2026-11-16.md)
 - [JointSpace API](08-jointspace-api.md)
 - [Verified findings and dead ends](12-verified-findings-and-dead-ends.md)
 - [Deep jailbreak roadmap](25-deep-jailbreak-roadmap.md)

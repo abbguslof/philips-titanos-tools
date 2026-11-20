@@ -1,5 +1,48 @@
 # Changelog
 
+## 0.4.17 - 2026-11-20
+
+### Added
+
+- Level 3.5 reusable kernel carrier: `tools/build_carrier.py` merges a
+  KCFI-aware sysfs mailbox into the user's `ndp_logo.ko`, and
+  `tools/carrier_ctl.py` resolves symbols and drives 64-bit read/write/call,
+  `dump`, `poke`, `scratch`, and `selftest`. The carrier loads, exposes the
+  `carrier` parameter, and rolls back cleanly.
+- Runtime `nfsb_verify` patch: the carrier patches the verifier with
+  `aarch64_insn_patch_text_nosync`. The pristine header returns 0, a modified
+  signature returns `0xffffbf00`, and the patched function returns 0. The
+  runtime mount-path check `nvt_dm_check_nfsb` rejects a modified loop copy
+  unpatched and accepts it after the patch (`NFSB header found and verified`).
+- `ndp_led` PWM backlight: the exported `KER_LED_PWM_HWFR_Get_Duty`/`Set_Duty`
+  path reads channel 0 duty `20000`/offset `105`, dims to `10000`, and restores.
+  The change is non-persistent; a reboot returns the default.
+- Read-only `dm_table` probe (`tools/probe/dm_table.c`) for device-mapper
+  tables and device lists.
+- Redacted hardware evidence for the carrier, verifier patch, backlight, and
+  NFSB mount check.
+
+### Changed
+
+- `carrier_ctl.py` adds `dump`, `poke`, `scratch`, and `selftest`, and
+  normalizes `/proc/kallsyms` addresses.
+- The Level 3.5 docs and roadmap record the verified carrier, verifier patch,
+  mount-path check, and backlight, and the open full NFSB dm mapping.
+- Test coverage is 105 tests; the suite, compile step, and shell syntax checks
+  pass.
+
+### Fixed
+
+- `carrier_ctl.py sym` rejected `/proc/kallsyms` addresses that lacked a `0x`
+  prefix; the resolver now emits `0x` and the guard accepts it.
+
+### Notes
+
+- The carrier and verifier patch are lab-only, non-persistent, and require the
+  user's own vendor `ndp_logo.ko`.
+- The `nfsb` mount helper is init-only; `nvt_dm_setup_nfsb` creates a `verity`
+  target. The full dm mapping test remains open.
+
 ## 0.4.16 - 2026-11-16
 
 ### Added

@@ -559,4 +559,27 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-20 (Level 3.5 carrier, verifier, backlight)
+
+New material: `tools/build_carrier.py`, `tools/carrier_ctl.py`,
+`payloads/carrier/carrier.c`, `payloads/carrier/carrier_raw.c`,
+`tools/probe/dm_table.c`, the matching tests, `docs/research/37` through `40`,
+`evidence/deep/2026-11-20-*`, and the state, roadmap, and index updates.
+
+Checks:
+- The new material is source, documentation, and redacted evidence. No vendor
+  firmware, extracted filesystem, raw capture, credential, MAC, serial, SSID,
+  PIN, pairing credential, or TV IP is added.
+- The carrier build requires the user's own `ndp_logo.ko`. Neither `ndp_logo.ko`
+  nor `ndp_led.ko` is committed.
+- Kernel addresses in the evidence are redacted. The research notes use symbols,
+  module-relative offsets, and the published module hashes.
+- The verifier and backlight notes mark the changes as lab-only and
+  non-persistent. The full `nvt_dm_setup_nfsb` dm mapping remains open.
+- The changelog is cut to 0.4.17; `pyproject.toml` is 0.4.17.
+- Test coverage is 105 tests; the test suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

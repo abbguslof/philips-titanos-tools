@@ -9,7 +9,7 @@ Novatek NT72690.**
 [Check your model](models.md){ .md-button }
 [Read the deep roadmap](research/25-deep-jailbreak-roadmap.md){ .md-button }
 
-**Verified on `55PUS8000/12` · 72 tests · release `0.4.16`**
+**Verified on `55PUS8000/12` · 105 tests · release `0.4.17`**
 
 !!! warning "Scope"
     This is an owner-authorized repository for TVs you own. The tested root
@@ -47,6 +47,17 @@ If your model is missing, open a
 
 ## Latest research
 
+- [NFSB mount-path verifier](research/40-nfsb-mount-check-2026-11-20.md):
+  the patched verifier accepts a modified loop copy through the runtime check;
+  the full dm mapping is open.
+- [ndp_led PWM backlight](research/39-ndp-led-pwm-backlight-2026-11-20.md):
+  channel 0 duty dimmed and restored through the exported PWM functions.
+- [Runtime verifier patch](research/38-runtime-verifier-patch-2026-11-20.md):
+  the carrier patches `nfsb_verify` and accepts a modified signature; reboot
+  restores the original. The full NFSB dm mapping is open.
+- [Level 3.5 reusable kernel carrier](research/37-kernel-carrier-level-3-5.md):
+  KCFI-aware build/control tooling for runtime kernel read/write and calls,
+  verified on the lab, including the direct verifier patch.
 - [169.001 artifact verification and static follow-up](research/35-tpn236e-169001-static-2026-11-15.md):
   package hashes, 19/19 stored MD5s, verified offsets, and the 2023 boot chain.
 - [43PUS7608/12 field scan](research/34-tpn236e-43pus7608-2026-11-14.md):
@@ -56,7 +67,8 @@ If your model is missing, open a
 - [70PUS8108/60 network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md):
   JointSpace 6.1 and the unauthenticated `1926` surface.
 - [Deep jailbreak roadmap](research/25-deep-jailbreak-roadmap.md):
-  Level 3 verified, Level 3.5 next, Level 4 blocked.
+  Level 3 verified, Level 3.5 carrier/verifier/backlight verified, Level 4
+  blocked.
 
 ## Documentation
 

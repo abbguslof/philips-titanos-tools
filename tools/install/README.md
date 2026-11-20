@@ -43,6 +43,28 @@ sha256sum /mtd_rwarea/apdat/opt/bin/lsblk > /mtd_rwarea/apdat/opt/manifest.sha25
 PATH=/mtd_rwarea/apdat/opt/bin:$PATH lsblk
 ```
 
+## dm_table probe
+
+`tools/probe/dm_table.c` is a static armhf, read-only device-mapper probe. It
+lists dm devices and prints table targets and parameters. It uses
+`DM_LIST_DEVICES` and `DM_TABLE_STATUS`; it never creates, loads, suspends, or
+removes a mapping.
+
+```sh
+LLD=${LLD:-ld.lld}
+clang --target=arm-linux-gnueabihf -march=armv7-a \
+  -nostdlib -nostartfiles -fno-stack-protector -fno-builtin -ffreestanding \
+  -static -no-pie -O2 -fuse-ld=lld --ld-path="$LLD" -Wl,-e,_start \
+  -o dist/armhf/dm_table tools/probe/dm_table.c
+```
+
+Run on the TV:
+
+```sh
+/tmp/dm_table
+/tmp/dm_table nfsb-2 nfsb-3
+```
+
 ## Persistence
 
 `PATH` survives because `/mtd_rwarea/apdat/root_boot.sh:12` appends

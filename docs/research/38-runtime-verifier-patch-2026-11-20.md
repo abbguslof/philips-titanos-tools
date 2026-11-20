@@ -82,4 +82,4 @@ The text patch lives in RAM only. Reboot removes it.
 
 ## Evidence
 
-[2026-11-20 runtime verifier patch](../../evidence/deep/2026-11-20-runtime-verifier-patch.md).
+[2026-11-20 runtime verifier patch](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/deep/2026-11-20-runtime-verifier-patch.md).

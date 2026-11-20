@@ -64,4 +64,4 @@ modified data block still needs the verity path.
 
 ## Evidence
 
-[2026-11-20 NFSB mount check](../../evidence/deep/2026-11-20-nfsb-mount-check.md).
+[2026-11-20 NFSB mount check](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/deep/2026-11-20-nfsb-mount-check.md).

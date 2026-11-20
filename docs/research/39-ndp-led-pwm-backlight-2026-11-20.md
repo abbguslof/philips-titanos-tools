@@ -73,4 +73,4 @@ duty.
 
 ## Evidence
 
-[2026-11-20 ndp_led backlight](../../evidence/deep/2026-11-20-ndp-led-backlight.md).
+[2026-11-20 ndp_led backlight](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/deep/2026-11-20-ndp-led-backlight.md).

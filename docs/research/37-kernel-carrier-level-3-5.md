@@ -184,7 +184,7 @@ Rollback and reboot:
   hash `b43297b16436980131e5ebb2c6b5f883d292a7947eb2d233b2fc08d051cffdc2`, and
   no `/tmp/ndp_logo_carrier.ko`.
 
-Evidence: [2026-11-20 kernel carrier](../../evidence/deep/2026-11-20-kernel-carrier.md).
+Evidence: [2026-11-20 kernel carrier](https://github.com/abbguslof/philips-titanos-tools/blob/main/evidence/deep/2026-11-20-kernel-carrier.md).
 
 ## Live runbook (owned lab only)
 

@@ -10,6 +10,8 @@
 | `autoscript.diag.txt` | Older, broader diagnostic autoscript from the v4 research runs. Not the canonical autoroot payload. |
 | `autoscript.stateproof.txt` | One-line, non-resetting autoscript that appends boot state to `/media/sda1/proof.txt`. |
 | `root_boot.opt-block.sh` | Block for `root_boot.sh`: tmpfs `/root`, `opt` PATH, firewall, and Dropbear start. |
+| `carrier/carrier.c` | Level 3.5 sysfs mailbox payload; merged into the vendor `ndp_logo.ko` by `tools/build_carrier.py`. |
+| `carrier/carrier_raw.c` | Unchecked call helper for the carrier; compiled without KCFI. |
 | `busybox-armhf` | Static ARM hard-float BusyBox 1.35.0 (Debian). GPLv2; see `THIRD_PARTY_NOTICES.md`. |
 | `bootstrap/bootstrap.sh` | Legacy generic reverse-shell example. Not used by the verified root path. |
 

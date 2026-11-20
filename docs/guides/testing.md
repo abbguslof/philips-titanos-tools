@@ -8,7 +8,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (72 tests):
+Current coverage (105 tests):
 
 | Test file | Covers |
 | :--- | :--- |
@@ -28,6 +28,8 @@ Current coverage (72 tests):
 | `test_persist_root.py` | Installer hook detection, embedded script syntax, `/swdl` wrapper, no USB dependency. |
 | `test_stage_usb.py` | SAM canary staging and CRC verification. |
 | `test_uboot_nvm_tool.py` | Dual CRC32, factory verification, bit-identical round-trip. |
+| `test_build_carrier.py` | ELF section/symbol parsing, relocation-safe entry patching, and a gated real-module carrier build. |
+| `test_carrier_ctl.py` | Symbol/address validation, command scripts, safety gates, and mocked carrier flows. |
 
 ## What is not in CI
 

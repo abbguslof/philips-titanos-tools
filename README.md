@@ -66,7 +66,7 @@ External reports are read-only and not maintainer-reproduced. Do not copy the 80
 
 | Model | Chassis | Firmware | Status | Report |
 | :--- | :--- | :--- | :--- | :--- |
-| **55PUS8000/12** | `TPA256E` / `TPN256E` | `TPA256E_V056.002.236.191` | **VERIFIED (lab)** | [USB root](docs/guides/usb-autoroot.md), [persistence](docs/guides/persistent-root.md), [kernel carrier](docs/research/16-kernel-and-hardware-control.md) |
+| **55PUS8000/12** | `TPA256E` / `TPN256E` | `TPA256E_V056.002.236.191` | **VERIFIED (lab)** | [USB root](docs/guides/usb-autoroot.md), [persistence](docs/guides/persistent-root.md), [kernel carrier](docs/research/37-kernel-carrier-level-3-5.md), [backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md), [NFSB verifier](docs/research/40-nfsb-mount-check-2026-11-20.md) |
 | 55PUS8450/12 | `TPN256E` | `TPN256E_V056.010.032.001` | **REPORTED** | [USB root evidence](evidence/tpn256e-variant/), [portability](docs/research/27-8450-portability.md); `/swdl` persistence is reported, not reproduced |
 | 77OLED760/12 | `TPN258E` | `058.010.032.001` | **REPORTED** | [compatibility report](evidence/tpn258e-77oled760/); USB root, `/swdl`, SSH; recovery and update untested |
 | 70PUS8108/60 | `TPN236E` | `TPN236E_V236.004.269.01` | **REPORTED** | [network surface](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md); no root; `1926` auth gap; `:7788` closed |

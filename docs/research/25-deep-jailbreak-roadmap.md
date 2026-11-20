@@ -1,7 +1,8 @@
 # Deep jailbreak roadmap: the 8000 lab and field units
 
-Status: **PLAN / STARTED 2026-11-12; updated 2026-11-16**. Level 3 is verified
-on the lab; Level 3.5 is the next target. No boot-chain writes.
+Status: **PLAN / STARTED 2026-11-12; updated 2026-11-20**. Level 3 is verified
+on the lab. The Level 3.5 carrier, verifier patch, mount-path check, and
+backlight are verified. The full NFSB dm mapping is next. No boot-chain writes.
 
 This page changes the unit model:
 
@@ -26,7 +27,7 @@ the certified media stack.
 | 1 | Persistent root after USB removal | VERIFIED (`customer_env.sh`) | 8450 REPORTED (`/swdl`) |
 | 2 | Permissive SELinux, SSH, custom chroot userspace | VERIFIED | UNMEASURED |
 | 3 | Unsigned vendor-module carrier, kernel code execution, arbitrary R/W | VERIFIED (`ndp_logo`) | UNMEASURED |
-| 3.5 | Runtime kernel primitives: kallsyms, verifier patching, hardware control | REACHABLE | NOT APPROPRIATE |
+| 3.5 | Runtime kernel primitives: kallsyms, verifier patching, hardware control | VERIFIED (partial) | NOT APPROPRIATE |
 | 4 | Boot-time control: custom XBoot/ATF/kernel/FDT/initramfs or bootable modified NFSB | BLOCKED | NOT APPROPRIATE |
 | 5 | Secure world / DRM keys | OUT OF SCOPE | OUT OF SCOPE |
 
@@ -112,6 +113,18 @@ not a reusable interface. Turn it into a framework:
 - targeted primitives: clean SELinux control, verifier inspection/patching,
   eMMC/boot-area reads, device ioctls;
 - every payload non-persistent until it survives cold-boot testing.
+
+The carrier is verified on the lab (2026-11-20): it builds from the TV's own
+`ndp_logo.ko`, loads, exposes the parameter, passes the live KCFI check, writes
+and reads kernel memory, and reads live symbols. Rollback and reboot restored
+the seloff path. The direct `nfsb_verify` patch is verified in
+[38](38-runtime-verifier-patch-2026-11-20.md). The mount-path check
+(`nvt_dm_check_nfsb`) accepts a modified loop copy after the patch, and the
+`ndp_led` PWM backlight dims and restores. See
+[39](39-ndp-led-pwm-backlight-2026-11-20.md) and
+[40](40-nfsb-mount-check-2026-11-20.md). The full `nvt_dm_setup_nfsb` dm
+mapping is next. See
+[Level 3.5: reusable kernel carrier](37-kernel-carrier-level-3-5.md).
 
 This layer gives runtime control. It does not make a modified boot image
 bootable.
@@ -215,8 +228,10 @@ writes until Phase R.
   [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
 - Issue #8 corrected the doc 35 `msg_server`/`cmd_daemon` labels and recorded
   the physical serial, USB-gated CDP, and factory-console paths. The default
-  network surface and Level 3.5 status are unchanged.
-- Level 3.5 is still the next lab step. The reusable carrier is not built.
+  network surface and Level 3.5 status are unchanged at the time of that note.
+- The reusable Level 3.5 carrier, verifier patch, mount-path check, and
+  `ndp_led` backlight are verified on the lab (2026-11-20). The next step is the
+  full `nvt_dm_setup_nfsb` dm mapping or the dm-verity data path.
 
 ## Current status
 
@@ -248,6 +263,20 @@ writes until Phase R.
   corrupted-image restore, ISP/JTAG, and UART RX remain open.
 - [ ] Boot-chain verifier and key map (Phase B). Partial maps exist in docs
   28, 29, 31, and 32.
-- [ ] Reusable kernel carrier (Phase K). This is the next Level 3.5 milestone.
+- [x] Reusable kernel carrier (Phase K). The carrier is verified on the lab:
+  load, KCFI set/get, self-buffer write/read, symbol reads, rollback, and
+  reboot. See [Level 3.5: reusable kernel carrier](37-kernel-carrier-level-3-5.md).
+- [x] First Level 3.5 payload: direct `nfsb_verify` patch. The pristine header
+  returns 0, a modified signature returns `0xffffbf00`, and the patched
+  function returns 0. Reboot restores the original. See
+  [38](38-runtime-verifier-patch-2026-11-20.md).
+- [x] NFSB mount-path check: `nvt_dm_check_nfsb` rejected a modified loop copy
+  unpatched and accepted it after the patch (`NFSB header found and verified`).
+  See [40](40-nfsb-mount-check-2026-11-20.md).
+- [x] ndp_led PWM backlight: channel 0 duty dimmed and restored; reboot returns
+  the default. See [39](39-ndp-led-pwm-backlight-2026-11-20.md).
+- [ ] Full `nvt_dm_setup_nfsb` dm mapping: the runtime setup creates a `verity`
+  target; a mount test needs a direct call with a loop block device.
+- [ ] dm-verity data path: a modified data block still fails verity.
 - [ ] Dual-boot recovery slot (Phase D).
 - [ ] Boot-chain write, only after R (Phase 4).

@@ -50,9 +50,11 @@ in a separate private project.
 ## What is Level 3.5?
 
 Runtime kernel primitives on the owned lab: `kallsyms`, controlled read/write,
-verifier inspection, and hardware control. The current `ndp_logo` carrier is a
-one-shot seloff payload. A reusable no-op carrier is the next step. See the
-[deep jailbreak roadmap](../research/25-deep-jailbreak-roadmap.md).
+verifier inspection, and hardware control. The `ndp_logo` carrier, the runtime
+verifier patch, the NFSB mount-path check, and the `ndp_led` backlight are
+verified. The full `nvt_dm_setup_nfsb` dm mapping is next. See the
+[deep jailbreak roadmap](../research/25-deep-jailbreak-roadmap.md) and the
+[carrier page](../research/37-kernel-carrier-level-3-5.md).
 
 ## Where do I start?
 

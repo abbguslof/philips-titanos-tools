@@ -3,6 +3,10 @@
 Status: **VERIFIED / OPEN** on `55PUS8000/12`, firmware
 `TPA256E_V056.002.236.191`, 2026-11-01. No boot-chain or partition writes.
 
+The reusable carrier that supersedes the one-shot seloff payload is in
+[37-kernel-carrier-level-3-5.md](37-kernel-carrier-level-3-5.md). This page
+keeps the earlier proof.
+
 ## Why this matters
 
 The permissive v33 policy removed the SELinux blocker for userspace and
@@ -236,6 +240,12 @@ No new bootarg route was found:
    trace the proprietary remote key path before touching dedicated buttons.
 4. **Hardware drivers.** Reverse engineer the specific `/dev/ntk*` ioctl needed
    for the feature (backlight, HDMI, Ambilight, tuner), one device at a time.
+   The first target is `ndp_led.ko` (`/dev/ntkled`). The exported
+   `KER_LED_PWM_HWFR_Get_Duty`/`Set_Duty` path is verified: channel 0,
+   `20000`/offset `105`, dim to `10000`, restore. This build has no
+   `/sys/class/backlight` or `/sys/class/leds`; the `TconLed` DT node carries
+   only interrupts. Next: the 2D/3D channels and the HDMI/Ambilight ioctls. See
+   [39](39-ndp-led-pwm-backlight-2026-11-20.md).
 5. **Do not** write `mmcblk0boot*` or NFSB boot images without an ISP/vendor
    recovery path.
 

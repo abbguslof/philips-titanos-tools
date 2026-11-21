@@ -11,6 +11,7 @@ unit.
 | 77OLED760/12 | `TPN258E` | `058.010.032.001` | **REPORTED** | [compatibility report](https://github.com/abbguslof/philips-titanos-tools/tree/main/evidence/tpn258e-77oled760); USB root, `/swdl`, SSH; recovery and update untested |
 | 70PUS8108/60 | `TPN236E` | `TPN236E_V236.004.269.01` | **REPORTED** | [network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md); no root; `1926` auth gap; `:7788` closed |
 | 43PUS7608/12 | `TPN236E` | `236.006.169.001` | **REPORTED / OPEN** | [field scan](research/34-tpn236e-43pus7608-2026-11-14.md), [169.001 artifact](research/35-tpn236e-169001-static-2026-11-15.md); no CDP, no network entry; initial entry open |
+| 55PUS8108/12 | `TPN23.6E` | `236.006.169.001` | **REPORTED** | [FZ1A field report](research/41-tpn236e-55pus8108.md), one UID 0 boot observation, repeatable access open |
 
 ## What the status labels mean
 

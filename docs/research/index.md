@@ -59,6 +59,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 38 | [2026-11-20 runtime verifier patch](38-runtime-verifier-patch-2026-11-20.md) | VERIFIED (hardware) / OPEN (dm mapping) | Direct `nfsb_verify` patch: pristine header accepted, modified signature rejected, patched function accepts it; reboot restores the original. Full NFSB dm mapping open. |
 | 39 | [2026-11-20 ndp_led PWM backlight](39-ndp-led-pwm-backlight-2026-11-20.md) | VERIFIED (hardware) | Exported `KER_LED_PWM_HWFR_Get_Duty`/`Set_Duty`: channel 0 duty 20000/offset 105, dim to 10000, restore; reboot returns the default. |
 | 40 | [2026-11-20 NFSB mount-path verifier](40-nfsb-mount-check-2026-11-20.md) | VERIFIED (hardware) / OPEN (dm mapping) | `nvt_dm_check_nfsb` rejects a modified loop copy unpatched and accepts it after the `nfsb_verify` patch; full `nvt_dm_setup_nfsb` mapping open. |
+| 41 | [55PUS8108/12 FZ1A on 169.001](41-tpn236e-55pus8108.md) | REPORTED (hardware), VERIFIED (offline) | Boot credentials, USB diagnostics, browser playback, media stack and source archive inventory. |
 
 ## Guides
 

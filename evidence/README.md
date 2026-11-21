@@ -18,6 +18,8 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 
 ## External firmware variant
 
+The [55PUS8108/12 field measurements](tpn236e-55pus8108/README.md) cover browser playback, USB diagnostics and a single boot observation on firmware 236.006.169.001.
+
 | Set | What it proves |
 | :--- | :--- |
 | [tpn256e-variant](tpn256e-variant/) | External USB autoroot on `55PUS8450/12`; it does not prove the `/swdl` hook after a USB-less boot. |

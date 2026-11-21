@@ -33,6 +33,7 @@ ability to power-cycle the TV. The persistent hook requires root first.
 | :--- | :--- |
 | Ephemeral root shell (`:2323`) | Physical USB + cold boot |
 | Persistent root | Ephemeral root first, then write to `apdat` |
+| Root via the USB flag, CDP, and RPC injection | One physical USB write (flag-file name only) + one warm reboot |
 | Local JointSpace control | LAN access + pairing (or the vendor app secret) |
 | Firmware inspection | Local copy of a package you obtained for your own device |
 
@@ -75,8 +76,11 @@ by itself.
 The `70PUS8108/60` and `43PUS7608/12` TPN236E field units had `:7788` closed
 on the default boot, including while the browser was running. On the 169.001
 image a physical USB `nbrowser_log_to_file` flag can enable it on the next
-browser launch; that is local/physical, not remote. See
-[the corrections note](docs/research/36-tpn236e-169001-corrections-2026-11-16.md).
+browser launch; that is local/physical, not remote. The same unit was then
+live-verified through the launcher RPC bridge: an unquoted advertising-ID value
+runs a shell command as `idtv`, and `customer_env.sh` grants root on reboot.
+See [the corrections note](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)
+and [the RPC-injection note](docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md).
 Do not assume the lab's debug port is present on another build.
 
 ## Reporting a vulnerability

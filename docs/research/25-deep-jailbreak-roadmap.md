@@ -159,11 +159,11 @@ Read-only only:
 - persistence verification with the owner's agreement;
 - comparison of kernel, modules, SELinux, partitions, NFSB headers, and device
   nodes.
-- 2023 `TPN236E` field units: read-only network probes only. No CDP endpoint
-  was found on the default boot and no network entry exists. A physical USB
-  `nbrowser_log_to_file` flag can enable `:7788` on the next browser launch;
-  see [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
-  Do not apply the 8000 eburner/carrier paths.
+- 2023 `TPN236E` field units: read-only network probes, plus the owner-run
+  physical path in [the RPC-injection note](42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md).
+  No network entry exists. A physical USB `nbrowser_log_to_file` flag opens
+  `:7788`; the launcher RPC bridge then reaches `idtv` and root. Do not apply
+  the 8000 eburner/carrier paths.
 
 No boot-chain writes, no 8000 carrier modules, no `insmod` experiments on a
 field unit.
@@ -219,13 +219,15 @@ writes until Phase R.
   `stbc_emmc` is 8051 firmware and its `xboot` bulk is a second
   boot-ROM/OTP-encrypted layer. See
   [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
-- The 2023 field units have no CDP endpoint on the default boot; the
-  `CDP -> idtv` candidate is closed by default. A physical USB
-  `nbrowser_log_to_file` flag can enable `:7788` on the next browser launch;
-  that is local/physical, not remote. `msg_server` and the active `cmd_daemon`
-  are local root `system()` queues; `msg_server` runs as `initrc_t`; they need
-  a local sender and are not initial entries. See
-  [the corrections note](36-tpn236e-169001-corrections-2026-11-16.md).
+- The 2023 field units have no CDP endpoint on the default boot. The
+  `CDP -> idtv` candidate is open through a physical USB
+  `nbrowser_log_to_file` flag, and the 43PUS7608/12 unit was taken to root:
+  the launcher RPC bridge injects a shell command as `idtv`, then
+  `customer_env.sh` runs as root on reboot. Physical only, not remote.
+  `msg_server` and the active `cmd_daemon` remain local root `system()` queues;
+  `msg_server` runs as `initrc_t`; they need a local sender and are not initial
+  entries. See
+  [the RPC-injection note](42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md).
 - Issue #8 corrected the doc 35 `msg_server`/`cmd_daemon` labels and recorded
   the physical serial, USB-gated CDP, and factory-console paths. The default
   network surface and Level 3.5 status are unchanged at the time of that note.
@@ -252,8 +254,10 @@ writes until Phase R.
   recovery slot 1/boot1. See
   [the app-layer update gate](31-app-update-gate-2026-11-14.md).
 - [x] 2023 `TPN236E` `169.001` external artifact and live follow-up; no CDP on
-  the default boot and no network entry. A physical USB flag path is in doc 36. See
-  [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md).
+  the default boot and no network entry. The physical USB flag path was
+  live-verified to root. See
+  [the 169.001 follow-up](35-tpn236e-169001-static-2026-11-15.md) and
+  [the RPC-injection note](42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md).
 - [ ] Dump-only `sys_run` package test.
 - [ ] `kerupm` update-mode verification and boot selection.
 - [ ] `p1/p2` U-Boot/FIT metadata and secure-chain verifier.

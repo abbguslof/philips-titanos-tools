@@ -41,6 +41,7 @@ different limits. The full table is in [Supported models](models.md).
 | `77OLED760/12` | `058.010.032.001` | **REPORTED** |
 | `70PUS8108/60` | `TPN236E_V236.004.269.01` | **REPORTED** |
 | `43PUS7608/12` | `236.006.169.001` | **REPORTED / OPEN** |
+| [`55PUS8108/12`](research/41-tpn236e-55pus8108.md) | `236.006.169.001` | **REPORTED** |
 
 If your model is missing, open a
 [field report](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose).

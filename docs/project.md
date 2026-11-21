@@ -1,6 +1,6 @@
 # Project
 
-Current release: `0.4.17` (2026-11-20). The repository is MIT-licensed.
+Current release: `0.4.18` (2026-11-21). The repository is MIT-licensed.
 
 | Page | Use it for |
 | :--- | :--- |

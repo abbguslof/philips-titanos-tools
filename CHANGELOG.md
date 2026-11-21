@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.4.18 - 2026-11-21
+
+### Added
+
+- Research note 41, the `55PUS8108/12` (TPN236E) field report on
+  `236.006.169.001`: one privileged boot record, browser playback, USB
+  diagnostics, the debug-menu help-branch finding, the OpenMAX guest result,
+  and the source archive inventory.
+- Research note 42, the live-verified `43PUS7608/12` root chain: the USB
+  `nbrowser_log_to_file` flag opens CDP, the launcher RPC bridge injects a
+  shell command as `idtv`, and `customer_env.sh` grants root on reboot. The
+  note also records the second static `Usbsoftwarestart.ui` sink and the adID
+  telemetry leak.
+- `50PUS8909/12` (`TPN248E`, `TPN248E_V248.010.000.121`) field-report entry in
+  the model tables, including the failed USB autoroot and the offline `ttyS0`
+  getty and empty root-password findings. The installed 2026 build is untested.
+- Redacted browser and USB evidence set for `55PUS8108/12`.
+
+### Changed
+
+- `43PUS7608/12` moves from **REPORTED / OPEN** to **REPORTED (root)** across
+  README, the model page, docs index, the truth table, SECURITY, and the
+  roadmap. The default boot still has no CDP and no network entry; the new path
+  is physical.
+- The 55PUS8108/12 chassis is `TPN236E`, the note filename carries the date,
+  the note uses the standard Status/Target header, and the evidence index uses
+  a table row.
+- `55PUS8108/12` is indexed in README, the model page, and the docs index.
+- The test badge reports the current 105 tests.
+
+### Notes
+
+- The maintainer did not reproduce either field unit. Both root reports remain
+  external.
+- The 43PUS7608/12 note omits a ready-to-run payload and keeps the execution
+  primitive and anchors.
+
 ## 0.4.17 - 2026-11-20
 
 ### Added

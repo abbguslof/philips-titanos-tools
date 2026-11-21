@@ -18,11 +18,15 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 
 ## External firmware variant
 
-The [55PUS8108/12 field measurements](tpn236e-55pus8108/README.md) cover browser playback, USB diagnostics and a single boot observation on firmware 236.006.169.001.
-
 | Set | What it proves |
 | :--- | :--- |
+| [tpn236e-55pus8108](tpn236e-55pus8108/) | Browser playback, USB diagnostics, and one privileged boot observation on `55PUS8108/12` (`TPN236E_V236.006.169.001`). |
 | [tpn256e-variant](tpn256e-variant/) | External USB autoroot on `55PUS8450/12`; it does not prove the `/swdl` hook after a USB-less boot. |
+
+The [43PUS7608/12 root chain](../docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md)
+is a live external report with byte-checked anchors. No raw capture or payload
+was supplied; the research note keeps the observations **REPORTED** and omits a
+ready-to-run payload.
 
 An additional [77OLED760/12 (TPN258E) report](tpn258e-77oled760/) includes
 USB autoroot, a USB-less cold boot using the `/swdl` persistence hook, and

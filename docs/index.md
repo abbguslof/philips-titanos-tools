@@ -40,14 +40,21 @@ different limits. The full table is in [Supported models](models.md).
 | `55PUS8450/12` | `TPN256E_V056.010.032.001` | **REPORTED** |
 | `77OLED760/12` | `058.010.032.001` | **REPORTED** |
 | `70PUS8108/60` | `TPN236E_V236.004.269.01` | **REPORTED** |
-| `43PUS7608/12` | `236.006.169.001` | **REPORTED / OPEN** |
-| [`55PUS8108/12`](research/41-tpn236e-55pus8108.md) | `236.006.169.001` | **REPORTED** |
+| `43PUS7608/12` | `236.006.169.001` | **REPORTED (root)** |
+| [`55PUS8108/12`](research/41-tpn236e-55pus8108-2026-11-21.md) | `236.006.169.001` | **REPORTED** |
+| `50PUS8909/12` | `TPN248E_V248.010.000.121` | **REPORTED / OPEN** |
 
 If your model is missing, open a
 [field report](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose).
 
 ## Latest research
 
+- [43PUS7608/12 RPC-injection root](research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md):
+  a USB flag opens CDP, the launcher RPC bridge injects a shell command as
+  `idtv`, and the boot hook grants root. External and live-verified.
+- [55PUS8108/12 field report](research/41-tpn236e-55pus8108-2026-11-21.md):
+  one privileged boot record, browser playback, USB diagnostics, and offline
+  media findings on the same firmware family.
 - [NFSB mount-path verifier](research/40-nfsb-mount-check-2026-11-20.md):
   the patched verifier accepts a modified loop copy through the runtime check;
   the full dm mapping is open.

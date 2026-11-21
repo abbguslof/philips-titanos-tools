@@ -1,6 +1,6 @@
 # Current state
 
-Updated: 2026-11-16.
+Updated: 2026-11-21.
 
 Target: Philips `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard
 `715GD542`, firmware `TPA256E_V056.002.236.191`.
@@ -54,6 +54,17 @@ The public repo documents research and root. The live unit is further along:
   now the recovery pair.
 - The private custom userspace is outside this repository's public scope. This
   page records the root hook, not its internals.
+
+## External field units
+
+These are external reports, not maintainer reproductions. Do not apply the lab
+bootchain or kernel carrier to them.
+
+| Unit | State | Evidence |
+| :--- | :--- | :--- |
+| `43PUS7608/12` (`TPN236E`, `236.006.169.001`) | **REPORTED (root).** The USB flag `nbrowser_log_to_file` opens CDP on `:7788`; the launcher RPC bridge injects a shell command as `idtv`; `customer_env.sh` grants root on reboot. Two reboots. Physical only. | [RPC-injection root](docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md) |
+| `55PUS8108/12` (`TPN236E`, `236.006.169.001`) | **REPORTED.** One privileged boot record (`rcS`, UID 0, `initrc_t`); browser playback and USB diagnostics recorded. Interactive and repeatable root open. | [Field report](docs/research/41-tpn236e-55pus8108-2026-11-21.md) |
+| `50PUS8909/12` (`TPN248E`, `TPN248E_V248.010.000.121`) | **REPORTED / OPEN.** JointSpace 6.1; USB autoroot failed; offline `ttyS0` getty and empty root password in the 2025 image; installed 2026 build untested. | [Field report](https://github.com/abbguslof/philips-titanos-tools/issues/10) |
 
 ## Open gates
 
@@ -163,5 +174,7 @@ The public repo documents research and root. The live unit is further along:
 - [43PUS7608/12 field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md)
 - [43PUS7608/12 169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md)
 - [43PUS7608/12 169.001 corrections](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)
+- [43PUS7608/12 RPC-injection root](docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md)
+- [55PUS8108/12 field report](docs/research/41-tpn236e-55pus8108-2026-11-21.md)
 - [2026-11-14 backup evidence](evidence/deep/2026-11-14-emmc-backup.md)
 - [2026-11-14 NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md)

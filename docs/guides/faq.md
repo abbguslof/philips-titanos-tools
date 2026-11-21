@@ -10,9 +10,10 @@ No. The tested `55PUS8000/12` path needs a USB stick and a cold boot. The 2023
 ## Does it work on my Philips TV?
 
 Check the [model table](../models.md). The `55PUS8000/12` is
-the verified lab. `55PUS8450/12`, `77OLED760/12`, `70PUS8108/60`, and
-`43PUS7608/12` are external reports with different limits. Do not copy the 8000
-bootchain or kernel carrier to a field unit.
+the verified lab. `55PUS8450/12`, `77OLED760/12`, `70PUS8108/60`,
+`43PUS7608/12`, `55PUS8108/12`, and `50PUS8909/12` are external reports with
+different limits. Do not copy the 8000 bootchain or kernel carrier to a field
+unit.
 
 ## Will it brick my TV?
 
@@ -38,6 +39,8 @@ firmware mirror. "Hacking" is a search term, not a target.
 - `77OLED760/12`: `058.010.032.001`
 - `70PUS8108/60`: `TPN236E_V236.004.269.01`
 - `43PUS7608/12`: `236.006.169.001`
+- `55PUS8108/12`: `TPN236E_V236.006.169.001`
+- `50PUS8909/12`: `TPN248E_V248.010.000.121`
 
 Firmware-specific details stay firmware-specific. A hook or offset on one build
 is not a family fact.

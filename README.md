@@ -10,13 +10,13 @@
   [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
   [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://abbguslof.github.io/philips-titanos-tools/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![Tests](https://img.shields.io/badge/tests-72-brightgreen.svg)](tests/)
+  [![Tests](https://img.shields.io/badge/tests-105-brightgreen.svg)](tests/)
   [![Tested on](https://img.shields.io/badge/tested%20on-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![Help wanted](https://img.shields.io/badge/help%20wanted-other%20models-blue.svg)](https://github.com/abbguslof/philips-titanos-tools/issues)
 </div>
 
-> **Scope.** This repo is for TVs you own. The root path needs physical USB access and a cold boot. It is not a remote exploit, a firmware mirror, or a custom OS. Read [SECURITY.md](SECURITY.md) before you start.
+> **Scope.** This repo is for TVs you own. Every root path needs physical USB access: a cold boot for the tested lab, or a flag file and one warm reboot on a reported 2023 `TPN236E` unit. It is not a remote exploit, a firmware mirror, or a custom OS. Read [SECURITY.md](SECURITY.md) before you start.
 
 ## Start here
 
@@ -70,8 +70,9 @@ External reports are read-only and not maintainer-reproduced. Do not copy the 80
 | 55PUS8450/12 | `TPN256E` | `TPN256E_V056.010.032.001` | **REPORTED** | [USB root evidence](evidence/tpn256e-variant/), [portability](docs/research/27-8450-portability.md); `/swdl` persistence is reported, not reproduced |
 | 77OLED760/12 | `TPN258E` | `058.010.032.001` | **REPORTED** | [compatibility report](evidence/tpn258e-77oled760/); USB root, `/swdl`, SSH; recovery and update untested |
 | 70PUS8108/60 | `TPN236E` | `TPN236E_V236.004.269.01` | **REPORTED** | [network surface](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md); no root; `1926` auth gap; `:7788` closed |
-| 43PUS7608/12 | `TPN236E` | `236.006.169.001` | **REPORTED / OPEN** | [field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md), [169.001 artifact](docs/research/35-tpn236e-169001-static-2026-11-15.md), [corrections](docs/research/36-tpn236e-169001-corrections-2026-11-16.md); no default CDP, no network entry; physical paths open |
-| 55PUS8108/12 | `TPN23.6E` | `236.006.169.001` | **REPORTED** | [FZ1A field report](docs/research/41-tpn236e-55pus8108.md), one UID 0 boot observation, repeatable access open |
+| 43PUS7608/12 | `TPN236E` | `236.006.169.001` | **REPORTED (root)** | [field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md), [169.001 artifact](docs/research/35-tpn236e-169001-static-2026-11-15.md), [corrections](docs/research/36-tpn236e-169001-corrections-2026-11-16.md), [RPC-injection root](docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md); physical USB flag -> CDP -> `idtv` injection -> root; no remote entry |
+| 55PUS8108/12 | `TPN236E` | `236.006.169.001` | **REPORTED** | [FZ1A field report](docs/research/41-tpn236e-55pus8108-2026-11-21.md); one UID 0 boot observation; repeatable access open |
+| 50PUS8909/12 | `TPN248E` | `TPN248E_V248.010.000.121` | **REPORTED / OPEN** | [field report](https://github.com/abbguslof/philips-titanos-tools/issues/10); JointSpace 6.1; USB autoroot failed; offline `ttyS0` getty and empty root password; 2026 build untested |
 
 If your model is missing, open a [field report](https://github.com/abbguslof/philips-titanos-tools/issues/new/choose) with the model, chassis, firmware, and what worked or failed.
 

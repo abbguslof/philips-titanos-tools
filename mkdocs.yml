@@ -69,7 +69,6 @@ nav:
       - All research: research/index.md
       - 169.001 verification: research/35-tpn236e-169001-static-2026-11-15.md
       - 169.001 corrections: research/36-tpn236e-169001-corrections-2026-11-16.md
-      - 55PUS8108/12 field report: research/41-tpn236e-55pus8108.md
       - 43PUS7608/12 field scan: research/34-tpn236e-43pus7608-2026-11-14.md
       - 70PUS8108/60 network surface: research/33-tpn236e-70pus8108-network-surface-2026-11-14.md
       - Deep jailbreak roadmap: research/25-deep-jailbreak-roadmap.md
@@ -77,6 +76,8 @@ nav:
       - Runtime verifier patch: research/38-runtime-verifier-patch-2026-11-20.md
       - ndp_led backlight: research/39-ndp-led-pwm-backlight-2026-11-20.md
       - NFSB mount check: research/40-nfsb-mount-check-2026-11-20.md
+      - 55PUS8108/12 field report: research/41-tpn236e-55pus8108-2026-11-21.md
+      - 43PUS7608/12 RPC-injection root: research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md
       - Firmware container: research/03-firmware-container-timg-pimg-nfsb.md
       - Verified findings: research/12-verified-findings-and-dead-ends.md
   - Reference:

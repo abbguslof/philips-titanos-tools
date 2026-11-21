@@ -9,7 +9,7 @@ Novatek NT72690.**
 [Check your model](models.md){ .md-button }
 [Read the deep roadmap](research/25-deep-jailbreak-roadmap.md){ .md-button }
 
-**Verified on `55PUS8000/12` · 105 tests · release `0.4.17`**
+**Verified on `55PUS8000/12` · 105 tests · release `0.4.18`**
 
 !!! warning "Scope"
     This is an owner-authorized repository for TVs you own. The tested root

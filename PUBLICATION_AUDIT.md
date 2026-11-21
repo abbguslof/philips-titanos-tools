@@ -582,4 +582,30 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-21 (field reports 41/42 and model index)
+
+New material: `docs/research/41-tpn236e-55pus8108-2026-11-21.md`,
+`docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md`,
+`evidence/tpn236e-55pus8108/README.md`, the model and research index updates,
+and the SECURITY, FAQ, roadmap, STATE, and truth-table status changes.
+
+Checks:
+- The new material is documentation and a redacted evidence summary. No vendor
+  firmware, extracted filesystem, raw capture, credential, MAC, serial, SSID,
+  PIN, pairing credential, or TV IP is added.
+- The 55PUS8108/12 evidence table contains selected fields from recorded tests,
+  not the raw records or device identifiers.
+- The 43PUS7608/12 note records the execution primitive and byte-checked
+  anchors but omits a ready-to-run payload. No raw capture or vendor file is
+  included. The reporter restored the advertising ID after testing.
+- The 50PUS8909/12 model entry links the public field report. No firmware or
+  device data from that report is copied into the repository.
+- The 43PUS7608/12 status change and the `CDP -> idtv` correction are scoped to
+  the named unit and firmware. The lab root path is unchanged.
+- The changelog is cut to 0.4.18; `pyproject.toml` is 0.4.18.
+- Test coverage is 105 tests; the test suite, compile step, shell syntax checks,
+  and `mkdocs build --strict` pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

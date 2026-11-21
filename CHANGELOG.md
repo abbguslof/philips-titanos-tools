@@ -21,9 +21,9 @@
 ### Changed
 
 - `43PUS7608/12` moves from **REPORTED / OPEN** to **REPORTED (root)** across
-  README, the model page, docs index, the truth table, SECURITY, and the
-  roadmap. The default boot still has no CDP and no network entry; the new path
-  is physical.
+  README, the model page, docs index, the truth table, SECURITY, the roadmap,
+  and notes 34-36. The default boot still has no CDP and no network entry; the
+  new path is physical.
 - The 55PUS8108/12 chassis is `TPN236E`, the note filename carries the date,
   the note uses the standard Status/Target header, and the evidence index uses
   a table row.
@@ -32,8 +32,8 @@
 
 ### Notes
 
-- The maintainer did not reproduce either field unit. Both root reports remain
-  external.
+- The maintainer did not reproduce the field units. The 43PUS7608/12 root
+  chain and the 55PUS8108/12 privileged boot record remain external reports.
 - The 43PUS7608/12 note omits a ready-to-run payload and keeps the execution
   primitive and anchors.
 

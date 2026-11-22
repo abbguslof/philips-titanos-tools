@@ -28,7 +28,17 @@ From `docs/research/02` and the live unit:
 - `p9` is `misc`; `p11` is `nvm_dat`; `p13–p18` and `p21` have U-Boot legacy
   magic; `p19/p20/p32–p35` are NFSB images; `p36` is pstore.
 - The XBoot log reports `boot_area: 1`, but the exact boot-ROM/EXT_CSD selection
-  rules are not mapped.
+  rules are not mapped. The 2026-11-22 A/B test mapped the p9 DBFG and the
+  boot-part switch; slot 0 fails `lnikauth`; see
+  [the A/B failure](48-ab-switch-failure-2026-11-22.md).
+
+## Boot-selection recovery (2026-11-22)
+
+The A/B switch to the update slot 0 failed the XBoot `lnikauth` check. The old
+slot 1/boot1 is the licensed pair. The recovery is p9 `misc` offset `0x10` = 2
+and eMMC `EXT_CSD` `PARTITION_CONFIG` = `0x50`. The eMMC is a BGA-153 under the
+front heatsink; the write needs a programmer or a shop. The corrupted boot-area
+restore remains untested.
 
 ## Recovery research order
 

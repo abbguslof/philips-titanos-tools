@@ -34,9 +34,9 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Recovery backup | Full `mmcblk0` image and boot areas; `sha256sum -c` passes | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Restore | Same-byte write to both boot areas, read-back hashes, and cold boots verified | [2026-11-14 backup](evidence/deep/2026-11-14-emmc-backup.md) |
 | Update package | `sys_run`/`kerupm`/`eburner` map; `kerupm` matches `p21`; burner checks are MD5-only | [Update path](docs/research/30-update-path-2026-11-14.md) |
-| App-layer update gate | **VERIFIED on hardware.** The genuine VER40 USB package loaded, validated, and programmed active slot 0 (`p15`/`p17`/`p19`); AC-on activated it. Version `002.236.191`; root and persistence survived. Old slot 1/boot1 is the recovery pair. The RSA gate remains the barrier for modified packages | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
+| App-layer update gate | **VERIFIED on hardware.** The genuine VER40 USB package wrote slot 0/boot0 (`p15`/`p17`/`p19`). The live boot stayed slot 1/boot1 (XBoot `2a4184c`, p20 rootfs, p9 DBFG 2, `lnikauth pass`). Slot 0 fails `lnikauth`; the A/B switch to it is TESTED-NEGATIVE. Root and persistence ran on slot 1. The RSA gate remains the barrier for modified packages | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md), [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md) |
 | NDAL V4L2 reset | `NDAL_VideoExt_STBC_ResetByHWWDT_*` uses control `0x0f170f1f`/`0x0f170f29` (class `0x0f170000`), ioctl `0xc0185647`, 20-byte controls, and `/dev/video24`. The classic eburner initramfs uses a USB image (`/media/sda1/nvt_tv_firmware.img`), not `/swdl`; the p9 metadata layout (`PPCH`/`FWVR`/`UPST`/`BTFG`) is mapped. The entry trigger remains open | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
-| `/swdl` and p9 | Vendor `/swdl/autorun.upg` `74d2790a…`; p9 `7e8fca3d…` (post-update); active boot0 `1c7494…`/slot 0 `002.236.191`; recovery boot1 `eee415…`/slot 1 `002.235.191`; STBC off | [NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md) |
+| `/swdl` and p9 | Vendor `/swdl/autorun.upg` `74d2790a…`; p9 `7e8fca3d…` (post-update); the update wrote boot0 `1c7494…`/slot 0 (p19 new rootfs); the live boot was boot1 `eee415…`/slot 1 (p20 old rootfs) with p9 DBFG 2; STBC off; slot 0 fails `lnikauth` | [NDAL evidence](evidence/deep/2026-11-14-ndal-v4l2-reset.md), [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md) |
 | Runtime NFSB | Inner SquashFS mounts read-only at offset `0x1000` | [Runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md) |
 
 ## Live drift
@@ -49,9 +49,10 @@ The public repo documents research and root. The live unit is further along:
   `ndp_logo_seloff_boot.ko`, `opt/`, and the persistent-root scripts and logs.
 - `/swdl` holds `autorun.upg` (917,372,175 B), `autorun_size.txt`, and
   `autorun_version.txt`.
-- The vendor VER40 USB update wrote active slot 0 (`p15`/`p17`/`p19`) and
-  boot0; AC-on activated it. Firmware `002.236.191`; recovery slot 1/boot1 is
-  the previous `002.235.191`. Root and persistence survived.
+- The vendor VER40 USB update wrote slot 0 (`p15`/`p17`/`p19`) and boot0. The
+  live boot stayed slot 1/boot1 (p20/old), XBoot `2a4184c`, p9 DBFG 2,
+  `lnikauth pass`. The p9 version is `002.236.191`; the live rootfs was slot 1.
+  Root and persistence ran on slot 1. The update slot 0 fails `lnikauth`.
 - The earlier 2026-11-14 eburner retries restored the vendor
   `/swdl/autorun.upg`, the p9 `misc`, and the STBC mode. Those boot areas are
   now the recovery pair.
@@ -83,12 +84,12 @@ bootchain or kernel carrier to them.
 - [x] App-layer USB update trigger: USB package -> `/swdl/autorun.upg` ->
   verify -> eburner flag -> reset. See
   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md).
-- [x] Vendor VER40 USB update: the genuine package loaded, validated, and
-  programmed active slot 0 (`p15`/`p17`/`p19`); AC-on activation; version
-  `002.236.191`; root/persistence survived.
-- [x] A/B recovery pair: active boot0/slot 0 new; recovery boot1/slot 1 old.
-  The eMMC boot part (`nvt_emmc_set_boot_part_id` `0xa679`) and the p9
-  `NVHC`/`bflag` are available; the pair switch is not yet exercised.
+- [x] Vendor VER40 USB update: the genuine package wrote slot 0
+  (`p15`/`p17`/`p19`); the live boot stayed slot 1/boot1 with `lnikauth pass`;
+  root and persistence ran on slot 1. The p9 version is `002.236.191`.
+- [x] A/B switch: **TESTED-NEGATIVE.** Slot 0 fails `lnikauth`; the p9 DBFG
+  selects the pair (`bc:2` slot 1, `bc:1` slot 0). The old slot 1/boot1 is the
+  licensed pair. See [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md).
 - [x] Eburner flag path: `PKG_ready<path>` at `misc + 0x3e00`, STBC ioctl
   `0xc0105310`, and a no-op status function. See
   [app-layer gate](docs/research/31-app-update-gate-2026-11-14.md).
@@ -137,26 +138,30 @@ bootchain or kernel carrier to them.
 - [x] Custom NFSB image: a host-built SquashFS + header/tree mounts read-only
   through the runtime setup. See
   [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md).
-- [x] Level 4 boot-chain map (read-only): the live A/B pair, the static
+- [x] Level 4 boot-chain map (read-only): the A/B pair, the static
   VTBL/NVHC/U-Boot slots, the encrypted XBoot pair, the component trailers, and
-  the eMMC boot-part switch are mapped. No writes. See
+  the eMMC boot-part switch are mapped. See
   [Level 4 map](docs/research/46-level4-boot-chain-map-2026-11-22.md).
-- [x] A/B recovery pair exists (slot 0/boot0 new; slot 1/boot1 old); the pair
-  switch is not yet exercised.
+- [x] A/B switch to slot 0: **TESTED-NEGATIVE.** The XBoot prints
+  `lnikauth fail`, hits `BC over limit`, and the OBR cannot toggle. The old
+  slot 1/boot1 is the licensed pair. The recovery is p9 DBFG 2 and
+  `EXT_CSD 0x50`. See
+  [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md).
 
 ## Next action
 
-1. Pull the live `p13`-`p18` component trailers read-only and map the 260-byte
-   trailer and the XBoot consumer. Then, with explicit go-ahead, run the A/B
-   boot-part switch (boot1/slot1 and back) before any modified boot-area write.
-   See [Level 4 map](docs/research/46-level4-boot-chain-map-2026-11-22.md) and
+1. Restore the boot selection to slot 1: write p9 `0x10` = 2 (or the live p9
+   image) and set eMMC `EXT_CSD` `PARTITION_CONFIG` = `0x50`. The TV needs an
+   eMMC programmer or a shop; the board can be mailed. Do not write a boot
+   area. See
+   [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md) and
    [recovery gate](docs/guides/recovery-gate.md).
 2. Map the `ndp_led` 2D/3D channels and move to the HDMI and Ambilight ioctls.
    See [ndp_led backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md).
 3. Keep a second copy of the 2026-11-14 backup off the TV.
-4. Exercise the A/B recovery pair switch (eMMC boot part plus p9 slot) before
-   any modified boot-area write. The vendor update wrote active boot0/slot 0;
-   recovery boot1/slot 1 is the old version.
+4. The A/B switch to slot 0 is TESTED-NEGATIVE; slot 0 is not licensed. The
+   old slot 1/boot1 is the only bootable pair. Do not repeat the switch. See
+   [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md).
 5. Patch `libfwup` RSA (`nvtfw_sec_verify_whole_img_sign` `0xb889` or
    `nvtfw_enable_secure_boot` `0x6d3d`) and the app-layer version check. Build
    a modified VER40 package, starting with a harmless component, and keep the
@@ -192,6 +197,7 @@ bootchain or kernel carrier to them.
 - [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md)
 - [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md)
 - [Level 4 boot-chain map](docs/research/46-level4-boot-chain-map-2026-11-22.md)
+- [A/B switch failure](docs/research/48-ab-switch-failure-2026-11-22.md)
 - [43PUS7608/12 field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md)
 - [43PUS7608/12 169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md)
 - [43PUS7608/12 169.001 corrections](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)

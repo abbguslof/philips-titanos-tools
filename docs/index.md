@@ -9,7 +9,7 @@ Novatek NT72690.**
 [Check your model](models.md){ .md-button }
 [Read the deep roadmap](research/25-deep-jailbreak-roadmap.md){ .md-button }
 
-**Verified on `55PUS8000/12` · 115 tests · release `0.4.22`**
+**Verified on `55PUS8000/12` · 115 tests · release `0.4.24`**
 
 !!! warning "Scope"
     This is an owner-authorized repository for TVs you own. The tested root
@@ -49,10 +49,16 @@ If your model is missing, open a
 
 ## Latest research
 
+- [A/B switch failure](research/48-ab-switch-failure-2026-11-22.md):
+  slot 0 fails `lnikauth`; the old slot 1/boot1 is the licensed pair; the
+  recovery is p9 DBFG 2 and `EXT_CSD 0x50`.
+- [Titan OS control field reports](research/47-titanos-control-field-reports-2026-11-22.md):
+  external JointSpace 6.1, Titan OS MQTT, DIAL, Wake-on-LAN, Ambilight Off node
+  300, and JointSpace stability reports. No root conclusion.
 - [Level 4 boot-chain map](research/46-level4-boot-chain-map-2026-11-22.md):
-  live A/B pair, static VTBL/NVHC/U-Boot slots, encrypted XBoot, component
-  trailers, and the eMMC boot-part switch. Read-only; the A/B recovery switch
-  is the next test.
+  the A/B pair, static VTBL/NVHC/U-Boot slots, encrypted XBoot, component
+  trailers, and the eMMC boot-part switch. The A/B switch to slot 0 is
+  TESTED-NEGATIVE.
 - [Custom NFSB image mount](research/45-custom-nfsb-mount-2026-11-22.md):
   a host-built SquashFS + NFSB header/tree mounts read-only through the runtime
   setup. The one-block case is explained (dm-verity zero hash levels).
@@ -92,8 +98,9 @@ If your model is missing, open a
 - [70PUS8108/60 network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md):
   JointSpace 6.1 and the unauthenticated `1926` surface.
 - [Deep jailbreak roadmap](research/25-deep-jailbreak-roadmap.md):
-  Level 3 verified, Level 3.5 complete, Level 4 boot chain mapped read-only; the
-  A/B recovery switch is the next test.
+  Level 3 verified, Level 3.5 complete, Level 4 boot chain mapped; the A/B
+  switch to slot 0 is TESTED-NEGATIVE; the old slot 1 is licensed; the recovery
+  is the p9/`EXT_CSD`.
 
 ## Documentation
 

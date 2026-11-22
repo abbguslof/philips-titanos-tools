@@ -1,9 +1,11 @@
 # App-layer update gate: `/swdl` trigger and RSA verification
 
-Status: **VERIFIED (hardware)** for the genuine VER40 USB update and A/B
-activation. **VERIFIED (static)** for the trigger, verifier, classic eburner
-USB-image initramfs, and p9 metadata. **OPEN** for the modified VER40
-package/RSA bypass and the classic eburner entry.
+Status: **VERIFIED (hardware)** for the genuine VER40 USB update.
+**TESTED-NEGATIVE** for the A/B slot 0 write: the update wrote slot 0, the live
+boot stayed slot 1/boot1 with `lnikauth pass`, and slot 0 fails `lnikauth`
+([48](48-ab-switch-failure-2026-11-22.md)). **VERIFIED (static)** for the
+trigger, verifier, classic eburner USB-image initramfs, and p9 metadata. **OPEN**
+for the modified VER40 package/RSA bypass and the classic eburner entry.
 
 Target: `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`.
 
@@ -135,9 +137,10 @@ because the package is staged directly, not through the app-layer verifier.
 
 ## Next
 
-- The vendor VER40 USB update is proven: genuine package, active slot 0,
-  AC-on activation, version `002.236.191`; root/persistence survived; recovery
-  pair slot 1/boot1.
+- The vendor VER40 USB update is proven: the genuine package wrote slot 0; the
+  live boot stayed slot 1/boot1 with `lnikauth pass`; version `002.236.191`;
+  root/persistence ran on slot 1. Slot 0 is not licensed; see
+  [48](48-ab-switch-failure-2026-11-22.md).
 - Next: patch `libfwup` RSA (`nvtfw_sec_verify_whole_img_sign` `0xb889` or
   `nvtfw_enable_secure_boot` `0x6d3d`) and the app-layer version check; build a
   modified VER40 component; keep the old pair recovery.
@@ -204,11 +207,13 @@ sequences; the entry trigger remains open. See
 
 The app-layer USB update accepted the genuine `TIMGPKGVER40` package. The TV
 menu listed the package only after it was renamed to `autorun.upg`; the
-original `.pkg` name was ignored. It loaded, validated, and programmed active
-slot 0 (`p15`/`p17`/`p19`). The TV rebooted to the old slot. An AC-on cycle
-then activated slot 0: firmware `002.236.191`.
+original `.pkg` name was ignored. It loaded, validated, and wrote slot 0
+(`p15`/`p17`/`p19`). The TV rebooted to the old slot. The later serial log
+shows `boot_area:1`, `lnikauth pass`; the live boot stayed slot 1. Slot 0
+failed `lnikauth`, and the A/B switch to it is TESTED-NEGATIVE. The p9 version
+is `002.236.191`.
 
-| Partition | Active slot 0 | Recovery slot 1 |
+| Partition | Written slot 0 (not licensed) | Live boot slot 1 (licensed) |
 | :--- | :--- | :--- |
 | FDT | `p15` `9ac6c6de…` | `p16` `7d7535e9…` |
 | kernel | `p17` `85dd1e43…` | `p18` `c6be43cf…` |
@@ -216,18 +221,22 @@ then activated slot 0: firmware `002.236.191`.
 
 The eMMC boot area changed too: boot0 `1c74949e…` (new), boot1
 `eee415012095a8c51be032d1e713ac120211408aeebe029b8791526bbe4d30bd` (old).
-The active boot part is 1; the recovery boot1 is the other part. `p9` changed
-to `7e8fca3d…`; `p1`/`p2`, `p13`/`p14`, and `p21` are unchanged. The live
-`/swdl/autorun.upg` is the vendor `74d2790a…` package.
+The pre-failure boot part was 2 (boot1); the live boot was boot1. The update
+wrote boot0; it did not boot it. `p9` changed to `7e8fca3d…`; `p1`/`p2`,
+`p13`/`p14`, and `p21` are unchanged. The live `/swdl/autorun.upg` is the
+vendor `74d2790a…` package.
 
 The serial log showed `PowerOnEvt:AC ON(2)`, `switched:0`, `dual_all_same:0`,
-`addon_stats=2`, `boot_area:1`, and `lnikauth pass`. Root and persistence
-survived: `uid=0`, dropbear `:2222`, telnetd `:2323`, `customer_env.sh`, and
-the persistent root.
+`addon_stats=2`, `boot_area:1`, and `lnikauth pass`. The live boot was slot 1.
+Slot 0 did not boot; it fails `lnikauth`. Root and persistence ran on slot 1:
+`uid=0`, dropbear `:2222`, telnetd `:2323`, `customer_env.sh`, and the
+persistent root.
 
 The app-layer RSA verifier is now the barrier for a modified package. The next
-step is a patched `libfwup` plus a modified VER40 component; the recovery pair
-is slot 1/boot1. The app-layer version check may also need a patch.
+step is a patched `libfwup` plus a modified VER40 component; the old slot
+1/boot1 is the only licensed pair. The app-layer version check may also need a
+patch. The A/B switch to slot 0 is negative; see
+[48](48-ab-switch-failure-2026-11-22.md).
 
 The 2023 `TPN236E` `169.001` package has no `eburner`, `sys_run`, or `kerupm`
 components. Do not apply this 8000 update path to that family; see

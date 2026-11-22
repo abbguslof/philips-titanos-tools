@@ -3,8 +3,9 @@
 Status: **PLAN / STARTED 2026-11-12; updated 2026-11-22**. Level 3 is verified
 on the lab. The Level 3.5 carrier, verifier patch, mount-path check, backlight,
 full NFSB dm mapping, dm-verity data path, and a custom NFSB mount are verified.
-The Level 4 boot chain is mapped read-only; the A/B recovery switch is the next
-test. No boot-chain writes.
+The Level 4 boot chain is mapped; the A/B switch to slot 0 is TESTED-NEGATIVE
+(slot 0 is not licensed). The old slot 1/boot1 is the licensed pair; the
+recovery is p9 DBFG 2 and `EXT_CSD 0x50`. No boot-chain writes.
 
 This page changes the unit model:
 
@@ -219,8 +220,9 @@ writes until Phase R.
 ## Later results (2026-11-14/15)
 
 - The genuine vendor VER40 USB update loaded, validated, and programmed active
-  slot 0 (`p15`/`p17`/`p19`); AC-on activated it. Root and persistence
-  survived. The old slot 1/boot1 is the recovery pair. The app-layer RSA
+  slot 0 (`p15`/`p17`/`p19`). The live boot stayed slot 1/boot1 with
+  `lnikauth pass`; slot 0 fails `lnikauth` (48). Root and persistence ran on
+  slot 1. The app-layer RSA
   verifier remains the barrier for a modified package. See
   [the app-layer update gate](31-app-update-gate-2026-11-14.md).
 - The 2023 `TPN236E` `169.001` package was verified externally: hashes, 19/19
@@ -260,8 +262,8 @@ writes until Phase R.
   cold boots returned root. A deliberately corrupted boot area is still
   untested.
 - [x] App-layer update trigger, package-loader mapping, and genuine vendor
-  VER40 update: active slot 0 and boot0 programmed, AC-on activation,
-  recovery slot 1/boot1. See
+  VER40 update: slot 0/boot0 written; the live boot stayed slot 1/boot1 with
+  `lnikauth pass`; slot 0 fails `lnikauth`. See
   [the app-layer update gate](31-app-update-gate-2026-11-14.md).
 - [x] 2023 `TPN236E` `169.001` external artifact and live follow-up; no CDP on
   the default boot and no network entry. The physical USB flag path was
@@ -299,11 +301,14 @@ writes until Phase R.
 - [x] Custom NFSB image: a host-built SquashFS + header/tree mounts read-only
   through the runtime setup. See
   [45](45-custom-nfsb-mount-2026-11-22.md).
-- [x] Level 4 boot-chain map (read-only): live A/B pair, static
+- [x] Level 4 boot-chain map (read-only): the A/B pair, static
   VTBL/NVHC/U-Boot, encrypted XBoot, component trailers, and the eMMC
   boot-part switch. See [46](46-level4-boot-chain-map-2026-11-22.md).
-- [ ] A/B boot-part switch recovery test (boot1/slot1 and back); needs explicit
-  go-ahead.
+- [x] A/B switch to slot 0: **TESTED-NEGATIVE.** Slot 0 fails `lnikauth`; the
+  old slot 1/boot1 is the licensed pair; the recovery is p9 DBFG 2 and
+  `EXT_CSD 0x50`. See [48](48-ab-switch-failure-2026-11-22.md).
+- [ ] eMMC boot-selection recovery: write p9 DBFG 2 and `EXT_CSD 0x50`
+  (programmer or shop). The TV remains in the XBoot loop.
 - [ ] Corrupted-image restore (Phase R), the gate for a modified boot-area
   write.
 - [ ] Dual-boot recovery slot (Phase D).

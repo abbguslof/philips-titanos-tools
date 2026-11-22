@@ -1,10 +1,11 @@
 # Level 4 boot-chain map and recovery gate
 
-Status: **READ-ONLY MAP / PLAN (2026-11-22)**. The live A/B pair, the static
+Status: **READ-ONLY MAP / PLAN (2026-11-22)**. The A/B pair, the static
 NVHC/VTBL/U-Boot slots, the encrypted XBoot pair, the component trailers, and
-the app-layer A/B boot-part switch are mapped. **No boot-area, eMMC, or FDT
-writes were made.** The A/B switch and the corrupted-image restore are the next
-tests and need explicit go-ahead.
+the app-layer A/B boot-part switch are mapped. This note carries a correction:
+the live boot was slot 1/boot1, not slot 0. The update wrote slot 0 but did not
+license it. The A/B switch to slot 0 is **TESTED-NEGATIVE** in
+[48](48-ab-switch-failure-2026-11-22.md). No modified boot-area write.
 
 Target: Philips `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`, kernel
 `6.1.124-gd063554eebf5-ab6`.
@@ -15,7 +16,7 @@ static analysis of `libfwup.so`. The pre-update dumps are
 
 ## Live A/B map
 
-| Item | Active slot 0 | Recovery slot 1 |
+| Item | Written slot 0 (not licensed) | Live boot slot 1 (licensed) |
 | :--- | :--- | :--- |
 | eMMC boot area | `boot0` `1c74949e…` (new XBoot) | `boot1` `eee41501…` (old XBoot) |
 | U-Boot slot | `p1` `e7698f8f…` | `p2` `756355f8…` |
@@ -31,8 +32,9 @@ Key facts:
   The vendor update did **not** change the U-Boot slots.
 - The VTBL is identical in `p1` and `p2` and identical to the pre-update VTBL.
   It is a static structure, not a per-version component hash table.
-- `p19` changed (active rootfs slot 0); `p20` is the old recovery rootfs. This
-  matches the vendor update: active slot 0 new, recovery slot 1 old.
+- `p19` changed (the written slot 0 rootfs); `p20` stayed the old rootfs. The
+  live boot was `p20`/slot 1. The update wrote slot 0; it did not boot it.
+  [48](48-ab-switch-failure-2026-11-22.md) records the `lnikauth` failure.
 - `boot0` and `boot1` differ throughout (371,968 differing bytes, 2,807 runs)
   after a 16-byte shared header. The XBoot is encrypted/obfuscated, not a
   plaintext component.
@@ -111,8 +113,15 @@ boot ROM or the encrypted XBoot/components.
 `nvt_emmc_get_boot_part_id` reads the same field. `nvtfw_emmc_sync_dbflag_boot_part`
 wraps get/set; `nvtfw_emmc_read/write_dual_boot_flag` handle the dual-boot flag.
 
-So the recovery switch is explicit: set `PARTITION_CONFIG` bits `[5:3]` to 1/2
-and let the XBoot/U-Boot slot selection follow.
+So the switch is explicit: set `PARTITION_CONFIG` bits `[5:3]` to 1/2 and let
+the XBoot/U-Boot slot selection follow.
+
+The A/B test set p9 `0x10` = 1 and the boot part to 1, then rebooted. The XBoot
+booted boot_area 0 and printed `lnikauth fail`; the boot counter reached
+`BC over limit`. The OBR `LONG_PRESS_TO_OBR`/`OBR_SWITCH` did not toggle because
+the DB said slot 0. The old slot 1/boot1 stayed intact. The recovery is p9
+`0x10` = 2 and `EXT_CSD 0x50`; see
+[48](48-ab-switch-failure-2026-11-22.md).
 
 ## Barriers
 
@@ -128,10 +137,10 @@ and let the XBoot/U-Boot slot selection follow.
 
 1. **Read-only:** pull the live `p13`-`p18` components (or their trailers) and
    map the 260-byte trailer and the XBoot consumer. No writes.
-2. **A/B switch recovery test:** set the boot part to boot1/slot1, reboot,
-   confirm the old XBoot + old components boot, then set it back to boot0/slot0.
-   This is the hard-to-reverse step; it needs explicit go-ahead and the
-   2026-11-14 backup available.
+2. **A/B switch:** tested negative. Slot 0 fails `lnikauth`; the old slot
+   1/boot1 is the licensed pair. Restore the boot selection to slot 1 (p9
+   DBFG 2, `EXT_CSD 0x50`). See
+   [48](48-ab-switch-failure-2026-11-22.md).
 3. **Corrupted-image restore:** deliberately corrupt the active boot area and
    prove recovery, or prove the boot ROM falls back to boot1. This is the
    documented stop condition for any modified boot-area write.
@@ -144,8 +153,9 @@ and let the XBoot/U-Boot slot selection follow.
   explicit EXT_CSD choice only?
 - What key/OTP protects the XBoot and the 260-byte component trailers, and can
   it be read or overridden?
-- What exactly is the `lnikauth` check, and where does it run? It is not in the
-  plaintext artifacts (`boot0`/`boot1`/`p1`/`p2`/`p21`).
+- The `lnikauth` check runs in the XBoot. Slot 1/boot1 passes; slot 0/boot0
+  fails. The license detail is not in the plaintext artifacts
+  (`boot0`/`boot1`/`p1`/`p2`/`p21`).
 - Can the app-layer `nvtfw_enable_secure_boot` bypass be combined with the
   update path to write a modified component that the boot ROM still accepts?
 
@@ -158,4 +168,5 @@ and let the XBoot/U-Boot slot selection follow.
 - [Recovery engineering](26-recovery-engineering.md)
 - [Boot image map](28-boot-image-map.md)
 - [App-layer update gate](31-app-update-gate-2026-11-14.md)
+- [A/B switch failure](48-ab-switch-failure-2026-11-22.md)
 - [Deep jailbreak roadmap](25-deep-jailbreak-roadmap.md)

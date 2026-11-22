@@ -171,14 +171,15 @@ Status labels: **Verified** means reproduced on a tested TV or checked against t
 | :--- | :--- | :--- |
 | Firmware container parsing (`TIMG` / `TIMGPKGVER40` / `PIMG` / `NFSB` / SquashFS LZO) | **Verified statically** | [firmware guide](docs/guides/firmware-extraction.md) |
 | Update-package component map and MD5-only burner checks | **Verified (local package)** | [Update path](docs/research/30-update-path-2026-11-14.md) |
-| App-layer USB update trigger and RSA gate | **Verified on hardware: genuine VER40 update wrote active slot 0 and activated on AC-on (`002.236.191`)** | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md) |
+| App-layer USB update trigger and RSA gate | **Verified on hardware: genuine VER40 update wrote slot 0; the live boot stayed slot 1/boot1 (`lnikauth pass`); slot 0 is not licensed** | [App-layer gate](docs/research/31-app-update-gate-2026-11-14.md), [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md) |
 | NDAL V4L2 AC-on reset trigger (`/dev/video24`) | **Verified statically; eburner entry open** | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
 | U-Boot-style NVM environment read/write with dual CRC32 | **Verified** | [NVM reference](docs/reference/file-formats.md#uboot-nvm-nvm_ubootdatdata) |
 | Runtime raw SquashFS mount inside an NFSB image (read-only) | **Verified** | [runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md), [evidence](evidence/runtime-nfsb/) |
 | Runtime NFSB `linear` + `verity` dm mapping on a loop copy (read-only) | **Verified** | [NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md) |
 | Modified NFSB data block passing dm-verity after a rebuilt tree and header digest | **Verified** | [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md) |
 | Host-built SquashFS + NFSB header/tree mounted read-only on a loop copy | **Verified** | [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md) |
-| Level 4 boot-chain map (read-only): live A/B pair, static VTBL/NVHC/U-Boot, encrypted XBoot, component trailers, eMMC boot-part switch | **Verified (read-only)** | [Level 4 map](docs/research/46-level4-boot-chain-map-2026-11-22.md) |
+| Level 4 boot-chain map (read-only): A/B pair, static VTBL/NVHC/U-Boot, encrypted XBoot, component trailers, eMMC boot-part switch | **Verified (read-only)** | [Level 4 map](docs/research/46-level4-boot-chain-map-2026-11-22.md) |
+| A/B switch to the update slot 0 | **Tested negative: `lnikauth` fails; the old slot 1/boot1 is the licensed pair; recovery p9 DBFG 2 + `EXT_CSD 0x50`** | [A/B failure](docs/research/48-ab-switch-failure-2026-11-22.md) |
 | JointSpace local control (keys, volume, input, Ambilight `expert` mode) | **Verified** | [JointSpace research](docs/research/08-jointspace-api.md) |
 | Opera/Chromium DevTools on TCP `:7788` | **Open on the LAN** | [webview research](docs/research/13-webview-launcher-ipc.md#chromium-devtools-on-7788) |
 | Serial `SERV.U` interactive shell | **Dead** (`ttyS0` TX only; RX received nothing) | [hardware notes](docs/research/07-hardware-serv-u.md) |

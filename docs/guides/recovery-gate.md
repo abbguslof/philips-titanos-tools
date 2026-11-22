@@ -1,7 +1,9 @@
 # Recovery gate: back up the eMMC before boot-chain work
 
 Status: **VERIFIED backup**, **same-byte restore tested on both boot areas**.
-A deliberately corrupted boot area is still untested. This is the gate from the
+A deliberately corrupted boot area is still untested. The A/B switch to slot 0
+is **TESTED-NEGATIVE**; the boot-selection recovery is below. This is the gate
+from the
 [deep jailbreak roadmap](../research/25-deep-jailbreak-roadmap.md) and
 [recovery engineering](../research/26-recovery-engineering.md).
 
@@ -96,11 +98,32 @@ Do not use a modified image for the first restore test. Recovery from a
 deliberately corrupted boot area is still untested; it needs the eMMC
 boot-area selection or ISP/JTAG path.
 
+## If the boot selection is wrong
+
+A failed A/B selection leaves the XBoot loop: `boot_area:0`, `lnikauth fail`,
+`BC over limit`. The eMMC data is intact; the p9 and boot-part values are
+wrong. This is not a data restore.
+
+The pre-failure live pair is slot 1/boot1. Recover it with:
+- p9 `misc` offset `0x10` = `02 00 00 00` (or the live p9 image, sha256
+  `7e8fca3d…`).
+- eMMC `EXT_CSD` `PARTITION_CONFIG` (index 179) = `0x50` (boot part 2).
+
+The write needs an eMMC programmer (RT809H, Easy JTAG, Medusa) through a
+BGA-153 socket or ISP adapter, or a shop. A soldering iron alone cannot
+program the eMMC. The eMMC is a BGA-153 under the front heatsink. The p9 image
+and the full backup stay local.
+
+The A/B switch to the update slot 0 is TESTED-NEGATIVE; slot 0 fails
+`lnikauth`. Do not repeat it. See
+[the A/B failure](../research/48-ab-switch-failure-2026-11-22.md).
+
 ## Stop conditions
 
 - No full backup.
 - No verified restore of a deliberately corrupted boot area.
 - No way to select or recover the boot area.
+- No way to write the p9 or the eMMC boot part.
 - Any uncertainty about the partition's role.
 - Field units: do not write.
 

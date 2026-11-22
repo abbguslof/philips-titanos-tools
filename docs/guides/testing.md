@@ -8,12 +8,12 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (115 tests):
+Current coverage (118 tests):
 
 | Test file | Covers |
 | :--- | :--- |
 | `test_ambilight_controller.py` | Color parsing, telemetry cache, LED validation. |
-| `test_autoroot_usb.py` | Payload validation, one-line autoscript, staging, manifest, required steps. |
+| `test_autoroot_usb.py` | Payload validation, one-line autoscript, staging, manifest, required steps, empty-label handling. |
 | `test_channel_map_tool.py` | CRC-16/MODBUS, factory map verification, bit-identical rebuild. |
 | `test_edid_tool.py` | EDID CRC32 and tamper detection. |
 | `test_firmware_fetch.py` | Support-page link extraction and candidate filename generation. |

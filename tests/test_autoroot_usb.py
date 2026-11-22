@@ -3,6 +3,7 @@ import hashlib
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from tools.autoroot_usb import (
     AUTOSCRIPT_LINE,
@@ -12,6 +13,8 @@ from tools.autoroot_usb import (
     EXPECTED_BUSYBOX_SHA256,
     MANIFEST_NAME,
     README_NAME,
+    BuildError,
+    ensure_empty_label,
     sha256_file,
     stage_files,
     validate_payload,
@@ -83,6 +86,24 @@ class TestAutorootUSB(unittest.TestCase):
         ):
             self.assertIn(token, script)
         self.assertNotRegex(script, r"(?m)^\s*(/bin/|/usr/bin/)?pkill\b")
+
+    @patch("tools.autoroot_usb._run")
+    @patch("tools.autoroot_usb._fat_label", return_value="")
+    def test_empty_label_needs_no_reset(self, mock_label, mock_run):
+        ensure_empty_label(Path("/dev/sdz1"))
+        mock_run.assert_not_called()
+
+    @patch("tools.autoroot_usb._run")
+    @patch("tools.autoroot_usb._fat_label", side_effect=["GRTMPFPP_EN", ""])
+    def test_labelled_partition_is_reset(self, mock_label, mock_run):
+        ensure_empty_label(Path("/dev/sdz1"))
+        mock_run.assert_called_once_with(["fatlabel", "--reset", "/dev/sdz1"])
+
+    @patch("tools.autoroot_usb._run")
+    @patch("tools.autoroot_usb._fat_label", side_effect=["GRTMPFPP_EN", "GRTMPFPP_EN"])
+    def test_persistent_label_raises(self, mock_label, mock_run):
+        with self.assertRaises(BuildError):
+            ensure_empty_label(Path("/dev/sdz1"))
 
 
 if __name__ == "__main__":

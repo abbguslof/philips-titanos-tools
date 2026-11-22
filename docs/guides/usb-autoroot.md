@@ -12,7 +12,7 @@ writes nothing to flash. Restore is: remove the stick, cold boot.
 ## Requirements
 
 - A spare USB stick (all data will be erased).
-- A Linux host with `sfdisk`, `mkfs.fat`, `mount`, and Python 3.
+- A Linux host with `sfdisk`, `mkfs.fat`, `fatlabel`, `mount`, and Python 3.
 - The TV's LAN address.
 - Physical access to the TV's USB port and AC plug.
 
@@ -103,7 +103,8 @@ Pull the stick and inspect these files on it:
 Common causes:
 
 - **No `autoroot.log`** — the stick was labelled, not mounted at `/media/sda1`,
-  or inserted after the 6-second `find`.
+  or inserted after the 6-second `find`. Clear a leftover label with
+  `sudo fatlabel --reset /dev/sdX1` and rebuild.
 - **`FAILED` with "missing busybox"** — the stick was missing
   `busybox-armhf`; rebuild it with the tool.
 - **`telnetd` started but LAN connection is refused** — the firewall rule did not

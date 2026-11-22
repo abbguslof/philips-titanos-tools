@@ -97,7 +97,7 @@ The TV evaluates a script from `/media/sda1` as root during boot. The USB tool b
 
 ## Quick start
 
-You need a spare USB stick, physical access to the TV, and a Linux host with `sfdisk`, `mkfs.fat`, `lsblk`, and `mount`. The stick is reformatted.
+You need a spare USB stick, physical access to the TV, and a Linux host with `sfdisk`, `mkfs.fat`, `fatlabel`, `lsblk`, and `mount`. The stick is reformatted.
 
 ### 1. Build the USB root stick
 

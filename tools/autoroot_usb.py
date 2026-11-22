@@ -206,6 +206,24 @@ def _unmount_children(device: Path) -> None:
             subprocess.run(["umount", "-l", node], check=False)
 
 
+def _fat_label(part: Path) -> str:
+    """Read the label from the filesystem itself, not a cached udev/blkid value."""
+    return subprocess.check_output(["fatlabel", str(part)], text=True).strip()
+
+
+def ensure_empty_label(part: Path) -> None:
+    """Clear any FAT label; mdev only mounts an unlabelled partition at /media/sda1."""
+    label = _fat_label(part)
+    if label:
+        _run(["fatlabel", "--reset", str(part)])
+        label = _fat_label(part)
+    if label:
+        raise BuildError(
+            f"filesystem label is {label!r}, but the TV only mounts an unlabelled "
+            f"partition at /media/sda1; clear it with: fatlabel --reset {part}"
+        )
+
+
 def format_usb(device_arg: str, assume_yes: bool) -> Path:
     """Format a whole disk as MBR + one unlabelled FAT32 partition."""
     _require_root()
@@ -213,6 +231,7 @@ def format_usb(device_arg: str, assume_yes: bool) -> Path:
         "sfdisk",
         "wipefs",
         "mkfs.fat",
+        "fatlabel",
         "partprobe",
         "lsblk",
         "mount",
@@ -289,24 +308,11 @@ def format_usb(device_arg: str, assume_yes: bool) -> Path:
     if not part.exists():
         raise BuildError(f"partition did not appear: {part}")
 
-    _run(["mkfs.fat", "-F", "32", "-n", "", str(part)])
+    # Omitting -n creates the empty label the TV needs. Passing "-n ''" is
+    # rejected by some dosfstools builds ("labels can't be empty").
+    _run(["mkfs.fat", "-F", "32", str(part)])
 
-    # The autorun path is /media/sda1 only when mdev sees an empty label.
-    label = subprocess.check_output(
-        ["lsblk", "-no", "LABEL", str(part)], text=True
-    ).strip()
-    if label:
-        fatlabel = shutil.which("fatlabel")
-        if fatlabel:
-            subprocess.run([fatlabel, str(part), ""], check=False)
-            label = subprocess.check_output(
-                ["lsblk", "-no", "LABEL", str(part)], text=True
-            ).strip()
-    if label:
-        raise BuildError(
-            f"filesystem label is {label!r}, but the TV only mounts an unlabelled "
-            f"partition at /media/sda1; clear it with: fatlabel {part} ''"
-        )
+    ensure_empty_label(part)
     return part
 
 

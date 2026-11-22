@@ -751,3 +751,20 @@ Checks:
 - The test suite, compile step, shell syntax checks, and docs links pass.
 
 Verdict: GO.
+
+## Addendum 2026-11-22 (autoroot USB empty-label fix)
+
+New material: `tools/autoroot_usb.py`, `tests/test_autoroot_usb.py`, the USB
+autoroot guide, the testing guide, the README requirement list, and issue #12.
+
+Checks:
+- The tool no longer passes an empty `-n` label to `mkfs.fat` or calls
+  `fatlabel DEVICE ''`. It reads the label from the filesystem and clears a
+  stale one with `fatlabel --reset`.
+- The change is local formatting logic. No payload, credential, device
+  identifier, or vendor firmware is added.
+- The changelog is cut to 0.4.25; `pyproject.toml` is 0.4.25.
+- Test coverage is 118 tests; the test suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.

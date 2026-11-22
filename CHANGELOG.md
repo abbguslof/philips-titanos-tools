@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.4.25 - 2026-11-22
+
+### Fixed
+
+- `tools/autoroot_usb.py` creates the unlabelled FAT32 partition the TV needs
+  with dosfstools 4.2. It no longer passes `-n ""` to `mkfs.fat` or runs
+  `fatlabel DEVICE ''`, which fails with `labels can't be empty or white space
+  only`. The tool reads the label from the filesystem and clears a stale label
+  with `fatlabel --reset` (issue #12).
+
+### Changed
+
+- The label check uses `fatlabel` instead of `lsblk`'s cached udev/blkid value,
+  so a WSL2 host no longer reports a label from the previous filesystem.
+- The USB autoroot docs list `fatlabel` and show the reset command; the testing
+  guide records the label tests.
+- The changelog is cut to 0.4.25; `pyproject.toml` is 0.4.25.
+- Test coverage is 118 tests.
+
+### Notes
+
+- A fresh FAT32 filesystem is already unlabelled; the reset is a safety net.
+  Repair an existing stick with `sudo fatlabel --reset /dev/sdX1`.
+
 ## 0.4.24 - 2026-11-22
 
 ### Added

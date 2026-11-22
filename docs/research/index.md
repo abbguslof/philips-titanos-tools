@@ -65,6 +65,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 44 | [2026-11-22 dm-verity data path](44-nfsb-verity-data-path-2026-11-22.md) | VERIFIED (hardware) | A modified data block reads through the verity device after the tree is recomputed and the header root digest is replaced; the stock tree/digest still returns EIO. A custom NFSB image is mounted in 45. |
 | 45 | [2026-11-22 custom NFSB mount](45-custom-nfsb-mount-2026-11-22.md) | VERIFIED (hardware) / one-block edge explained | A host-built SquashFS + NFSB header/tree mounts read-only through `nvt_dm_setup_linear` + `nvt_dm_setup_nfsb`. One data block has zero hash levels; the root is `H(salt\|\|data)` and there is no tree block. |
 | 46 | [2026-11-22 Level 4 boot-chain map](46-level4-boot-chain-map-2026-11-22.md) | READ-ONLY MAP / PLAN | Live A/B pair, static VTBL/NVHC/U-Boot, encrypted XBoot, 260-byte component trailers, the app-layer secure-boot stub, and the eMMC boot-part switch. The A/B recovery switch and corrupted-image restore are next. |
+| 47 | [Titan OS control field reports: 55PML9019/12 and 77OLED759/12](47-titanos-control-field-reports-2026-11-22.md) | REPORTED | External control-surface reports: JointSpace 6.1, Titan OS MQTT, DIAL, Wake-on-LAN, Ambilight Off node 300, and JointSpace stability. No root conclusion. |
 
 ## Guides
 

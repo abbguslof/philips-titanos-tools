@@ -709,3 +709,21 @@ Checks:
 Verdict: GO.
 
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*
+
+## Addendum 2026-11-22 (Titan OS control field reports)
+
+New material: `docs/research/47-titanos-control-field-reports-2026-11-22.md`,
+the model rows for `55PML9019/12` and `77OLED759/12`, and the index and
+changelog updates.
+
+Checks:
+- The note records external control-surface reports only. It draws no root,
+  persistence, boot-chain, or recovery conclusion for either unit.
+- No secret, shared key, certificate, blocklist, raw capture, serial, MAC, SSID,
+  IP, or vendor firmware is copied. The source projects are linked.
+- The model rows are marked REPORTED (control only) and name the firmware where
+  the source reports it.
+- The changelog is cut to 0.4.23; `pyproject.toml` is 0.4.23.
+- The test suite, compile step, shell syntax checks, and docs links pass.
+
+Verdict: GO.

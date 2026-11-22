@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.4.23 - 2026-11-22
+
+### Added
+
+- Research note 47, Titan OS control field reports for `55PML9019/12`
+  (`TPN248E`, `248.010.000.121`) and `77OLED759/12`: JointSpace 6.1, Titan
+  MQTT, DIAL, Wake-on-LAN, the Ambilight Off settings node, source macros, and
+  JointSpace stability limits. The note cites the two public MIT projects and
+  reproduces no code, keys, certificates, or blocklists.
+- Model rows for the two reported control-only units.
+
+### Changed
+
+- The model tables and index link the new report. The changelog is cut to
+  0.4.23; `pyproject.toml` is 0.4.23.
+
+### Notes
+
+- External reports only. Neither unit was tested for root, persistence,
+  boot-chain access, or recovery. No root conclusion is drawn.
+
 ## 0.4.22 - 2026-11-22
 
 ### Added

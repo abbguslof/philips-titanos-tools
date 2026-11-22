@@ -82,6 +82,7 @@ nav:
       - NFSB verity data path: research/44-nfsb-verity-data-path-2026-11-22.md
       - Custom NFSB mount: research/45-custom-nfsb-mount-2026-11-22.md
       - Level 4 boot-chain map: research/46-level4-boot-chain-map-2026-11-22.md
+      - Titan OS control reports: research/47-titanos-control-field-reports-2026-11-22.md
       - Firmware container: research/03-firmware-container-timg-pimg-nfsb.md
       - Verified findings: research/12-verified-findings-and-dead-ends.md
   - Reference:

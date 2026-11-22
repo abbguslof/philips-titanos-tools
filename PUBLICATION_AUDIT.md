@@ -708,6 +708,30 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-22 (A/B switch failure and eMMC recovery)
+
+New material: `docs/research/48-ab-switch-failure-2026-11-22.md`,
+`evidence/deep/2026-11-22-ab-switch-failure.md`, and the STATE, roadmap, notes
+31/46, README, site home, research index, evidence index, recovery guide, FAQ,
+and 26 updates.
+
+Checks:
+- The new material is documentation and a redacted evidence summary. The board
+  photos, the p9 image, the full eMMC backup, and the raw boot images stay local
+  or in the gitignored `dist/` tree. No serials, MACs, SSIDs, IPs, QR contents,
+  pairing credentials, or vendor firmware are added.
+- The serial excerpts are XBoot lines only. They keep no serial number, IP, or
+  QR content.
+- The note records the A/B switch failure and the recovery values. It does not
+  claim a successful recovery; the TV remains in the XBoot loop.
+- The note records the eMMC write and the shop/programmer. No modified
+  boot-area write is claimed.
+- The changelog is cut to 0.4.24; `pyproject.toml` is 0.4.24.
+- Test coverage is 115 tests; the test suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*
 
 ## Addendum 2026-11-22 (Titan OS control field reports)

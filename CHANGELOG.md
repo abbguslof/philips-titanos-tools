@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.4.24 - 2026-11-22
+
+### Added
+
+- Research note 48, the A/B switch failure: slot 0 fails the XBoot `lnikauth`;
+  the old slot 1/boot1 is the licensed pair; the recovery is p9 DBFG 2 and
+  `EXT_CSD 0x50`.
+- Redacted evidence for the 2026-11-22 A/B failure and recovery values.
+- The eMMC boot-selection recovery section in the recovery gate guide.
+
+### Changed
+
+- The A/B switch status moves from planned to TESTED-NEGATIVE across STATE, the
+  roadmap, notes 31/46, the README, the site home, and the indexes. The notes
+  record that the vendor update wrote slot 0 but the live boot stayed slot 1;
+  slot 0 is not licensed.
+- The app-layer update row no longer claims slot 0 activated; the live boot was
+  slot 1.
+- The changelog is cut to 0.4.24; `pyproject.toml` is 0.4.24.
+- Test coverage is 115 tests.
+
+### Notes
+
+- The TV stays in the XBoot loop; the recovery write is not done.
+- The eMMC write needs a programmer or a shop. A soldering iron alone cannot.
+- The board photos, p9 image, and full backup stay local; no serials or images
+  are committed.
+- No modified boot-area write.
+
 ## 0.4.23 - 2026-11-22
 
 ### Added

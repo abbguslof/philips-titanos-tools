@@ -60,7 +60,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 39 | [2026-11-20 ndp_led PWM backlight](39-ndp-led-pwm-backlight-2026-11-20.md) | VERIFIED (hardware) | Exported `KER_LED_PWM_HWFR_Get_Duty`/`Set_Duty`: channel 0 duty 20000/offset 105, dim to 10000, restore; reboot returns the default. |
 | 40 | [2026-11-20 NFSB mount-path verifier](40-nfsb-mount-check-2026-11-20.md) | VERIFIED (hardware) / OPEN (dm mapping) | `nvt_dm_check_nfsb` rejects a modified loop copy unpatched and accepts it after the `nfsb_verify` patch; full `nvt_dm_setup_nfsb` mapping open. |
 | 41 | [55PUS8108/12 FZ1A on 169.001](41-tpn236e-55pus8108-2026-11-21.md) | REPORTED (hardware), VERIFIED (offline) | One privileged boot record, USB diagnostics, browser playback, media stack, and source archive inventory. |
-| 42 | [43PUS7608/12 USB flag -> CDP -> RPC injection -> root](42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md) | REPORTED (live) / OPEN (55PUS8108 probe) | The USB flag opens CDP; the launcher RPC bridge injects a shell command as `idtv`; `customer_env.sh` grants root. A second static sink and the adID telemetry leak are recorded. |
+| 42 | [43PUS7608/12 USB flag -> CDP -> RPC injection -> root](42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md) | REPORTED (live) / OPEN (55PUS8108 probe) | The USB flag opens CDP; the launcher RPC bridge injects a shell command as `idtv`; `customer_env.sh` grants root. A stick-free reboot also reproduced root and both listeners. A second static sink and the adID telemetry leak are recorded. |
 
 ## Guides
 

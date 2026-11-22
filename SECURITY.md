@@ -79,7 +79,9 @@ image a physical USB `nbrowser_log_to_file` flag can enable it on the next
 browser launch; that is local/physical, not remote. The same unit was then
 live-verified through the launcher RPC bridge: an unquoted advertising-ID value
 runs a shell command as `idtv`, and `customer_env.sh` grants root on reboot.
-See [the corrections note](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)
+A later boot with the stick removed reproduced root and both listeners, so the
+physical USB step is needed once, not every boot. See
+[the corrections note](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)
 and [the RPC-injection note](docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md).
 Do not assume the lab's debug port is present on another build.
 

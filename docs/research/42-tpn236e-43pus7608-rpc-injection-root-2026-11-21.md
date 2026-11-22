@@ -8,8 +8,8 @@ This note supplies the step that [doc 36](36-tpn236e-169001-corrections-2026-11-
 left as an inference. A USB flag file opens CDP. The launcher page calls the
 local JSON-RPC bridge. One RPC method passes an unquoted value to a shell as
 `idtv`. The writable boot hook then runs as root. The reporter proved root on
-two reboots of the same unit and byte-checked the anchors against the running
-image.
+two reboots with the stick and again on a later boot with the stick removed,
+and byte-checked the anchors against the running image.
 
 Target:
 
@@ -66,15 +66,20 @@ shell here.
 
 The `idtv` process can write `/mtd_rwarea/apdat/customer_env.sh`, which is an
 `idtv_data_t` path. `run.sh:333` sources that file as root on the next boot.
-The reporter observed the following twice:
+The reporter observed the following on each boot:
 
 ```
 uid=0(root) gid=0(root) context=system_u:system_r:initrc_t
 ```
 
 Persistence held across two reboots with the stick variant. A stick-free
-variant, with a BusyBox binary copied to `apdat`, is deployed on the unit but
-has not been reboot-validated.
+variant, with a BusyBox binary copied to `apdat`, was later reboot-validated:
+the FAT32 stick was removed before boot, `/media/` stayed empty, and
+`/mtd_rwarea/apdat/root_proof.txt` was written by the boot script at about
+12 s after kernel start. Root returned as
+`uid=0(root) gid=0(root) context=system_u:system_r:initrc_t`, and both
+listeners (`:2323`, `:9999`) and their ACCEPT rules were present. The retry
+loops beat the netfilter start race again.
 
 ## Second sink (static, not fired)
 
@@ -104,9 +109,10 @@ exec. BusyBox `telnetd` from `apdat` is the stable root listener.
 
 The entry class matches the published autoroot: one physical USB write that
 places a flag-file name only, plus one warm reboot. Nothing on the stick is
-executed and no cold boot is needed. After entry, CDP, the RPC bridge, and the
-root listeners are LAN-reachable through the ACCEPT rules that the persistence
-script installs; the stock `iptables_conf.sh` does not open them.
+executed and no cold boot is needed. Once the hook is written, later boots need
+no stick. After entry, CDP, the RPC bridge, and the root listeners are
+LAN-reachable through the ACCEPT rules that the persistence script installs;
+the stock `iptables_conf.sh` does not open them.
 
 Not claimed: entry without the flag file, remote exploitation, a Widevine or
 secure-boot bypass, or survival when the flag is absent at browser start.
@@ -127,7 +133,8 @@ secure-boot bypass, or survival when the flag is absent at browser start.
 
 - The maintainer has not reproduced this unit or chain.
 - The second sink is static only.
-- The stick-free persistence variant is not reboot-tested.
+- One stick-free reboot was validated. Repeated stick-free boots and a recovery
+  test are not claimed.
 - The bridge binary attribution is inferred from `nvt.app.ini`.
 - The sink is in the shared Titan OS RPC stack, so it plausibly applies to the
   55PUS8108/12 169.001 unit in

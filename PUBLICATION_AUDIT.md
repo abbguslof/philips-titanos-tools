@@ -602,6 +602,9 @@ Checks:
   device data from that report is copied into the repository.
 - The 43PUS7608/12 status change and the `CDP -> idtv` correction are scoped to
   the named unit and firmware. The lab root path is unchanged.
+- The 43PUS7608/12 stick-free reboot validation is recorded as an external
+  hardware result. No raw capture, proof-file contents, or identifiers are
+  added.
 - The changelog is cut to 0.4.18; `pyproject.toml` is 0.4.18.
 - Test coverage is 105 tests; the test suite, compile step, shell syntax checks,
   and `mkdocs build --strict` pass.

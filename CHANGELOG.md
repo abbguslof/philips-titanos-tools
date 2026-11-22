@@ -28,12 +28,18 @@
   the note uses the standard Status/Target header, and the evidence index uses
   a table row.
 - `55PUS8108/12` is indexed in README, the model page, and the docs index.
+- `43PUS7608/12` stick-free persistence is recorded: the FAT32 stick was
+  removed before boot, `/media/` stayed empty, the boot script wrote
+  `root_proof.txt` at about 12 s, root returned as `initrc_t`, and both
+  listeners and ACCEPT rules were present.
 - The test badge reports the current 105 tests.
 
 ### Notes
 
 - The maintainer did not reproduce the field units. The 43PUS7608/12 root
   chain and the 55PUS8108/12 privileged boot record remain external reports.
+- The 43PUS7608/12 stick-free validation is one external reboot. Repeated
+  stick-free boots and a recovery test are not claimed.
 - The 43PUS7608/12 note omits a ready-to-run payload and keeps the execution
   primitive and anchors.
 

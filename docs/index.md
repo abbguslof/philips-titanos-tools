@@ -51,7 +51,8 @@ If your model is missing, open a
 
 - [43PUS7608/12 RPC-injection root](research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md):
   a USB flag opens CDP, the launcher RPC bridge injects a shell command as
-  `idtv`, and the boot hook grants root. External and live-verified.
+  `idtv`, and the boot hook grants root. A later boot with the stick removed
+  reproduced root and both listeners. External and live-verified.
 - [55PUS8108/12 field report](research/41-tpn236e-55pus8108-2026-11-21.md):
   one privileged boot record, browser playback, USB diagnostics, and offline
   media findings on the same firmware family.

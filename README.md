@@ -267,6 +267,10 @@ The suite covers the dual-CRC32 NVM format, CRC-16/MODBUS channel maps, EDID int
 - [ACCESSIBILITY.md](ACCESSIBILITY.md) for the docs and Ambilight studio scope, known gaps, and reporting.
 - [docs/adr](docs/adr/) for the architecture decisions behind the repo.
 
+## Support
+
+This is student-run, unfunded work. [GitHub Sponsors](https://github.com/sponsors/abbguslof) is optional and never required; it buys project time, not features or priority.
+
 ## Keywords
 
 Philips Titan OS jailbreak, Titan OS root, Philips TV root, Philips TV SSH, Philips TV hacking, Titan OS hacking, TV jailbreak, TV root, Philips TV models, Titan OS models, 55PUS8000/12, 55PUS8450/12, 77OLED760/12, 70PUS8108/60, 43PUS7608/12, TPA256E, TPN256E, TPN236E, TPN258E, Novatek NT72690, USB autoroot, persistent root, XBoot, ATF, firmware extraction, TIMG, PIMG, NFSB, SquashFS, raw SquashFS mount, runtime NFSB bypass, U-Boot NVM, dual CRC32, SAM, Service Alignment Mode, channel maps, CRC-16/MODBUS, JointSpace, Ambilight, local control, right-to-repair, smart TV reverse engineering, owner-authorized hacking, firmware reverse engineering, telemetry audit, debloat.

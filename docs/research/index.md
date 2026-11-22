@@ -64,6 +64,7 @@ The toolkit targets Titan OS on the Novatek NT72690 platform. Other models may d
 | 43 | [Full NFSB dm mapping](43-nfsb-dm-mapping-2026-11-22.md) | VERIFIED (hardware) | `nvt_dm_setup_linear` and `nvt_dm_setup_nfsb` build the `linear` and `verity` targets; a read-only loop copy mounts the stock SquashFS. The header field map and target params are recorded. The dm-verity data path is verified in 44. |
 | 44 | [2026-11-22 dm-verity data path](44-nfsb-verity-data-path-2026-11-22.md) | VERIFIED (hardware) | A modified data block reads through the verity device after the tree is recomputed and the header root digest is replaced; the stock tree/digest still returns EIO. A custom NFSB image is mounted in 45. |
 | 45 | [2026-11-22 custom NFSB mount](45-custom-nfsb-mount-2026-11-22.md) | VERIFIED (hardware) / one-block edge explained | A host-built SquashFS + NFSB header/tree mounts read-only through `nvt_dm_setup_linear` + `nvt_dm_setup_nfsb`. One data block has zero hash levels; the root is `H(salt\|\|data)` and there is no tree block. |
+| 46 | [2026-11-22 Level 4 boot-chain map](46-level4-boot-chain-map-2026-11-22.md) | READ-ONLY MAP / PLAN | Live A/B pair, static VTBL/NVHC/U-Boot, encrypted XBoot, 260-byte component trailers, the app-layer secure-boot stub, and the eMMC boot-part switch. The A/B recovery switch and corrupted-image restore are next. |
 
 ## Guides
 

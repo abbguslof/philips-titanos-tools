@@ -176,6 +176,7 @@ Status labels: **Verified** means reproduced on a tested TV or checked against t
 | Runtime NFSB `linear` + `verity` dm mapping on a loop copy (read-only) | **Verified** | [NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md) |
 | Modified NFSB data block passing dm-verity after a rebuilt tree and header digest | **Verified** | [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md) |
 | Host-built SquashFS + NFSB header/tree mounted read-only on a loop copy | **Verified** | [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md) |
+| Level 4 boot-chain map (read-only): live A/B pair, static VTBL/NVHC/U-Boot, encrypted XBoot, component trailers, eMMC boot-part switch | **Verified (read-only)** | [Level 4 map](docs/research/46-level4-boot-chain-map-2026-11-22.md) |
 | JointSpace local control (keys, volume, input, Ambilight `expert` mode) | **Verified** | [JointSpace research](docs/research/08-jointspace-api.md) |
 | Opera/Chromium DevTools on TCP `:7788` | **Open on the LAN** | [webview research](docs/research/13-webview-launcher-ipc.md#chromium-devtools-on-7788) |
 | Serial `SERV.U` interactive shell | **Dead** (`ttyS0` TX only; RX received nothing) | [hardware notes](docs/research/07-hardware-serv-u.md) |

@@ -56,8 +56,10 @@ Runtime kernel primitives on the owned lab: `kallsyms`, controlled read/write,
 verifier inspection, and hardware control. The `ndp_logo` carrier, the runtime
 verifier patch, the NFSB mount-path check, the full NFSB dm mapping, the
 dm-verity data path, a custom NFSB mount, and the `ndp_led` backlight are
-verified. The next target is the Level 4 recovery/boot-chain gate. See the
-[deep jailbreak roadmap](../research/25-deep-jailbreak-roadmap.md) and the
+verified. The Level 4 boot chain is mapped read-only; the A/B recovery switch
+is the next test. See the
+[Level 4 map](../research/46-level4-boot-chain-map-2026-11-22.md), the
+[deep jailbreak roadmap](../research/25-deep-jailbreak-roadmap.md), and the
 [carrier page](../research/37-kernel-carrier-level-3-5.md).
 
 ## Where do I start?

@@ -135,16 +135,20 @@ bootchain or kernel carrier to them.
 - [x] Custom NFSB image: a host-built SquashFS + header/tree mounts read-only
   through the runtime setup. See
   [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md).
+- [x] Level 4 boot-chain map (read-only): the live A/B pair, the static
+  VTBL/NVHC/U-Boot slots, the encrypted XBoot pair, the component trailers, and
+  the eMMC boot-part switch are mapped. No writes. See
+  [Level 4 map](docs/research/46-level4-boot-chain-map-2026-11-22.md).
 - [x] A/B recovery pair exists (slot 0/boot0 new; slot 1/boot1 old); the pair
   switch is not yet exercised.
 
 ## Next action
 
-1. Map the boot-time verifiers (`lnikauth`, `NVHC`, `UMFG`) read-only and plan
-   the A/B recovery test. Do not write a boot area until a deliberately
-   corrupted boot area has been restored. See
-   [recovery gate](docs/guides/recovery-gate.md) and
-   [boot image map](docs/research/28-boot-image-map.md).
+1. Pull the live `p13`-`p18` component trailers read-only and map the 260-byte
+   trailer and the XBoot consumer. Then, with explicit go-ahead, run the A/B
+   boot-part switch (boot1/slot1 and back) before any modified boot-area write.
+   See [Level 4 map](docs/research/46-level4-boot-chain-map-2026-11-22.md) and
+   [recovery gate](docs/guides/recovery-gate.md).
 2. Map the `ndp_led` 2D/3D channels and move to the HDMI and Ambilight ioctls.
    See [ndp_led backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md).
 3. Keep a second copy of the 2026-11-14 backup off the TV.
@@ -185,6 +189,7 @@ bootchain or kernel carrier to them.
 - [Full NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md)
 - [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md)
 - [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md)
+- [Level 4 boot-chain map](docs/research/46-level4-boot-chain-map-2026-11-22.md)
 - [43PUS7608/12 field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md)
 - [43PUS7608/12 169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md)
 - [43PUS7608/12 169.001 corrections](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)

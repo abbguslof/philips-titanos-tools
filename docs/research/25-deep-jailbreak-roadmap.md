@@ -3,7 +3,8 @@
 Status: **PLAN / STARTED 2026-11-12; updated 2026-11-22**. Level 3 is verified
 on the lab. The Level 3.5 carrier, verifier patch, mount-path check, backlight,
 full NFSB dm mapping, dm-verity data path, and a custom NFSB mount are verified.
-The next target is the Level 4 recovery/boot-chain gate. No boot-chain writes.
+The Level 4 boot chain is mapped read-only; the A/B recovery switch is the next
+test. No boot-chain writes.
 
 This page changes the unit model:
 
@@ -127,8 +128,11 @@ mapping mounts a loop copy read-only. See
 [40](40-nfsb-mount-check-2026-11-20.md), and
 [43](43-nfsb-dm-mapping-2026-11-22.md). The dm-verity data path is verified in
 [44](44-nfsb-verity-data-path-2026-11-22.md), and a custom NFSB image mounts
-read-only in [45](45-custom-nfsb-mount-2026-11-22.md). The next target is the
-Level 4 recovery/boot-chain gate. See
+read-only in [45](45-custom-nfsb-mount-2026-11-22.md). The live A/B pair, the
+static VTBL/NVHC/U-Boot slots, the encrypted XBoot, the component trailers, and
+the eMMC boot-part switch are mapped in
+[46](46-level4-boot-chain-map-2026-11-22.md). The A/B recovery switch is the
+next test. See
 [Level 3.5: reusable kernel carrier](37-kernel-carrier-level-3-5.md).
 
 This layer gives runtime control. It does not make a modified boot image
@@ -295,5 +299,12 @@ writes until Phase R.
 - [x] Custom NFSB image: a host-built SquashFS + header/tree mounts read-only
   through the runtime setup. See
   [45](45-custom-nfsb-mount-2026-11-22.md).
+- [x] Level 4 boot-chain map (read-only): live A/B pair, static
+  VTBL/NVHC/U-Boot, encrypted XBoot, component trailers, and the eMMC
+  boot-part switch. See [46](46-level4-boot-chain-map-2026-11-22.md).
+- [ ] A/B boot-part switch recovery test (boot1/slot1 and back); needs explicit
+  go-ahead.
+- [ ] Corrupted-image restore (Phase R), the gate for a modified boot-area
+  write.
 - [ ] Dual-boot recovery slot (Phase D).
 - [ ] Boot-chain write, only after R (Phase 4).

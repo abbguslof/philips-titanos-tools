@@ -19,6 +19,7 @@ kept under the gitignored `dist/` tree and are not published.
 | [2026-11-22 NFSB dm mapping](2026-11-22-nfsb-dm-mapping.md) | `nvt_dm_setup_linear` and `nvt_dm_setup_nfsb` build the `linear` and `verity` targets on a loop copy; the verity node mounts the stock SquashFS read-only; reboot restores the live state. The dm-verity data path is verified in the next row. |
 | [2026-11-22 NFSB verity data path](2026-11-22-nfsb-verity-data-path.md) | A modified data block returns EIO with the stock tree/digest and reads successfully after the tree is recomputed and the header root digest is replaced; the rebuilt block matches the local bytes. Reboot restores the live state. |
 | [2026-11-22 custom NFSB mount](2026-11-22-custom-nfsb-mount.md) | A host-built SquashFS + NFSB header/tree (1 MiB, two-level tree) mounts read-only through the runtime setup; a marker file reads back. The one-data-block case is explained (dm-verity zero levels, root `H(salt\|\|data)`). |
+| [2026-11-22 Level 4 boot-chain map](2026-11-22-level4-boot-chain-map.md) | Live A/B hashes, the static NVHC/VTBL/U-Boot slots, the encrypted XBoot pair, the 260-byte component trailers, and the eMMC boot-part switch. Read-only; no boot-area writes. |
 
 Method and limits: [boot image map](../../docs/research/28-boot-image-map.md),
 [deep roadmap](../../docs/research/25-deep-jailbreak-roadmap.md), and

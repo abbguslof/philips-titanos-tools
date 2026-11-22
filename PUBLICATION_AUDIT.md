@@ -611,4 +611,79 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-22 (full NFSB dm mapping)
+
+New material: `docs/research/43-nfsb-dm-mapping-2026-11-22.md`,
+`evidence/deep/2026-11-22-nfsb-dm-mapping.md`, and the STATE, roadmap, research
+index, FAQ, site home, notes 37/38/40, and evidence-index updates.
+
+Checks:
+- The new material is documentation and a redacted evidence summary. No vendor
+  firmware, extracted filesystem, raw capture, credential, MAC, serial, SSID,
+  PIN, pairing credential, or TV IP is added.
+- Kernel addresses in the evidence are redacted; the note uses symbol names and
+  the published header field values.
+- The run uses a read-only loop copy; the live rootfs and `/dev/nfsb-*` are not
+  touched, and reboot restores the live state.
+- At this cut a modified data block still failed dm-verity; 0.4.20 records the
+  data path. No boot-chain or boot-area write is claimed. The carrier and
+  verifier changes remain lab-only and non-persistent.
+- The changelog is cut to 0.4.19; `pyproject.toml` is 0.4.19.
+- Test coverage is 105 tests; the test suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.
+
+## Addendum 2026-11-22 (dm-verity data path)
+
+New material: `docs/research/44-nfsb-verity-data-path-2026-11-22.md`,
+`evidence/deep/2026-11-22-nfsb-verity-data-path.md`, `tools/nfsb_verity.py`,
+`tests/test_nfsb_verity.py`, and the STATE, roadmap, research index, FAQ, site
+home, README, notes 37/38/43, and evidence-index updates.
+
+Checks:
+- The new material is documentation and a redacted evidence summary. No vendor
+  firmware, extracted filesystem, raw capture, credential, MAC, serial, SSID,
+  PIN, pairing credential, or TV IP is added.
+- Kernel addresses and the local image bytes are redacted; the evidence records
+  header field values, target sizes, and block hashes only.
+- The run uses read-only loop copies; the live rootfs and `/dev/nfsb-*` are not
+  touched, and reboot restores the live state.
+- The proof is a raw block read through the verity device. No mounted modified
+  SquashFS, bootable modified NFSB, boot-chain, or boot-area write is claimed.
+  The carrier and verifier changes remain lab-only and non-persistent.
+- The rebuild tool reproduces the live-tested modified image byte-for-byte.
+- The changelog is cut to 0.4.20; `pyproject.toml` is 0.4.20.
+- Test coverage is 114 tests; the test suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.
+
+## Addendum 2026-11-22 (custom NFSB mount)
+
+New material: `docs/research/45-custom-nfsb-mount-2026-11-22.md`,
+`evidence/deep/2026-11-22-custom-nfsb-mount.md`, the `nfsb_verity.py`
+single-block fix and test, and the STATE, roadmap, research index, FAQ, site
+home, README, note 44, and evidence-index updates.
+
+Checks:
+- The new material is documentation, a small tool fix, and a redacted evidence
+  summary. No vendor firmware, extracted filesystem, raw capture, credential,
+  MAC, serial, SSID, PIN, pairing credential, or TV IP is added.
+- Kernel addresses and the local image bytes are redacted; the evidence records
+  header field values, target sizes, and block hashes only.
+- The run uses a read-only loop copy; the live rootfs and `/dev/nfsb-*` are not
+  touched, and reboot restores the live state.
+- The minted image keeps the stock RSA signature, which is invalid for changed
+  fields; the evidence states that the direct setup call skips the header check.
+  No signed image, bootable modified NFSB, boot-chain, or boot-area write is
+  claimed.
+- The single-block rule is confirmed against `veritysetup`; the tool fix is
+  covered by the test suite.
+- The changelog is cut to 0.4.21; `pyproject.toml` is 0.4.21.
+- Test coverage is 115 tests; the test suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

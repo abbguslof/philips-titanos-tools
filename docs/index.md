@@ -9,7 +9,7 @@ Novatek NT72690.**
 [Check your model](models.md){ .md-button }
 [Read the deep roadmap](research/25-deep-jailbreak-roadmap.md){ .md-button }
 
-**Verified on `55PUS8000/12` · 105 tests · release `0.4.18`**
+**Verified on `55PUS8000/12` · 115 tests · release `0.4.21`**
 
 !!! warning "Scope"
     This is an owner-authorized repository for TVs you own. The tested root
@@ -49,6 +49,16 @@ If your model is missing, open a
 
 ## Latest research
 
+- [Custom NFSB image mount](research/45-custom-nfsb-mount-2026-11-22.md):
+  a host-built SquashFS + NFSB header/tree mounts read-only through the runtime
+  setup. The one-block case is explained (dm-verity zero hash levels).
+- [dm-verity data path](research/44-nfsb-verity-data-path-2026-11-22.md):
+  a modified data block reads through the verity device after the tree is
+  recomputed and the header root digest is replaced; the stock tree/digest still
+  returns EIO. The next target is a custom mountable NFSB image.
+- [Full NFSB dm mapping](research/43-nfsb-dm-mapping-2026-11-22.md):
+  `nvt_dm_setup_linear` and `nvt_dm_setup_nfsb` build the `linear` and `verity`
+  targets; a read-only loop copy mounts the stock SquashFS.
 - [43PUS7608/12 RPC-injection root](research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md):
   a USB flag opens CDP, the launcher RPC bridge injects a shell command as
   `idtv`, and the boot hook grants root. A later boot with the stick removed
@@ -58,12 +68,14 @@ If your model is missing, open a
   media findings on the same firmware family.
 - [NFSB mount-path verifier](research/40-nfsb-mount-check-2026-11-20.md):
   the patched verifier accepts a modified loop copy through the runtime check;
-  the full dm mapping is open.
+  the full dm mapping is verified in
+  [43](research/43-nfsb-dm-mapping-2026-11-22.md).
 - [ndp_led PWM backlight](research/39-ndp-led-pwm-backlight-2026-11-20.md):
   channel 0 duty dimmed and restored through the exported PWM functions.
 - [Runtime verifier patch](research/38-runtime-verifier-patch-2026-11-20.md):
   the carrier patches `nfsb_verify` and accepts a modified signature; reboot
-  restores the original. The full NFSB dm mapping is open.
+  restores the original. The full NFSB dm mapping is verified in
+  [43](research/43-nfsb-dm-mapping-2026-11-22.md).
 - [Level 3.5 reusable kernel carrier](research/37-kernel-carrier-level-3-5.md):
   KCFI-aware build/control tooling for runtime kernel read/write and calls,
   verified on the lab, including the direct verifier patch.
@@ -76,8 +88,8 @@ If your model is missing, open a
 - [70PUS8108/60 network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md):
   JointSpace 6.1 and the unauthenticated `1926` surface.
 - [Deep jailbreak roadmap](research/25-deep-jailbreak-roadmap.md):
-  Level 3 verified, Level 3.5 carrier/verifier/backlight verified, Level 4
-  blocked.
+  Level 3 verified, Level 3.5 carrier/verifier/backlight/dm mapping/verity data
+  path/custom NFSB mount verified, Level 4 blocked.
 
 ## Documentation
 

@@ -1,5 +1,85 @@
 # Changelog
 
+## 0.4.21 - 2026-11-22
+
+### Added
+
+- Research note 45, the custom NFSB mount: a host-built SquashFS + NFSB
+  header/tree mounts read-only through `nvt_dm_setup_linear` +
+  `nvt_dm_setup_nfsb` on a loop copy, and the marker file reads back.
+- `tools/nfsb_verity.py` handles the single-data-block case: dm-verity has zero
+  hash levels, so the root is `H(salt || data)` and there is no tree block; the
+  root matches `veritysetup`.
+- Redacted evidence for the 2026-11-22 custom-mount run.
+
+### Changed
+
+- The "custom mountable NFSB" item moves from OPEN to VERIFIED across STATE, the
+  roadmap, the research index, the FAQ, the site home, the README, note 44, and
+  the evidence index. The Level 4 recovery/boot-chain gate is next.
+- The changelog is cut to 0.4.21; `pyproject.toml` is 0.4.21.
+- Test coverage is now 115 tests.
+
+### Notes
+
+- The run uses a read-only loop copy; the live rootfs and `/dev/nfsb-*` are not
+  touched, and reboot restores the live state.
+- The minted header keeps the stock RSA signature, which is invalid for the
+  changed fields; the direct setup call skips the header check. A bootable
+  modified NFSB remains blocked.
+
+## 0.4.20 - 2026-11-22
+
+### Added
+
+- Research note 44, the dm-verity data path: the stock `fs1` verifies the hash
+  tree algorithm and on-disk layout, and a modified data block reads through the
+  verity device after the tree is recomputed and the header root digest at
+  `0x6f` is replaced. The stock tree/digest control returns EIO.
+- `tools/nfsb_verity.py` (`verify`/`rebuild`) and
+  `tests/test_nfsb_verity.py`. The rebuild reproduces the live-tested modified
+  image byte-for-byte.
+- Redacted evidence for the 2026-11-22 data-path run.
+
+### Changed
+
+- The dm-verity data path moves from OPEN to VERIFIED across STATE, the roadmap,
+  the research index, the FAQ, the site home, notes 37/38/43, the README, and
+  the evidence index. A custom mountable NFSB image is the new next target.
+- The changelog is cut to 0.4.20; `pyproject.toml` is 0.4.20.
+- Test coverage is now 114 tests.
+
+### Notes
+
+- The run uses read-only loop copies; the live rootfs and `/dev/nfsb-*` are not
+  touched, and reboot restores the live state.
+- The proof is a raw block read through the verity device, not a mounted
+  modified SquashFS. A bootable modified NFSB remains blocked.
+
+## 0.4.19 - 2026-11-22
+
+### Added
+
+- Research note 43, the full NFSB dm mapping: the reversed
+  `nvt_dm_setup_linear`/`nvt_dm_setup_nfsb` ABI, the big-endian header field
+  map, the `linear` and `verity` target strings, and a hardware run where a
+  read-only loop copy mounts the stock SquashFS through the verity device.
+- Redacted evidence for the 2026-11-22 dm mapping run.
+
+### Changed
+
+- The NFSB dm mapping moves from OPEN to VERIFIED across STATE, the roadmap,
+  the research index, the FAQ, the site home, notes 37/38/40, and the evidence
+  index. The dm-verity data path is the new next gate.
+- The changelog is cut to 0.4.19; `pyproject.toml` is 0.4.19.
+
+### Notes
+
+- The test is lab-only and uses a loop copy; the live rootfs and `/dev/nfsb-*`
+  are not touched. Reboot restores the live state.
+- A modified data block still fails dm-verity; no boot-chain or boot-area write
+  is claimed.
+
 ## 0.4.18 - 2026-11-21
 
 ### Added

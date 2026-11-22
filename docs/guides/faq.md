@@ -54,8 +54,9 @@ in a separate private project.
 
 Runtime kernel primitives on the owned lab: `kallsyms`, controlled read/write,
 verifier inspection, and hardware control. The `ndp_logo` carrier, the runtime
-verifier patch, the NFSB mount-path check, and the `ndp_led` backlight are
-verified. The full `nvt_dm_setup_nfsb` dm mapping is next. See the
+verifier patch, the NFSB mount-path check, the full NFSB dm mapping, the
+dm-verity data path, a custom NFSB mount, and the `ndp_led` backlight are
+verified. The next target is the Level 4 recovery/boot-chain gate. See the
 [deep jailbreak roadmap](../research/25-deep-jailbreak-roadmap.md) and the
 [carrier page](../research/37-kernel-carrier-level-3-5.md).
 

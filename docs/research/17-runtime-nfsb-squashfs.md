@@ -52,7 +52,8 @@ dm: target verity of size 38080 on 253:11(253:11) is ready
 The running kernel exports `nfsb_verify`, `nvt_dm_check_nfsb`,
 `dm_check_nfsb`, and `nfsb` helper symbols. The NFSB header carries the SHA-256
 root and the RSA signature. The kernel builds the dm-verity target from that
-header.
+header. The runtime `linear` + `verity` construction is reversed in
+[the full NFSB dm mapping](43-nfsb-dm-mapping-2026-11-22.md).
 
 A modified copy of the same image still mounts through `nfsb`, because the
 header remains valid. dm-verity catches the changed data when a read touches the

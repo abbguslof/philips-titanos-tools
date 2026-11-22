@@ -10,7 +10,7 @@
   [![CI](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/abbguslof/philips-titanos-tools/actions/workflows/ci.yml)
   [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://abbguslof.github.io/philips-titanos-tools/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![Tests](https://img.shields.io/badge/tests-105-brightgreen.svg)](tests/)
+  [![Tests](https://img.shields.io/badge/tests-115-brightgreen.svg)](tests/)
   [![Tested on](https://img.shields.io/badge/tested%20on-55PUS8000%2F12%20%C2%B7%20TPA256E-orange.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![SoC](https://img.shields.io/badge/SoC-Novatek%20NT72690-red.svg)](docs/research/01-boot-chain-xboot-atf.md)
   [![Help wanted](https://img.shields.io/badge/help%20wanted-other%20models-blue.svg)](https://github.com/abbguslof/philips-titanos-tools/issues)
@@ -66,7 +66,7 @@ External reports are read-only and not maintainer-reproduced. Do not copy the 80
 
 | Model | Chassis | Firmware | Status | Report |
 | :--- | :--- | :--- | :--- | :--- |
-| **55PUS8000/12** | `TPA256E` / `TPN256E` | `TPA256E_V056.002.236.191` | **VERIFIED (lab)** | [USB root](docs/guides/usb-autoroot.md), [persistence](docs/guides/persistent-root.md), [kernel carrier](docs/research/37-kernel-carrier-level-3-5.md), [backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md), [NFSB verifier](docs/research/40-nfsb-mount-check-2026-11-20.md) |
+| **55PUS8000/12** | `TPA256E` / `TPN256E` | `TPA256E_V056.002.236.191` | **VERIFIED (lab)** | [USB root](docs/guides/usb-autoroot.md), [persistence](docs/guides/persistent-root.md), [kernel carrier](docs/research/37-kernel-carrier-level-3-5.md), [backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md), [NFSB verifier](docs/research/40-nfsb-mount-check-2026-11-20.md), [NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md) |
 | 55PUS8450/12 | `TPN256E` | `TPN256E_V056.010.032.001` | **REPORTED** | [USB root evidence](evidence/tpn256e-variant/), [portability](docs/research/27-8450-portability.md); `/swdl` persistence is reported, not reproduced |
 | 77OLED760/12 | `TPN258E` | `058.010.032.001` | **REPORTED** | [compatibility report](evidence/tpn258e-77oled760/); USB root, `/swdl`, SSH; recovery and update untested |
 | 70PUS8108/60 | `TPN236E` | `TPN236E_V236.004.269.01` | **REPORTED** | [network surface](docs/research/33-tpn236e-70pus8108-network-surface-2026-11-14.md); no root; `1926` auth gap; `:7788` closed |
@@ -173,6 +173,9 @@ Status labels: **Verified** means reproduced on a tested TV or checked against t
 | NDAL V4L2 AC-on reset trigger (`/dev/video24`) | **Verified statically; eburner entry open** | [NDAL V4L2](docs/research/32-ndal-v4l2-reset-2026-11-14.md) |
 | U-Boot-style NVM environment read/write with dual CRC32 | **Verified** | [NVM reference](docs/reference/file-formats.md#uboot-nvm-nvm_ubootdatdata) |
 | Runtime raw SquashFS mount inside an NFSB image (read-only) | **Verified** | [runtime NFSB](docs/research/17-runtime-nfsb-squashfs.md), [evidence](evidence/runtime-nfsb/) |
+| Runtime NFSB `linear` + `verity` dm mapping on a loop copy (read-only) | **Verified** | [NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md) |
+| Modified NFSB data block passing dm-verity after a rebuilt tree and header digest | **Verified** | [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md) |
+| Host-built SquashFS + NFSB header/tree mounted read-only on a loop copy | **Verified** | [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md) |
 | JointSpace local control (keys, volume, input, Ambilight `expert` mode) | **Verified** | [JointSpace research](docs/research/08-jointspace-api.md) |
 | Opera/Chromium DevTools on TCP `:7788` | **Open on the LAN** | [webview research](docs/research/13-webview-launcher-ipc.md#chromium-devtools-on-7788) |
 | Serial `SERV.U` interactive shell | **Dead** (`ttyS0` TX only; RX received nothing) | [hardware notes](docs/research/07-hardware-serv-u.md) |

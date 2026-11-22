@@ -1,8 +1,9 @@
 # Deep jailbreak roadmap: the 8000 lab and field units
 
-Status: **PLAN / STARTED 2026-11-12; updated 2026-11-20**. Level 3 is verified
-on the lab. The Level 3.5 carrier, verifier patch, mount-path check, and
-backlight are verified. The full NFSB dm mapping is next. No boot-chain writes.
+Status: **PLAN / STARTED 2026-11-12; updated 2026-11-22**. Level 3 is verified
+on the lab. The Level 3.5 carrier, verifier patch, mount-path check, backlight,
+full NFSB dm mapping, dm-verity data path, and a custom NFSB mount are verified.
+The next target is the Level 4 recovery/boot-chain gate. No boot-chain writes.
 
 This page changes the unit model:
 
@@ -119,11 +120,15 @@ The carrier is verified on the lab (2026-11-20): it builds from the TV's own
 and reads kernel memory, and reads live symbols. Rollback and reboot restored
 the seloff path. The direct `nfsb_verify` patch is verified in
 [38](38-runtime-verifier-patch-2026-11-20.md). The mount-path check
-(`nvt_dm_check_nfsb`) accepts a modified loop copy after the patch, and the
-`ndp_led` PWM backlight dims and restores. See
-[39](39-ndp-led-pwm-backlight-2026-11-20.md) and
-[40](40-nfsb-mount-check-2026-11-20.md). The full `nvt_dm_setup_nfsb` dm
-mapping is next. See
+(`nvt_dm_check_nfsb`) accepts a modified loop copy after the patch, the
+`ndp_led` PWM backlight dims and restores, and the full `linear` + `verity` dm
+mapping mounts a loop copy read-only. See
+[39](39-ndp-led-pwm-backlight-2026-11-20.md),
+[40](40-nfsb-mount-check-2026-11-20.md), and
+[43](43-nfsb-dm-mapping-2026-11-22.md). The dm-verity data path is verified in
+[44](44-nfsb-verity-data-path-2026-11-22.md), and a custom NFSB image mounts
+read-only in [45](45-custom-nfsb-mount-2026-11-22.md). The next target is the
+Level 4 recovery/boot-chain gate. See
 [Level 3.5: reusable kernel carrier](37-kernel-carrier-level-3-5.md).
 
 This layer gives runtime control. It does not make a modified boot image
@@ -231,9 +236,10 @@ writes until Phase R.
 - Issue #8 corrected the doc 35 `msg_server`/`cmd_daemon` labels and recorded
   the physical serial, USB-gated CDP, and factory-console paths. The default
   network surface and Level 3.5 status are unchanged at the time of that note.
-- The reusable Level 3.5 carrier, verifier patch, mount-path check, and
-  `ndp_led` backlight are verified on the lab (2026-11-20). The next step is the
-  full `nvt_dm_setup_nfsb` dm mapping or the dm-verity data path.
+- The reusable Level 3.5 carrier, verifier patch, mount-path check, `ndp_led`
+  backlight, full NFSB dm mapping, dm-verity data path, and a custom NFSB mount
+  are verified on the lab (2026-11-20/22). The next step is the Level 4
+  recovery/boot-chain gate.
 
 ## Current status
 
@@ -279,8 +285,15 @@ writes until Phase R.
   See [40](40-nfsb-mount-check-2026-11-20.md).
 - [x] ndp_led PWM backlight: channel 0 duty dimmed and restored; reboot returns
   the default. See [39](39-ndp-led-pwm-backlight-2026-11-20.md).
-- [ ] Full `nvt_dm_setup_nfsb` dm mapping: the runtime setup creates a `verity`
-  target; a mount test needs a direct call with a loop block device.
-- [ ] dm-verity data path: a modified data block still fails verity.
+- [x] Full `nvt_dm_setup_nfsb` dm mapping: `nvt_dm_setup_linear` and
+  `nvt_dm_setup_nfsb` build the `linear` and `verity` targets; a loop copy
+  mounts the stock SquashFS read-only. See
+  [43](43-nfsb-dm-mapping-2026-11-22.md).
+- [x] dm-verity data path: a modified data block verifies after a recomputed
+  tree and header root digest; the stock tree/digest still returns EIO. See
+  [44](44-nfsb-verity-data-path-2026-11-22.md).
+- [x] Custom NFSB image: a host-built SquashFS + header/tree mounts read-only
+  through the runtime setup. See
+  [45](45-custom-nfsb-mount-2026-11-22.md).
 - [ ] Dual-boot recovery slot (Phase D).
 - [ ] Boot-chain write, only after R (Phase 4).

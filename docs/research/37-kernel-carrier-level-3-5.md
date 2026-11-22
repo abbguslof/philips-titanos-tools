@@ -2,19 +2,21 @@
 
 Status: **VERIFIED (hardware) 2026-11-20** for the build, load, parameter,
 KCFI set/get, self-buffer write/read, symbol resolution, safe reads, rollback,
-reboot, and the direct `nfsb_verify` patch. The mount-path check and the
-`ndp_led` backlight are verified in [39](39-ndp-led-pwm-backlight-2026-11-20.md)
-and [40](40-nfsb-mount-check-2026-11-20.md). **OPEN** for the full
-`nvt_dm_setup_nfsb` dm mapping and the dm-verity data path. No boot-chain,
-boot-area, or eMMC writes.
+reboot, and the direct `nfsb_verify` patch. The mount-path check, the `ndp_led`
+backlight, and the full `linear` + `verity` dm mapping are verified in
+[39](39-ndp-led-pwm-backlight-2026-11-20.md),
+[40](40-nfsb-mount-check-2026-11-20.md), and
+[43](43-nfsb-dm-mapping-2026-11-22.md). The dm-verity data path is verified in
+[44](44-nfsb-verity-data-path-2026-11-22.md). No boot-chain, boot-area, or eMMC
+writes.
 
 This page closes Phase K from the
 [deep jailbreak roadmap](25-deep-jailbreak-roadmap.md). The carrier builds from
 the TV's own `ndp_logo.ko`, loads, exposes the parameter, passes the live KCFI
 check, and reads and writes kernel memory. The first payload, a direct
 `nfsb_verify` patch, is verified in
-[38](38-runtime-verifier-patch-2026-11-20.md). The NFSB mount integration is
-the next step.
+[38](38-runtime-verifier-patch-2026-11-20.md). The full NFSB dm mapping is
+verified in [43](43-nfsb-dm-mapping-2026-11-22.md).
 
 ## Why
 
@@ -259,21 +261,24 @@ live rootfs, and reboot to undo it.
 
 This direct sequence is verified for `nfsb_verify` in
 [38](38-runtime-verifier-patch-2026-11-20.md). The runtime mount-path check is
-verified in [40](40-nfsb-mount-check-2026-11-20.md). The full
-`nvt_dm_setup_nfsb` dm mapping is open.
+verified in [40](40-nfsb-mount-check-2026-11-20.md), and the full
+`linear` + `verity` dm mapping in [43](43-nfsb-dm-mapping-2026-11-22.md).
 
 ## Limits and open items
 
-- **Full NFSB dm mapping open.** The mount-path check `nvt_dm_check_nfsb` is
-  verified in [40](40-nfsb-mount-check-2026-11-20.md). The full
-  `nvt_dm_setup_nfsb` path creates a `verity` target; a mount test needs a
-  direct call with a loop block device. Do not touch the live rootfs or
-  `/dev/nfsb-*`.
+- **Full NFSB dm mapping verified.** `nvt_dm_setup_linear` and
+  `nvt_dm_setup_nfsb` build the `linear` and `verity` targets, and a loop copy
+  mounts the stock SquashFS read-only. See
+  [43](43-nfsb-dm-mapping-2026-11-22.md). Use a loop copy; do not touch the live
+  rootfs or `/dev/nfsb-*`.
 - **Hardware control verified for the backlight.** See
   [39](39-ndp-led-pwm-backlight-2026-11-20.md). HDMI, Ambilight, and tuner
   remain open.
-- **dm-verity data path open.** A modified data block still fails verity. The
-  raw SquashFS mount remains the working path for modified userspace.
+- **dm-verity data path verified.** A modified data block verifies after the
+  tree is recomputed and the header root digest is replaced; the stock
+  tree/digest still returns EIO. See
+  [44](44-nfsb-verity-data-path-2026-11-22.md). The raw SquashFS mount remains
+  the working path for modified userspace.
 - `aarch64_insn_patch_text_nosync`, `set_memory_rw`, `set_memory_ro`, and
   `copy_from_kernel_nofault` are present. `flush_icache_range` is absent.
 - Direct `read`/`write` is unsafe on an unmapped address. Use `safe-read` where

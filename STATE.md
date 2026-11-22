@@ -1,6 +1,6 @@
 # Current state
 
-Updated: 2026-11-21.
+Updated: 2026-11-22.
 
 Target: Philips `55PUS8000/12`, chassis `TPA256E` / `TPN256E`, mainboard
 `715GD542`, firmware `TPA256E_V056.002.236.191`.
@@ -24,7 +24,10 @@ Status labels: **VERIFIED**, **REPORTED**, **TESTED-NEGATIVE**, **INFERRED**,
 | Kernel carrier | **VERIFIED on hardware.** The `ndp_logo` carrier loads, exposes the `carrier` parameter, passes the live KCFI set/get check, writes/reads its scratch buffer, resolves symbols, and reads live kernel symbols. Rollback and reboot restored the seloff path | [Level 3.5 carrier](docs/research/37-kernel-carrier-level-3-5.md) |
 | Runtime verifier patch | **VERIFIED on hardware.** The carrier calls `nfsb_verify` on a scratch header: pristine returns 0, a modified signature returns `0xffffbf00`, and the two-instruction patch returns 0. Reboot restores `0xd10343fff800865e` | [Runtime verifier patch](docs/research/38-runtime-verifier-patch-2026-11-20.md) |
 | Backlight | **VERIFIED on hardware.** `KER_LED_PWM_HWFR_Get/Set_Duty` on `/dev/ntkled`: channel 0 duty `20000`/offset `105`, dim to `10000`, restore; reboot returns the default | [ndp_led backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md) |
-| NFSB mount-path check | **VERIFIED on hardware.** `nvt_dm_check_nfsb` rejected a modified loop copy unpatched and accepted it after the `nfsb_verify` patch (`NFSB header found and verified`); the full dm mapping is open | [NFSB mount check](docs/research/40-nfsb-mount-check-2026-11-20.md) |
+| NFSB mount-path check | **VERIFIED on hardware.** `nvt_dm_check_nfsb` rejected a modified loop copy unpatched and accepted it after the `nfsb_verify` patch (`NFSB header found and verified`) | [NFSB mount check](docs/research/40-nfsb-mount-check-2026-11-20.md) |
+| NFSB dm mapping | **VERIFIED on hardware.** `nvt_dm_setup_linear` builds the data-area `linear` target and `nvt_dm_setup_nfsb` builds the `verity` target; a read-only loop copy mounted the stock SquashFS. Big-endian header fields `0x06`/`0x0a`/`0x12`/`0x16`/`0x2a` and ASCII `0x1a`/`0x2e`/`0x6f` map to the target params | [NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md) |
+| dm-verity data path | **VERIFIED on hardware.** A modified data block reads through the verity device after the tree is recomputed and the header root digest at `0x6f` is replaced; the stock tree/digest still returns EIO (`data block 100 is corrupted`) | [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md) |
+| Custom NFSB image | **VERIFIED on hardware.** A host-built SquashFS + NFSB header/tree (1 MiB data, two-level tree) mounts read-only through `nvt_dm_setup_linear` + `nvt_dm_setup_nfsb`; `hello.txt` and a marker read back. The one-block case is explained (dm-verity zero levels, root `H(salt\|\|data)`) | [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md) |
 | Boot hooks | `run.sh:461` sources `customer_env.sh`; `run_custom_impl.sh:133` runs `/swdl/telnet/telnetd` | [Persistence](docs/research/06-persistence-customer-env.md), [`/swdl` variant](docs/research/24-swdl-telnet-persistence-2026-11-11.md) |
 | Boot areas | 4 MiB, `force_ro=1`, `ro=1`. Active boot0 `1c74949e…`; recovery boot1 `eee415012095a8c51be032d1e713ac120211408aeebe029b8791526bbe4d30bd`. The vendor update wrote boot0; boot1 is the pre-update recovery | [Vendor update](evidence/deep/2026-11-14-ndal-v4l2-reset.md) |
 | Boot map | `p1`/`p2` UMFG slots; `p9` slot map; `p13`/`p14` ATF; `p15`/`p16` FDT; `p17`/`p18` kernel; `p19`/`p20` rootfs; `p21` plain `kerupm` | [Boot image map](docs/research/28-boot-image-map.md) |
@@ -122,18 +125,26 @@ bootchain or kernel carrier to them.
 - [x] ndp_led PWM backlight: channel 0 duty dimmed and restored; reboot returns
   the default. See
   [ndp_led backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md).
-- [ ] Full `nvt_dm_setup_nfsb` dm mapping: the runtime setup creates a `verity`
-  target; a mount test needs a direct call with a loop block device.
-- [ ] dm-verity data path: a modified data block still fails verity.
+- [x] Full `nvt_dm_setup_nfsb` dm mapping: `nvt_dm_setup_linear` and
+  `nvt_dm_setup_nfsb` build the `linear` and `verity` targets; a read-only loop
+  copy mounted the stock SquashFS. See
+  [NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md).
+- [x] dm-verity data path: a modified data block verifies after a recomputed
+  tree and header root digest; the stock tree/digest still returns EIO. See
+  [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md).
+- [x] Custom NFSB image: a host-built SquashFS + header/tree mounts read-only
+  through the runtime setup. See
+  [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md).
 - [x] A/B recovery pair exists (slot 0/boot0 new; slot 1/boot1 old); the pair
   switch is not yet exercised.
 
 ## Next action
 
-1. Reverse `nvt_dm_setup_nfsb` and call it with a loop block device to test the
-   full dm/verity mapping; the mount-path check is verified. Do not touch the
-   live rootfs or `/dev/nfsb-*`. See
-   [NFSB mount check](docs/research/40-nfsb-mount-check-2026-11-20.md).
+1. Map the boot-time verifiers (`lnikauth`, `NVHC`, `UMFG`) read-only and plan
+   the A/B recovery test. Do not write a boot area until a deliberately
+   corrupted boot area has been restored. See
+   [recovery gate](docs/guides/recovery-gate.md) and
+   [boot image map](docs/research/28-boot-image-map.md).
 2. Map the `ndp_led` 2D/3D channels and move to the HDMI and Ambilight ioctls.
    See [ndp_led backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md).
 3. Keep a second copy of the 2026-11-14 backup off the TV.
@@ -171,6 +182,9 @@ bootchain or kernel carrier to them.
 - [Runtime verifier patch](docs/research/38-runtime-verifier-patch-2026-11-20.md)
 - [ndp_led PWM backlight](docs/research/39-ndp-led-pwm-backlight-2026-11-20.md)
 - [NFSB mount-path verifier](docs/research/40-nfsb-mount-check-2026-11-20.md)
+- [Full NFSB dm mapping](docs/research/43-nfsb-dm-mapping-2026-11-22.md)
+- [dm-verity data path](docs/research/44-nfsb-verity-data-path-2026-11-22.md)
+- [Custom NFSB mount](docs/research/45-custom-nfsb-mount-2026-11-22.md)
 - [43PUS7608/12 field scan](docs/research/34-tpn236e-43pus7608-2026-11-14.md)
 - [43PUS7608/12 169.001 static follow-up](docs/research/35-tpn236e-169001-static-2026-11-15.md)
 - [43PUS7608/12 169.001 corrections](docs/research/36-tpn236e-169001-corrections-2026-11-16.md)

@@ -1,8 +1,9 @@
 # 2026-11-20 NFSB mount-path verifier (Level 3.5)
 
 Status: **VERIFIED (hardware)** for the runtime `nvt_dm_check_nfsb` mount-path
-check with a modified loop copy and the patched `nfsb_verify`. **OPEN** for the
-full `nvt_dm_setup_nfsb` dm mapping.
+check with a modified loop copy and the patched `nfsb_verify`. The full
+`linear` + `verity` dm mapping is verified in
+[43](43-nfsb-dm-mapping-2026-11-22.md).
 
 Target: Philips `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`, kernel
 `6.1.124-gd063554eebf5-ab6`.
@@ -49,18 +50,14 @@ The patched check accepts the modified header through the real runtime path.
   `b43297b16436980131e5ebb2c6b5f883d292a7947eb2d233b2fc08d051cffdc2`
   were intact.
 
-## Full mapping is open
+## Full mapping
 
-`nvt_dm_setup_nfsb` creates the `/dev/nfsb-*` block devices with the internal
-dm API. It calls `dm_create`, `dm_table_create`, `dm_table_add_target` with the
-`verity` target, `dm_setup_md_queue`, `dm_swap_table`, and `dm_resume`. The
-`dm_mount_nfsb`, `dm_check_nfsb`, and `dm_setup_nfsb` helpers are init-only and
-are gone after boot. A read-only `dm_table` probe shows the standard
-`DM_LIST_DEVICES` interface returns no devices.
-
-The full mount test needs a direct `nvt_dm_setup_nfsb` call with a loop block
-device and the right arguments. That call also creates a verity target, so a
-modified data block still needs the verity path.
+The runtime `linear` + `verity` mapping is reversed and verified with a loop
+copy: `nvt_dm_setup_linear` builds the data-area `linear` target and
+`nvt_dm_setup_nfsb` builds the `verity` target over it; the verity device mounts
+the stock SquashFS read-only. See
+[the full NFSB dm mapping](43-nfsb-dm-mapping-2026-11-22.md). The dm-verity data
+path (a modified data block) remains open.
 
 ## Evidence
 

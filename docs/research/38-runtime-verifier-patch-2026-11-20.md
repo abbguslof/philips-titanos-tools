@@ -2,8 +2,10 @@
 
 Status: **VERIFIED (hardware)** for the direct `nfsb_verify` patch. The runtime
 mount-path check is verified in
-[40](40-nfsb-mount-check-2026-11-20.md). **OPEN** for the full
-`nvt_dm_setup_nfsb` dm mapping. No boot-chain, boot-area, or eMMC writes.
+[40](40-nfsb-mount-check-2026-11-20.md), and the full `linear` + `verity` dm
+mapping in [43](43-nfsb-dm-mapping-2026-11-22.md). The dm-verity data path is
+verified in [44](44-nfsb-verity-data-path-2026-11-22.md). No boot-chain,
+boot-area, or eMMC writes.
 
 Target: Philips `55PUS8000/12`, firmware `TPA256E_V056.002.236.191`, kernel
 `6.1.124-gd063554eebf5-ab6`.
@@ -40,7 +42,7 @@ The header is valid: magic `NFSB`, version 3, signature at `0xb0..0x1af`.
 The patched function is `mov w0,#0; ret`. The module stayed live and the
 kernel logged no error. The original prologue is `0xd10343fff800865e`.
 
-## Mount integration is open
+## Mount integration is verified
 
 `mount -t nfsb` is not available on this boot:
 
@@ -53,13 +55,11 @@ kernel logged no error. The original prologue is `0xd10343fff800865e`.
 It calls `dm_create`, `dm_table_create`, `dm_table_add_target` with the
 `verity` target, `dm_setup_md_queue`, `dm_swap_table`, and `dm_resume`. A
 read-only `dm_table` probe (`tools/probe/dm_table.c`) shows the standard
-`DM_LIST_DEVICES` interface returns no devices and `DM_TABLE_STATUS` with the
-visible names returns ENXIO. The live mappings are internal to the NFSB setup.
+`DM_LIST_DEVICES` interface returns no devices; the live mappings are internal to
+the NFSB setup.
 
-The direct patch proves the verifier function. The runtime mount-path check
-`nvt_dm_check_nfsb` is verified with a modified loop copy in
-[40](40-nfsb-mount-check-2026-11-20.md). The full `nvt_dm_setup_nfsb` mapping
-still needs a call with a loop block device and the right arguments.
+The full `linear` + `verity` mapping is verified with a loop copy in
+[43](43-nfsb-dm-mapping-2026-11-22.md).
 
 ## Rollback
 
@@ -75,10 +75,10 @@ The text patch lives in RAM only. Reboot removes it.
 
 ## Next
 
-- Mount integration: reverse `nvt_dm_setup_nfsb` and call it with a loop block
-  device. The init-only `nfsb` type is gone.
+- Build a custom NFSB image that mounts read-only (header, tree, and mapping are
+  known). See [44](44-nfsb-verity-data-path-2026-11-22.md).
 - Or move to the next Level 3.5 target: hardware control through the carrier's
-  `call` primitive, or the dm-verity data path.
+  `call` primitive.
 
 ## Evidence
 

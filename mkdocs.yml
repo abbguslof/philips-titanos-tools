@@ -78,6 +78,9 @@ nav:
       - NFSB mount check: research/40-nfsb-mount-check-2026-11-20.md
       - 55PUS8108/12 field report: research/41-tpn236e-55pus8108-2026-11-21.md
       - 43PUS7608/12 RPC-injection root: research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md
+      - NFSB dm mapping: research/43-nfsb-dm-mapping-2026-11-22.md
+      - NFSB verity data path: research/44-nfsb-verity-data-path-2026-11-22.md
+      - Custom NFSB mount: research/45-custom-nfsb-mount-2026-11-22.md
       - Firmware container: research/03-firmware-container-timg-pimg-nfsb.md
       - Verified findings: research/12-verified-findings-and-dead-ends.md
   - Reference:

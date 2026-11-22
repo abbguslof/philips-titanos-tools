@@ -8,7 +8,7 @@ python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests -v
 ```
 
-Current coverage (105 tests):
+Current coverage (115 tests):
 
 | Test file | Covers |
 | :--- | :--- |
@@ -30,6 +30,7 @@ Current coverage (105 tests):
 | `test_uboot_nvm_tool.py` | Dual CRC32, factory verification, bit-identical round-trip. |
 | `test_build_carrier.py` | ELF section/symbol parsing, relocation-safe entry patching, and a gated real-module carrier build. |
 | `test_carrier_ctl.py` | Symbol/address validation, command scripts, safety gates, and mocked carrier flows. |
+| `test_nfsb_verity.py` | NFSB header parsing, SHA-256 hash-tree rebuild, root/tree verification, modified-block detection, and CLI overwrite safety. |
 
 ## What is not in CI
 

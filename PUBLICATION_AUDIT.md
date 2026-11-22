@@ -686,4 +686,26 @@ Checks:
 
 Verdict: GO.
 
+## Addendum 2026-11-22 (Level 4 boot-chain map)
+
+New material: `docs/research/46-level4-boot-chain-map-2026-11-22.md`,
+`evidence/deep/2026-11-22-level4-boot-chain-map.md`, and the STATE, roadmap,
+research index, FAQ, site home, README, and evidence-index updates.
+
+Checks:
+- The new material is documentation and a redacted evidence summary. No vendor
+  firmware, raw boot image, extracted filesystem, raw capture, credential, MAC,
+  serial, SSID, PIN, pairing credential, or TV IP is added.
+- The evidence records partition hashes and structure only. Kernel addresses,
+  raw XBoot/component bytes, and device identifiers are not published.
+- The work is read-only: no boot-area, eMMC, or FDT writes. The A/B switch and
+  the corrupted-image restore are not tested and require explicit go-ahead.
+- The app-layer secure-boot stub and the eMMC boot-part switch are documented as
+  app-layer behavior; they are not presented as a boot-ROM bypass.
+- The changelog is cut to 0.4.22; `pyproject.toml` is 0.4.22.
+- Test coverage is 115 tests; the test suite, compile step, and shell syntax
+  checks pass.
+
+Verdict: GO.
+
 *Generated 2026-11-09 from the `philips-titan-tools` repository.*

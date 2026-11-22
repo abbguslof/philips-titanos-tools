@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.4.22 - 2026-11-22
+
+### Added
+
+- Research note 46, the Level 4 boot-chain map: the live A/B hashes, the static
+  NVHC/VTBL/U-Boot slots, the encrypted XBoot pair, the 260-byte component
+  trailers, the app-layer secure-boot stub, and the eMMC boot-part switch
+  (`nvt_emmc_set_boot_part_id`, CMD6 index `0xb3`).
+- Redacted evidence for the 2026-11-22 read-only boot-chain map.
+
+### Changed
+
+- STATE, the roadmap, the research index, the FAQ, the site home, the README,
+  and the evidence index point at the Level 4 map. The A/B recovery switch and
+  the corrupted-image restore are the next tests.
+- The changelog is cut to 0.4.22; `pyproject.toml` is 0.4.22.
+
+### Notes
+
+- Read-only. No boot-area, eMMC, or FDT writes.
+- The A/B switch and corrupted-image restore need explicit go-ahead.
+- The XBoot/component keys and the `lnikauth` check remain open.
+
 ## 0.4.21 - 2026-11-22
 
 ### Added

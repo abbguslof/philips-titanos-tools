@@ -9,7 +9,7 @@ Novatek NT72690.**
 [Check your model](models.md){ .md-button }
 [Read the deep roadmap](research/25-deep-jailbreak-roadmap.md){ .md-button }
 
-**Verified on `55PUS8000/12` · 115 tests · release `0.4.21`**
+**Verified on `55PUS8000/12` · 115 tests · release `0.4.22`**
 
 !!! warning "Scope"
     This is an owner-authorized repository for TVs you own. The tested root
@@ -49,6 +49,10 @@ If your model is missing, open a
 
 ## Latest research
 
+- [Level 4 boot-chain map](research/46-level4-boot-chain-map-2026-11-22.md):
+  live A/B pair, static VTBL/NVHC/U-Boot slots, encrypted XBoot, component
+  trailers, and the eMMC boot-part switch. Read-only; the A/B recovery switch
+  is the next test.
 - [Custom NFSB image mount](research/45-custom-nfsb-mount-2026-11-22.md):
   a host-built SquashFS + NFSB header/tree mounts read-only through the runtime
   setup. The one-block case is explained (dm-verity zero hash levels).
@@ -88,8 +92,8 @@ If your model is missing, open a
 - [70PUS8108/60 network surface](research/33-tpn236e-70pus8108-network-surface-2026-11-14.md):
   JointSpace 6.1 and the unauthenticated `1926` surface.
 - [Deep jailbreak roadmap](research/25-deep-jailbreak-roadmap.md):
-  Level 3 verified, Level 3.5 carrier/verifier/backlight/dm mapping/verity data
-  path/custom NFSB mount verified, Level 4 blocked.
+  Level 3 verified, Level 3.5 complete, Level 4 boot chain mapped read-only; the
+  A/B recovery switch is the next test.
 
 ## Documentation
 

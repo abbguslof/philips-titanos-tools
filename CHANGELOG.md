@@ -1,6 +1,28 @@
 # Changelog
 
-## 0.4.25 - 2026-11-22
+## 0.4.26 - 2026-11-24
+
+### Added
+
+- [doc 49](docs/research/49-nt72690e-2026-selinux-exec-transition-2026-11-24.md):
+  first field report for `55PQS8501/12` (`TPN266E`, `NT72690E` 2026
+  platform generation). USB autoroot and the `/swdl/telnet/telnetd`
+  persistence variant both verified unmodified on this unit. Documents that
+  this generation's `idtv` loads the cloud launcher (`app.titanos.tv`), not
+  a local `mframework/webui/PHI/page`, so the `/swdl/UI/page` override has
+  no effect; that the embedded Chromium's DNS-over-HTTPS defeats a
+  `/tmp/resolv.conf` redirect of that origin; and an SELinux finding —
+  `chcon`-ing an ELF to a target domain's exec type and `execve()`-ing it
+  directly (never sourcing a shell script, which does not transition)
+  crosses a boundary `runcon`/`dyntransition` refuses from the root shell's
+  `initrc_t` domain, chained two hops to reach `tpvopera_t` and a working
+  Chrome DevTools Protocol target. Display takeover from there is
+  TESTED-NEGATIVE: a fixed three-layer DirectFB/SaWMan stack pins a second
+  instance to a small top-left surface regardless of window flags or
+  environment.
+- Model support table: `55PQS8501/12` added as **VERIFIED (lab)**.
+
+
 
 ### Fixed
 

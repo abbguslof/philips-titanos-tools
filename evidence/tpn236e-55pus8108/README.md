@@ -1,6 +1,6 @@
-# 55PUS8108/12 browser and USB observations
+# 55PUS8108/12 hardware observations
 
-External hardware observations on `TPN236E_V236.006.169.001`, 16–21 November
+External hardware observations on `TPN236E_V236.006.169.001`, 16–22 November
 2026. Each row summarizes selected fields from the owner's recorded test.
 
 | Test | Recorded result | Status |
@@ -22,6 +22,6 @@ identified a browser service. The later boot observation below has a separate de
 | 19 Nov | An initial system query timed out. After three wake datagrams, JointSpace returned HTTP 200, matching model and firmware, API 6.1.0. | REPORTED network response. The screen state was unobserved. |
 | 20 Nov | The device returned USB mount `/media/sdb1`. Two existence queries returned false for `/media/sda1` and its HAL log. In a separate run, all five expected diagnostic outputs returned read errors. | REPORTED mount snapshot. TESTED-NEGATIVE for readable output in that run. |
 | 21 Nov | Two reads of the same post-boot result matched in SHA-256. The retained 957 bytes contain `Name: rcS`, `PPid: 1`, UID and GID tuples each `0 0 0 0`, and `system_u:system_r:initrc_t`. | REPORTED one privileged boot execution. The framework process was not sampled. |
-
-No interactive session, second successful boot test or full recovery was
-demonstrated. Only selected fields from the records are reproduced here.
+| 21 Nov, 13:00 and 15:18 UTC | Each authenticated fixed command exited 0. Both process records returned four zero UID fields and four zero GID fields. Each links to its own post-boot model/firmware observation. | REPORTED on two separately prepared sessions. Interactive terminal access remains OPEN. |
+| 21 Nov, 15:19 UTC | A 2,456-byte owner-built ARM diagnostic in the second session reported UID 0 and kernel 4.19.261. Process exit 0. Follow-up check found the temporary file absent. | REPORTED native execution on the TV. |
+| 21–22 Nov | Four user-area segments totalled 3,959,422,976 bytes. Both hardware boot areas were 2,097,152 bytes each. Hashes matched across two saved copies. The kernel returned an RPMB size multiplier of 4 (512 KiB). | REPORTED capture and geometry. RPMB contents, point-in-time consistency and device restoration remain unverified. |

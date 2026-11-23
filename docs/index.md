@@ -74,8 +74,8 @@ If your model is missing, open a
   `idtv`, and the boot hook grants root. A later boot with the stick removed
   reproduced root and both listeners. External and live-verified.
 - [55PUS8108/12 field report](research/41-tpn236e-55pus8108-2026-11-21.md):
-  one privileged boot record, browser playback, USB diagnostics, and offline
-  media findings on the same firmware family.
+  repeatable fixed-command access, an owner-built ARM probe, browser playback,
+  USB diagnostics and measured eMMC backup coverage.
 - [NFSB mount-path verifier](research/40-nfsb-mount-check-2026-11-20.md):
   the patched verifier accepts a modified loop copy through the runtime check;
   the full dm mapping is verified in

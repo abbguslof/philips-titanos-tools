@@ -1,7 +1,7 @@
-# 55PUS8108/12 hardware observations
+# 55PUS8108/12 hardware and offline observations
 
 External hardware observations on `TPN236E_V236.006.169.001`, 16–22 November
-2026. Each row summarizes selected fields from the owner's recorded test.
+2026. The hardware tables summarize selected fields from the owner's recorded tests.
 
 | Test | Recorded result | Status |
 | :--- | :--- | :--- |
@@ -25,3 +25,10 @@ identified a browser service. The later boot observation below has a separate de
 | 21 Nov, 13:00 and 15:18 UTC | Each authenticated fixed command exited 0. Both process records returned four zero UID fields and four zero GID fields. Each links to its own post-boot model/firmware observation. | REPORTED on two separately prepared sessions. Interactive terminal access remains OPEN. |
 | 21 Nov, 15:19 UTC | A 2,456-byte owner-built ARM diagnostic in the second session reported UID 0 and kernel 4.19.261. Process exit 0. Follow-up check found the temporary file absent. | REPORTED native execution on the TV. |
 | 21–22 Nov | Four user-area segments totalled 3,959,422,976 bytes. Both hardware boot areas were 2,097,152 bytes each. Hashes matched across two saved copies. The kernel returned an RPMB size multiplier of 4 (512 KiB). | REPORTED capture and geometry. RPMB contents, point-in-time consistency and device restoration remain unverified. |
+
+## Offline comparisons on 24–25 November
+
+| Source | Selected result | Scope |
+| :--- | :--- | :--- |
+| Saved eMMC image | An 8,157-byte span containing the model, board ID and board name matched a model template exactly. | VERIFIED offline. The fitted board revision remains OPEN. |
+| ARM VM consoles, same display probe | Missing interpreter: exit 127. With musl alone: missing zlib, exit 127. With musl and zlib: completed enumeration, zero display devices, exit 2. | VERIFIED in a generic Linux 6.6 VM. Display on the TV remains OPEN. |

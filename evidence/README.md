@@ -20,7 +20,7 @@ private research archive. See [REDACTION.md](REDACTION.md) for what was removed.
 
 | Set | What it proves |
 | :--- | :--- |
-| [tpn236e-55pus8108](tpn236e-55pus8108/) | Browser playback, USB diagnostics, fixed-command and native process observations, and eMMC backup coverage on `55PUS8108/12` (`TPN236E_V236.006.169.001`). |
+| [tpn236e-55pus8108](tpn236e-55pus8108/) | Browser playback, USB diagnostics, fixed-command and native process observations, eMMC backup coverage, a stored board-family template and ARM VM loader observations for `55PUS8108/12` (`TPN236E_V236.006.169.001`). |
 | [tpn256e-variant](tpn256e-variant/) | External USB autoroot on `55PUS8450/12`; it does not prove the `/swdl` hook after a USB-less boot. |
 
 The [43PUS7608/12 root chain](../docs/research/42-tpn236e-43pus7608-rpc-injection-root-2026-11-21.md)
